@@ -1,0 +1,441 @@
+@font-face {
+  font-family: Clip;
+  src: url("fonts/Clip.ttf");
+}
+
+body {
+  --color-theme: 255, 150, 0;
+}
+
+.sign {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  transform: translateX(-50%);
+  left: 50%;
+  font-family: "Clip";
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.sign1 {
+  height: 50%;
+  top: -60px;
+  font-size: 7em;
+  letter-spacing: 2;
+  background-image: radial-gradient(
+    ellipse 50% 35% at 50% 50%,
+    rgba(var(--color-theme), 0.45),
+    transparent
+  );
+  text-shadow: 0 0 0.6rem rgba(var(--color-theme), 1), 0 0 1.5rem rgba(var(--color-theme), 1),
+    -0.2rem 0.1rem 1rem rgba(var(--color-theme), 1), 0.2rem 0.1rem 1rem rgba(var(--color-theme), 1),
+    0 -0.5rem 2rem rgba(var(--color-theme), 1), 0 0.5rem 3rem rgba(var(--color-theme), 1);
+  animation: shine 2s forwards, flicker 3s infinite;
+}
+
+#title{
+    -webkit-transition: all 1.3s;
+    -moz-transition: all 1.3s;
+    transition: all 1.3s;
+}
+
+.hide{
+  opacity: 0;
+}
+
+.hideScreensaver{
+  -webkit-transition: opacity 0.7s;
+  -moz-transition: opacity 0.7s;
+  transition: opacity 0.7s;
+}
+
+.sign_veille {
+  top: 140px;
+  font-size: 10em;
+  letter-spacing: 4;
+}
+
+.title_letter{
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+.sign2 {
+  top: 560px;
+  font-size: 2em;
+  letter-spacing: 2;
+}
+
+.subtitle{
+font-size: 1.2em;
+  font-family: "Clip";
+  text-transform: uppercase;
+  color: #ffe6ff;
+    text-shadow: 0 0 0.6rem rgba(var(--color-theme), 0.65), 0 0 1.5rem rgba(var(--color-theme), 0.65),
+      -0.2rem 0.1rem 1rem rgba(var(--color-theme), 0.65), 0.2rem 0.1rem 1rem rgba(var(--color-theme), 0.65),
+      0 -0.5rem 2rem rgba(var(--color-theme), 0.65), 0 0.5rem 3rem rgba(var(--color-theme), 0.65);
+    animation: flicker 5s infinite;
+}
+
+.subtitle-off{
+font-size: 1.2em;
+  font-family: "Clip";
+  text-transform: uppercase;
+  color: #a098a0;
+}
+
+.off-sign{
+  color: rgba(var(--color-theme), 0.55);
+  animation: shineOut 0.5s forwards;
+}
+
+.on-sign{
+  text-shadow: 0 0 0.6rem rgba(var(--color-theme), 1), 0 0 1.5rem rgba(var(--color-theme), 1),
+    -0.2rem 0.1rem 1rem rgba(var(--color-theme), 1), 0.2rem 0.1rem 1rem rgba(var(--color-theme), 1),
+    0 -0.5rem 2rem rgba(var(--color-theme), 1), 0 0.5rem 3rem rgba(var(--color-theme), 1);
+  animation: shine 1s forwards, flicker 3s infinite;
+}
+
+@keyframes blink {
+  0%,
+  22%,
+  36%,
+  75% {
+    color: #fff;
+    text-shadow: 0 0 0.6rem rgba(var(--color-theme), 1), 0 0 1.5rem rgba(var(--color-theme), 1),
+      -0.2rem 0.1rem 1rem rgba(var(--color-theme), 1), 0.2rem 0.1rem 1rem rgba(var(--color-theme), 1),
+      0 -0.5rem 2rem rgba(var(--color-theme), 1), 0 0.5rem 3rem rgba(var(--color-theme), 1);
+  }
+  28%,
+  33% {
+    color: rgba(var(--color-theme), 0.50);
+    text-shadow: none;
+  }
+  82%,
+  97% {
+    color: rgba(var(--color-theme), 1);
+    text-shadow: none;
+  }
+}
+
+.flicker {
+  animation: shine 2s forwards, blink 3s 2s infinite;
+}
+
+.flicker2 {
+  animation: shine 2s forwards, blink 5s 3s infinite;
+}
+
+.fast-flicker {
+  animation: shine 2s forwards, blink 10s 1s infinite;
+}
+
+@keyframes shine {
+  0% {
+    color: rgba(var(--color-theme), 0.26);
+    text-shadow: none;
+  }
+  100% {
+    color: #ffe6ff;
+    text-shadow: 0 0 0.6rem rgba(var(--color-theme), 1), 0 0 1.5rem rgba(var(--color-theme), 1),
+      -0.2rem 0.1rem 1rem rgba(var(--color-theme), 1), 0.2rem 0.1rem 1rem rgba(var(--color-theme), 1),
+      0 -0.5rem 2rem rgba(var(--color-theme), 1), 0 0.5rem 3rem rgba(var(--color-theme), 1);
+  }
+}
+
+@keyframes shineOut {
+  0% {
+    color: #ffe6ff;
+    text-shadow: 0 0 0.6rem rgba(var(--color-theme), 1), 0 0 1.5rem rgba(var(--color-theme), 1),
+      -0.2rem 0.1rem 1rem rgba(var(--color-theme), 1), 0.2rem 0.1rem 1rem rgba(var(--color-theme), 1),
+      0 -0.5rem 2rem rgba(var(--color-theme), 1), 0 0.5rem 3rem rgba(var(--color-theme), 1);
+  }
+  100% {
+    color: rgba(var(--color-theme), 0.26);
+    text-shadow: none;
+  }
+}
+
+@keyframes flicker {
+  from {
+    opacity: 1;
+  }
+
+  4% {
+    opacity: 0.9;
+  }
+
+  6% {
+    opacity: 0.85;
+  }
+
+  8% {
+    opacity: 0.95;
+  }
+
+  10% {
+    opacity: 0.9;
+  }
+
+  11% {
+    opacity: 0.922;
+  }
+
+  12% {
+    opacity: 0.9;
+  }
+
+  14% {
+    opacity: 0.95;
+  }
+
+  16% {
+    opacity: 0.98;
+  }
+
+  17% {
+    opacity: 0.9;
+  }
+
+  19% {
+    opacity: 0.93;
+  }
+
+  20% {
+    opacity: 0.99;
+  }
+
+  24% {
+    opacity: 1;
+  }
+
+  26% {
+    opacity: 0.94;
+  }
+
+  28% {
+    opacity: 0.98;
+  }
+
+  37% {
+    opacity: 0.93;
+  }
+
+  38% {
+    opacity: 0.5;
+  }
+
+  39% {
+    opacity: 0.96;
+  }
+
+  42% {
+    opacity: 1;
+  }
+
+  44% {
+    opacity: 0.97;
+  }
+
+  46% {
+    opacity: 0.94;
+  }
+
+  56% {
+    opacity: 0.9;
+  }
+
+  58% {
+    opacity: 0.9;
+  }
+
+  60% {
+    opacity: 0.99;
+  }
+
+  68% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 0.9;
+  }
+
+  72% {
+    opacity: 0.95;
+  }
+
+  93% {
+    opacity: 0.93;
+  }
+
+  95% {
+    opacity: 0.95;
+  }
+
+  97% {
+    opacity: 0.93;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.page{
+}
+
+#selection_alcool, #selection_diluant, #selected_alcool, #selected_diluant, #validate, #progression_text {
+  position: absolute;
+  width:100%;
+  height:100%
+  top:0;
+  left:0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  -webkit-transition: top 0.5s, left 0.5s, width 0.5s, filter 0.5s, transform 0.5s;
+  -moz-transition: top 0.5s, left 0.5s, width 0.5s, filter 0.5s, transform 0.5s;
+  transition: top 0.5s, left 0.5s, width 0.5s, filter 0.5s, transform 0.5s;
+}
+
+#selected_alcool, #selected_diluant{
+  -webkit-transition: top 0.9s, left 0.9s, width 0.9s;
+  -moz-transition: top 0.9s, left 0.9s, width 0.9s;
+  transition: top 0.9s, left 0.9s, width 0.9s;
+}
+
+#selected_alcool{
+    top: 90px;
+    left: -100px;
+}
+
+#selected_diluant{
+    top: 90px;
+    left: 180px;
+    width: calc(100% - 180px);
+}
+
+#validate{
+  top:220px;
+  transform: scaleX(0);
+  -webkit-transition: transform 0.9s ease;
+  -moz-transition:transform 0.9s ease;
+  transition: transform 0.9s ease;
+}
+
+#validate .subtitle{
+  font-size: 2em;
+}
+
+#validate.ready{
+  transform: scaleX(1);
+}
+
+#selected_alcool.ready{
+    top: 205px;
+    left: -290px;
+}
+
+#selected_diluant.ready{
+    top: 205px;
+    left: 600px;
+    width: calc(100% - 600px);
+}
+
+#selection_alcool.selected{
+    top: 255px;
+}
+
+#selection_alcool.unselected{
+    top: 255px;
+    filter: grayscale(90%);
+    transform: scale(0);
+}
+
+#selection_diluant.selected{
+    top: 255px;
+}
+
+#selection_diluant.unselected{
+    top: 255px;
+    filter: grayscale(90%);
+    transform: scale(0);
+}
+
+.list{
+  display: flex;
+}
+
+.itemBoisson{
+  height: 140px;
+  width: 140px;
+  margin: 15px;
+}
+
+#selected_alcool img, #selected_diluant img{
+  height: 110px;
+  width: 110px;
+  margin-top: 10px;
+}
+
+#selected_alcool .itemBoisson, #selected_diluant .itemBoisson{
+  text-align: center;
+}
+
+.itemBoisson>img{
+  height:100%;
+}
+
+#progression {
+  position: absolute;
+  width:600px;
+  height:50px;
+  top:53%;
+  left:50%;
+  transform: translateX(-50%) scale(0);
+  -webkit-transition: transform 0.9s ease;
+  -moz-transition:transform 0.9s ease;
+  transition: transform 0.9s ease;
+
+  box-shadow: 0 0 0.7rem #fff, 0 0 0.7rem #fff,
+    -0.2rem 0.1rem 1.2rem rgba(var(--color-theme), 0.9), 0.2rem 0.1rem 1.2rem rgba(var(--color-theme), 0.9),
+    0 -0.5rem 1.7rem rgba(var(--color-theme), 0.9), 0 0.5rem 2.5rem rgba(var(--color-theme), 0.9);
+
+  animation: shine 1s forwards, flicker 3s infinite;
+  border: 4px black solid;
+  border-radius: 50px;
+}
+
+#progression_text{
+    top:240px;
+    -webkit-transition: opacity 0.9s ease;
+    -moz-transition:opacity 0.9s ease;
+    transition: opacity 0.9s ease;
+    opacity: 0;
+}
+
+#progression_text.ready{
+  opacity: 1;
+}
+
+#progression.ready{
+  transform: translateX(-50%) scale(1);
+}
+
+#barre{
+  width: 60%;
+  height: 100%;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(var(--color-theme), 1);
+  transition: width 0.5s linear;
+  border-radius: 50px;
+  box-shadow: -0rem 0rem .7rem rgba(var(--color-theme), 1), 0rem 0rem .7rem rgba(var(--color-theme), 1);
+}

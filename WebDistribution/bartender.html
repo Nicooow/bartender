@@ -1,0 +1,90 @@
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1024, height=600, initial-scale=1.0">
+
+  <title>Bartender</title>
+  <meta name="description" content="Bartender">
+  <meta name="author" content="Nicolas Boujot">
+
+  <link rel="stylesheet" type="text/css" href="css/bartender.css?v=3">
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bartender.js?v=2"></script>
+
+</head>
+
+<body style="margin: 0; background-color: black; color:white;">
+  <div class="sign sign1" id="title">
+    <span class="fast-flicker title_letter">B</span><span class="title_letter">a</span><span class="title_letter">r</span><span class="flicker title_letter">t</span><span class="flicker title_letter">e</span><span class="title_letter">n</span><span class="title_letter">d</span><span class="title_letter title_letter">e</span><span class="flicker2 title_letter">r</span>
+
+  </div>
+
+  <div class="sign sign2 hideScreensaver">
+    <span class="off-sign" id="mode1" onclick="changeMode(1)">Light</span><span class="on-sign" id="mode2" onclick="changeMode(2)" style="padding-left: 10px; padding-right: 10px;">Normal</span><span class="off-sign" onclick="changeMode(3)" id="mode3">Hard</span>
+  </div>
+
+  <div class="page hideScreensaver">
+    <div id="selected_alcool" class="">
+      <div class="list" style="height:40px;margin-top:50px;">
+          <div class="subtitle-off"><h1>Alcool</h1></div>
+      </div>
+      <div class="list">
+        <div class="itemBoisson"><img src="img/no.png"></div>
+      </div>
+    </div>
+
+    <div id="selected_diluant" class="">
+      <div class="list" style="height:40px;margin-top:50px;">
+          <div class="subtitle-off"><h1>Diluant</h1></div>
+      </div>
+      <div class="list">
+        <div class="itemBoisson"><img src="img/no.png"></div>
+      </div>
+    </div>
+
+    <div id="progression" class="">
+        <div id="barre"></div>
+    </div>
+
+    <div id="progression_text" class="">
+        <div class="list">
+            <div class="subtitle"><h2 id="percent_text">%</h2></div>
+        </div>
+        <div class="list" style="margin-top:110px">
+            <div class="subtitle"><h1>Annuler</h1></div>
+        </div>
+    </div>
+
+
+    <div id="validate" class="">
+      <div class="list" style="height:40px;margin-top:50px;">
+          <div class="subtitle"><h1 onclick="validate()">Valider</h1></div>
+      </div>
+    </div>
+
+    <div id="selection_alcool" class="selected">
+      <div class="list" style="height:60px;margin-top:50px;">
+          <div class="subtitle"><h1>Sélection de l'alcool</h1></div>
+      </div>
+      <div class="list">
+        <div onclick="selectAlcool('clancampbell')" class="itemBoisson"><img src="img/clancampbell.png"></div>
+        <div onclick="selectAlcool('poliakov')" class="itemBoisson"><img src="img/poliakov.png"></div>
+        <div onclick="selectAlcool('jagermeister')" class="itemBoisson"><img src="img/jagermeister.png"></div>
+      </div>
+    </div>
+
+    <div id="selection_diluant" class="unselected">
+      <div class="list" style="height:60px;margin-top:50px;">
+          <div class="subtitle"><h1>Sélection du diluant</h1></div>
+      </div>
+      <div class="list">
+        <div onclick="selectDiluant('heineken')" class="itemBoisson"><img src="img/heineken.png"></div>
+        <div onclick="selectDiluant('ricard')" class="itemBoisson"><img src="img/ricard.png"></div>
+
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

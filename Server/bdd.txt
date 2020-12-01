@@ -1,0 +1,24 @@
+- boisson
+id
+nomAffichage
+nomCourt
+couleur
+logo
+pourcentageAlcool
+coefMultiplicateurDuree
+
+- pompe
+idPompe
+pinId
+#idCuve
+
+- debitmetre
+idDebitmetre
+millimetreParTick
+pinId
+#idPompe
+
+- specialPin
+pinId
+type
+name

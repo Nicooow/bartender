@@ -1,0 +1,44 @@
+.banner {
+    border-radius: 15px;
+    width: 100px;
+    height: 250px;
+    background: #000;
+    overflow: hidden;
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+    zoom: 0.5;
+    -moz-transform: scale(0.5);
+}
+.banner .fill {
+    transition: 1.5s ease-in-out;
+}
+.banner .waveShape {
+    animation-name: waveAction;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-duration: 0.5s;
+    width:150px;
+    height: 300px;
+}
+@keyframes waveAction {
+    0% {
+        transform: translate(-150px, 0);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+/* The heart of the matter */
+.testimonial-group > .row {
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.testimonial-group > .row > .col-xs-4 {
+  /*display: flex;*/
+  float: none;
+  margin-right: 5px;
+}

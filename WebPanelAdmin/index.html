@@ -1,0 +1,86 @@
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Bartender</title>
+  <meta name="description" content="Site de configuration du Bartender">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="author" content="Nicolas Boujot">
+  <link rel="icon" href="favicon.ico" />
+  <link rel="apple-touch-icon" href="favicon.ico">
+
+  <link rel="stylesheet" type="text/css" href="css/toggle-bootstrap-dark.min.css">
+  <link rel="stylesheet" type="text/css" href="css/toggle-bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/cuve.css?v=43">
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+
+</head>
+
+<body class="bootstrap">
+
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar-brand" onclick="setPage('accueil')" href="#">Bartender</a>
+    <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item btn-accueil">
+          <a class="nav-link" href="#" onclick="setPage('accueil')">Accueil</a>
+        </li>
+        <li class="nav-item btn-listBoissons btn-newBoisson">
+          <a class="nav-link" href="#" onclick="setPage('listBoissons')">Gestion des boissons</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="">Réglage</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Statistiques</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-md-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#" onclick="switchMode()">Jour/Nuit</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <br>
+
+  <div class="container" id="messages">
+    <div id="connexion" class="alert alert-info" role="alert" style="display:none;">
+       <div class="d-flex justify-content-center">
+          <div class="spinner-border" role="status"></div>
+       </div>
+       <div class="d-flex justify-content-center">
+          <span>Connexion au serveur...</span>
+       </div>
+    </div>
+
+    <div id="errors">
+
+    </div>
+  </div>
+
+  <div class="container" id="page" style="display:none;">
+    <h1>Accueil</h1>
+  </div>
+
+  <script src="js/script.js?465"></script>
+  <script>
+  window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      switchModeEtat(false);
+    }else{
+      switchModeEtat(true);
+    }
+  });
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        switchModeEtat(false);
+    }</script>
+</body>
+</html>
