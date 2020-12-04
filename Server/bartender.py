@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from py import parser, serverWs
+from py.bcolors import bcolors
 
 class Bartender():
     def __init__(self, debug = True):
@@ -18,8 +19,12 @@ class Bartender():
         self.ws.start()
 
     def log(self, func, text):
+        color = ["", ""];
+        colorFunc = {'ServerWs' : [bcolors.CYELLOW, bcolors.CYELLOW2], 'Parser' : [bcolors.CVIOLET, bcolors.CVIOLET2]}
+        if(func in colorFunc):
+            color = colorFunc[func]
         if(self.debug):
-            print(f"[{func}] {text}")
+            print(f"{bcolors.CEND}[{color[0]}{func}{bcolors.CEND}] {color[1]}{text}{bcolors.CEND}")
 
     def message_received(self, client, server, msg):
         self.parser.parse(client, server, msg)
