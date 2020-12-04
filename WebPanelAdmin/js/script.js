@@ -51,7 +51,6 @@ function connexionServeur(){
   socket.onopen = function(event) {
       $("#connexion").hide();
       $("#page").show();
-      setPage("accueil");
 
       this.onclose = function(event) {
           $("#page").hide()
