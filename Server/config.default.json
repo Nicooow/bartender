@@ -1,0 +1,11 @@
+{
+   "bdd":{
+        "host":"localhost",
+        "user":"root",
+        "password":""
+   },
+   "ws":{
+        "ip":"192.168.1.73",
+        "port":12345
+   }
+}

@@ -12,11 +12,16 @@ class ServerWs(threading.Thread):
         self.bartender.log("ServerWs", "Initialisation...")
 
     def run(self):
-        self.bartender.log("ServerWs", f"Démarrage du serveur websocket sur l'adresse {self.bartender.wsIp}:{self.bartender.wsPort}...")
-        self.server = WebsocketServer(self.bartender.wsPort, host=self.bartender.wsIp, loglevel=logging.NOTSET)
-        self.server.set_fn_new_client(self.new_client)
-        self.server.set_fn_message_received(self.message_received)
-        self.server.run_forever()
+        self.bartender.log("ServerWs", f"Démarrage du serveur websocket sur l'adresse {self.bartender.config['ws']['ip']}:{self.bartender.config['ws']['port']}...")
+        try:
+            self.server = WebsocketServer(self.bartender.config["ws"]["port"], host=self.bartender.config["ws"]["ip"], loglevel=logging.NOTSET)
+            self.server.set_fn_new_client(self.new_client)
+            self.server.set_fn_message_received(self.message_received)
+            self.bartender.log("ServerWs", f"Serveur démarré")
+            self.server.run_forever()
+        except Exception as e:
+            self.bartender.log("ServerWs", f"Erreur lors du démarrage du serveur : " + str(e))
+
 
     def send_message(self, client, msg):
         self.bartender.log("ServerWs", f"Envoie (id:{client['id']}) : {msg}")

@@ -3,9 +3,7 @@ id
 nomAffichage
 nomCourt
 couleur
-logo
 pourcentageAlcool
-coefMultiplicateurDuree
 
 - pompe
 idPompe

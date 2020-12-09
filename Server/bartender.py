@@ -1,30 +1,51 @@
 # -*- coding: utf-8 -*-
 
-from py import parser, serverWs
+from py import parser, serverWs, bdd
 from py.bcolors import bcolors
+import json
 
 class Bartender():
     def __init__(self, debug = True):
         # PARAM
         self.debug = debug
-        self.wsIp = "192.168.1.73"
-        self.wsPort = 12345
 
         # MODULES
+        self.bdd = bdd.BDD(self)
         self.parser = parser.Parser(self)
         self.ws = serverWs.ServerWs(self)
 
+        # DONNEES
+        self.boissons = []
+        self.cuves = []
+        self.config = {}
+
         # INIT
         self.log('__init__', "Initialisation...")
+        self.loadConfig();
+        self.bdd.connect()
         self.ws.start()
 
     def log(self, func, text):
         color = ["", ""];
-        colorFunc = {'ServerWs' : [bcolors.CYELLOW, bcolors.CYELLOW2], 'Parser' : [bcolors.CVIOLET, bcolors.CVIOLET2]}
+        colorFunc = {'ServerWs' : [bcolors.CYELLOW, bcolors.CYELLOW2],
+                     'Parser' : [bcolors.CVIOLET, bcolors.CVIOLET2],
+                     'Bdd' : [bcolors.CBLUE, bcolors.CBLUE2]}
         if(func in colorFunc):
             color = colorFunc[func]
         if(self.debug):
             print(f"{bcolors.CEND}[{color[0]}{func}{bcolors.CEND}] {color[1]}{text}{bcolors.CEND}")
+
+    def loadConfig(self):
+        self.log('loadConfig', "Chargement de la configuration...")
+        try:
+            with open('config.json') as json_file:
+                self.config = json.load(json_file)
+                self.log('loadConfig', "Configuration chargée")
+        except Exception as e:
+            self.log('loadConfig', "Erreur lors du chargement de la configuration, fermeture.")
+            print(str(e))
+            import sys
+            sys.exit(0)
 
     def message_received(self, client, server, msg):
         self.parser.parse(client, server, msg)
