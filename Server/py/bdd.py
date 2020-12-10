@@ -15,3 +15,9 @@ class BDD():
             self.bartender.log("Bdd", "Connexion réussite")
         except Exception as e:
             self.bartender.log("Bdd", "Erreur lors de la connexion : " + str(e))
+
+    def save(self):
+        pass
+
+    def load(self):
+        pass
