@@ -1,4 +1,4 @@
--
+--
 -- Structure de la table `boisson`
 --
 
@@ -104,6 +104,15 @@ ALTER TABLE `debitmetre`
 ALTER TABLE `pompe`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+ALTER TABLE cuve
+    ADD CONSTRAINT fk_foreign_debitmetre
+    FOREIGN KEY (idDebitmetre)
+    REFERENCES debitmetre(id);
+    ALTER TABLE cuve
+ADD CONSTRAINT fk_foreign_boisson
+    FOREIGN KEY (idBoisson)
+    REFERENCES boisson(id);
+    ALTER TABLE cuve
+ADD CONSTRAINT fk_foreign_pompe
+    FOREIGN KEY (idPompe)
+    REFERENCES pompe(id);
