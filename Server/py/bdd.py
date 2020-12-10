@@ -79,5 +79,10 @@ class BDD():
             self.bartender.log("Bdd", "Erreur lors du chargement des cuves")
             print(e)
 
+        self.bartender.boissons = boissons
+        self.bartender.pompes = pompes
+        self.bartender.debitmetres = debitmetres
+        self.bartender.cuves = cuves
+
     def save(self):
         pass

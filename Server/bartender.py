@@ -16,8 +16,8 @@ class Bartender():
 
         # DONNEES
         self.boissons = {}
-        self.pompe = {}
-        self.debimetres = {}
+        self.pompes = {}
+        self.debitmetres = {}
         self.cuves = {}
         self.config = {}
 
@@ -54,12 +54,9 @@ class Bartender():
         self.parser.parse(client, server, msg)
 
     def sendCuves(self, client):
+        for cuves in self.cuves:
+            pass
         self.ws.send_message(client, "addElement|cuve|1|Coca|#8A4C15|120")
-        self.ws.send_message(client, "addElement|cuve|2|Orange|#FF8000|40")
-        self.ws.send_message(client, "addElement|cuve|3|Vodka|#E4E4E4|70")
-        self.ws.send_message(client, "addElement|cuve|4|Whisky|#521E1E|110")
-        self.ws.send_message(client, "addElement|cuve|5|Get27|#06AF06|20")
-        self.ws.send_message(client, "addElement|cuve|6|Eau|#0FA4F9|50")
         self.ws.send_message(client, "animation|cuves")
 
     def sendBoissons(self, client):
