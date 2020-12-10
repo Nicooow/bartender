@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
 class Pompe():
-    def __init__(self):
-        self.id = 0
-        self.pinId = 0
+    def __init__(self, id, pinId):
+        self.id = id
+        self.pinId = pinId

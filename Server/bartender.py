@@ -16,6 +16,8 @@ class Bartender():
 
         # DONNEES
         self.boissons = []
+        self.pompe = []
+        self.debimetres = []
         self.cuves = []
         self.config = {}
 

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 class Cuve():
-    def __init__(self):
-        self.id = 0
-        self.pompe = None
-        self.debitmetre = None
-        self.boisson = None
-        self.quantitee = None
-        self.quantiteeMax = None
+    def __init__(self, id, pompe, debitmetre, boisson, quantitee, quantiteeMax):
+        self.id = id
+        self.pompe = pompe
+        self.debitmetre = debitmetre
+        self.boisson = boisson
+        self.quantitee = quantitee
+        self.quantiteeMax = quantiteeMax

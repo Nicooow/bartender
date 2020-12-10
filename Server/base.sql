@@ -116,3 +116,5 @@ ADD CONSTRAINT fk_foreign_boisson
 ADD CONSTRAINT fk_foreign_pompe
     FOREIGN KEY (idPompe)
     REFERENCES pompe(id);
+
+ALTER TABLE `cuve` CHANGE `idPompe` `idPompe` INT(11) NULL, CHANGE `idDebitmetre` `idDebitmetre` INT(11) NULL, CHANGE `idBoisson` `idBoisson` INT(11) NULL;
