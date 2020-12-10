@@ -7,7 +7,7 @@ CREATE TABLE `boisson` (
   `nomAffichage` varchar(30) NOT NULL,
   `nomCourt` varchar(30) NOT NULL,
   `couleur` varchar(7) NOT NULL,
-  `pourcentageAlcool` decimal(10,0) NOT NULL
+  `pourcentageAlcool` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -34,7 +34,7 @@ CREATE TABLE `cuve` (
 CREATE TABLE `debitmetre` (
   `id` int(11) NOT NULL,
   `pinId` int(11) NOT NULL,
-  `mlParTick` decimal(10,0) NOT NULL
+  `mlParTick` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
