@@ -15,16 +15,17 @@ class Bartender():
         self.ws = serverWs.ServerWs(self)
 
         # DONNEES
-        self.boissons = []
-        self.pompe = []
-        self.debimetres = []
-        self.cuves = []
+        self.boissons = {}
+        self.pompe = {}
+        self.debimetres = {}
+        self.cuves = {}
         self.config = {}
 
         # INIT
         self.log('__init__', "Initialisation...")
-        self.loadConfig();
+        self.loadConfig()
         self.bdd.connect()
+        self.bdd.load()
         self.ws.start()
 
     def log(self, func, text):
