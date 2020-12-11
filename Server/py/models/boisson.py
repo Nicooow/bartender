@@ -13,6 +13,7 @@ class Boisson():
         packet = []
         packet.append("addElement")
         packet.append("boisson")
+        packet.append(str(self.id))
         packet.append(str(self.nomAffichage))
         packet.append(str(self.nomCourt))
         packet.append(str(self.couleur))

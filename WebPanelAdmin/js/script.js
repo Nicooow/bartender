@@ -79,7 +79,7 @@ function parseMessage(message){
     if(args[1] == "cuve"){
       addCuve(args[2], args[3], args[4], args[5]);
     }else if(args[1] == "boisson"){
-      addBoissons(args[2], args[3], args[4], args[5],  args[6]);
+      addBoisson(args[2], args[3], args[4], args[5],  args[6], args[7]);
     }
   }else if(fnct == "animation"){
     if(args[1] == "cuves"){
@@ -116,38 +116,42 @@ function setPage(page){
     $("#page").html(`<h1>Liste des boissons</h1> <button type="button" onclick="setPage('newBoisson')" style="margin-bottom: 10px;" class="align-self-center btn btn-outline-info btn-block">Nouvelle boisson</button> <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3" id="listBoissons"> </div>`);
     sendMessage("ask|boissons");
   }else if(page=="newBoisson"){
-    $("#page").html(`
-      <h2>Nouvelle boisson</h2>
-      <div class="jumbotron mx-auto" style="max-width: 600px;">
-      <form action="javascript:createBoisson()" id="formNewBoisson">
-        <div class="form-group">
-          <label for="nomAffichage">Nom complet</label>
-          <input type="text" class="form-control" id="nomAffichage" placeholder="Nom d'affichage complet">
-        </div>
-        <div class="form-group">
-          <label for="nomCourt">Nom court</label>
-          <input type="text" class="form-control" id="nomCourt" placeholder="Sans espace">
-        </div>
-        <div class="form-group">
-          <label for="nomCourt">Couleur de la boisson</label>
-          <input type="color" class="form-control" id="couleur">
-        </div>
-        <div class="form-group">
-          <label for="nomCourt">Pourcentage d'alcool de la boisson</label>
-          <input type="number" step="0.01" class="form-control" id="pourcentageAlcool" placeholder="0 si non alcoolisé, séparé par un .">
-        </div>
-        <div class="form-group">
-          <label for="nomCourt">Logo de la boisson (.png)</label>
-          <input type="file" class="form-control" accept="image/png" id="logo">
-        </div>
-        <button type="submit" class="btn btn-primary btn-block" id="creer">Créer</button>
-      </form>
-      </div>
-      `);
+    showBoissonModele(true, 0, "", "", "#000", "", "abc")
   }
   if ($(window).width() <= 800) {
     $('.navbar-toggler:not(.collapsed)').click();
   }
+}
+
+function showBoissonModele(isNew, id, nomAffichage, nomCourt , couleur,  pourcentageAlcool, logo){
+  $("#page").html(`
+    <h2>Nouvelle boisson</h2>
+    <div class="jumbotron mx-auto" style="max-width: 600px;">
+    <form action="javascript:createBoisson()" id="formNewBoisson">
+      <div class="form-group">
+        <label for="nomAffichage">Nom complet</label>
+        <input type="text" value="`+nomAffichage+`" class="form-control" id="nomAffichage" placeholder="Nom d'affichage complet">
+      </div>
+      <div class="form-group">
+        <label for="nomCourt">Nom court</label>
+        <input type="text" value="`+nomCourt+`" class="form-control" id="nomCourt" placeholder="Sans espace">
+      </div>
+      <div class="form-group">
+        <label for="nomCourt">Couleur de la boisson</label>
+        <input type="color" value="`+couleur+`" class="form-control" id="couleur">
+      </div>
+      <div class="form-group">
+        <label for="nomCourt">Pourcentage d'alcool de la boisson</label>
+        <input type="number" value="`+pourcentageAlcool+`" step="0.01" class="form-control" id="pourcentageAlcool" placeholder="0 si non alcoolisé, séparé par un .">
+      </div>
+      <div class="form-group">
+        <label for="nomCourt">Logo de la boisson (.png)</label>
+        <input type="file" class="form-control" accept="image/png" id="logo">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block" id="creer">Créer</button>
+    </form>
+    </div>
+    `);
 }
 
 function addCuve(num, name, color, level){
@@ -179,7 +183,7 @@ function addCuve(num, name, color, level){
 
 }
 
-function addBoissons(name, shortName, color, levelAlcool, logo){
+function addBoisson(id, nomAffichage, nomCourt , couleur,  pourcentageAlcool, logo){
   $("#listBoissons").append(`
     <div class="col">
       <div class="media">
@@ -187,7 +191,7 @@ function addBoissons(name, shortName, color, levelAlcool, logo){
         <div class="media-body align-self-center">
           <div class="row">
             <div class="col">
-              <h5 class="mt-0">${name}</h5>`+ ((parseInt(levelAlcool)==0) ? "" : levelAlcool + "° d'alcool") + `
+              <h5 class="mt-0">${nomAffichage}</h5>`+ ((parseInt(pourcentageAlcool)==0) ? "" : pourcentageAlcool + "° d'alcool") + `
             </div>
             <div class="col align-self-center text-right">
               <button type="button" class="btn btn-secondary">Modifier</button>
