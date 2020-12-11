@@ -5,16 +5,15 @@ nomCourt
 couleur
 pourcentageAlcool
 
-- pompe
-idPompe
-pinId
-#idCuve
+- cuve
+id
+#idBoisson
+quantitee (mL)
+quantiteeMax (mL)
+pompePinId
+debitmetrePinId
+debitmetreMlParTick
 
-- debitmetre
-idDebitmetre
-millimetreParTick
-pinId
-#idPompe
 
 - specialPin
 pinId

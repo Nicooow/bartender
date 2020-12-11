@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 import mysql.connector
 from py.models.boisson import Boisson
-from py.models.pompe import Pompe
 from py.models.cuve import Cuve
-from py.models.debitmetre import Debitmetre
 
 class BDD():
     def __init__(self, bartender):
@@ -32,8 +30,6 @@ class BDD():
             return
 
         boissons = {}
-        pompes = {}
-        debitmetres = {}
         cuves = {}
 
         try:
@@ -47,32 +43,10 @@ class BDD():
             print(e)
 
         try:
-            self.cursor.execute("SELECT * FROM pompe")
-            for p in self.cursor:
-                pompe = Pompe(p[0], p[1])
-                pompes[p[0]] = pompe
-            self.bartender.log("Bdd", f"{len(pompes)} pompes chargés")
-        except Exception as e:
-            self.bartender.log("Bdd", "Erreur lors du chargement des pompes")
-            print(e)
-
-        try:
-            self.cursor.execute("SELECT * FROM debitmetre")
-            for d in self.cursor:
-                debitmetre = Debitmetre(d[0], d[1], d[2])
-                debitmetres[d[0]] = debitmetre
-            self.bartender.log("Bdd", f"{len(debitmetres)} débitmètres chargés")
-        except Exception as e:
-            self.bartender.log("Bdd", "Erreur lors du chargement des débitmètres")
-            print(e)
-
-        try:
             self.cursor.execute("SELECT * FROM cuve")
             for c in self.cursor:
-                pCuve = pompes[c[1]] if (c[1] in pompes) else None
-                dmCuve = debitmetres[c[2]] if (c[2] in debitmetres) else None
-                bCuve = boissons[c[3]] if (c[3] in boissons) else None
-                cuve = Cuve(c[0], pCuve, dmCuve, bCuve, c[4], c[5])
+                bCuve = boissons[c[1]] if (c[1] in boissons) else None
+                cuve = Cuve(c[0], bCuve, c[2], c[3], c[4], c[5], c[6])
                 cuves[c[0]] = cuve
             self.bartender.log("Bdd", f"{len(cuves)} cuves chargés")
         except Exception as e:
@@ -80,8 +54,6 @@ class BDD():
             print(e)
 
         self.bartender.boissons = boissons
-        self.bartender.pompes = pompes
-        self.bartender.debitmetres = debitmetres
         self.bartender.cuves = cuves
 
     def save(self):
