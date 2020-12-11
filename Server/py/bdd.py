@@ -39,7 +39,7 @@ class BDD():
         try:
             self.cursor.execute("SELECT * FROM boisson")
             for b in self.cursor:
-                boisson = Boisson(b[0], b[1], b[2], b[3], b[4])
+                boisson = Boisson(b[0], b[1], b[2], b[3], b[4], b[5])
                 boissons[b[0]] = boisson
             self.bartender.log("Bdd", f"{len(boissons)} boissons chargés")
         except Exception as e:
@@ -86,3 +86,13 @@ class BDD():
 
     def save(self):
         pass
+
+    def newBoisson(self, nomAffichage, nomCourt, couleur, pourcentageAlcool, logo):
+        sql = ("INSERT INTO boisson "
+                      "(nomAffichage, nomCourt, couleur, pourcentageAlcool, logo)"
+                      "VALUES (%s, %s, %s, %s, %s)")
+        self.cursor.execute(sql, (nomAffichage, nomCourt, couleur, pourcentageAlcool, logo))
+        self.bartender.boissons[self.cursor.lastrowid] = Boisson(self.cursor.lastrowid, nomAffichage, nomCourt, couleur, pourcentageAlcool, logo)
+        self.db.commit()
+        self.bartender.log("Bdd", f"Boisson créée (id:{self.cursor.lastrowid})")
+        return self.bartender.boissons[self.cursor.lastrowid]

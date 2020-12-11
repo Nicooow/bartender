@@ -10,6 +10,7 @@ class ServerWs(threading.Thread):
         threading.Thread.__init__(self)
         self.bartender = bartender
         self.bartender.log("ServerWs", "Initialisation...")
+        self.server = None
 
     def run(self):
         self.bartender.log("ServerWs", f"Démarrage du serveur websocket sur l'adresse {self.bartender.config['ws']['ip']}:{self.bartender.config['ws']['port']}...")
@@ -33,3 +34,10 @@ class ServerWs(threading.Thread):
 
     def new_client(self, client, server):
         self.bartender.log("ServerWs", f"Nouvelle connexion (id:{client['id']})")
+
+    def getOtherClients(self, client):
+        clients = []
+        for other in self.server.clients:
+            if(other!=client):
+                clients.append(other)
+        return clients

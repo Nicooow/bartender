@@ -79,7 +79,7 @@ function parseMessage(message){
     if(args[1] == "cuve"){
       addCuve(args[2], args[3], args[4], args[5]);
     }else if(args[1] == "boisson"){
-      addBoissons(args[2], args[3], args[4], args[5]);
+      addBoissons(args[2], args[3], args[4], args[5],  args[6]);
     }
   }else if(fnct == "animation"){
     if(args[1] == "cuves"){
@@ -96,6 +96,8 @@ function parseMessage(message){
          $("#cuve-"+args[2]+"-level").css("transform", "translate(0,"+args[5]+"px)")
        }
     }
+  }else if(fnct == "error"){
+    erreur(args[1], args[2])
   }
 }
 
@@ -117,7 +119,7 @@ function setPage(page){
     $("#page").html(`
       <h2>Nouvelle boisson</h2>
       <div class="jumbotron mx-auto" style="max-width: 600px;">
-      <form>
+      <form action="javascript:createBoisson()" id="formNewBoisson">
         <div class="form-group">
           <label for="nomAffichage">Nom complet</label>
           <input type="text" class="form-control" id="nomAffichage" placeholder="Nom d'affichage complet">
@@ -132,13 +134,13 @@ function setPage(page){
         </div>
         <div class="form-group">
           <label for="nomCourt">Pourcentage d'alcool de la boisson</label>
-          <input type="number" class="form-control" id="pourcentageAlcool" placeholder="0 si non alcoolisé, séparé par un .">
+          <input type="number" step="0.01" class="form-control" id="pourcentageAlcool" placeholder="0 si non alcoolisé, séparé par un .">
         </div>
         <div class="form-group">
           <label for="nomCourt">Logo de la boisson (.png)</label>
-          <input type="file" disabled class="form-control" accept="image/png" id="logo">
+          <input type="file" class="form-control" accept="image/png" id="logo">
         </div>
-        <button type="submit" class="btn btn-primary btn-block">Créer</button>
+        <button type="submit" class="btn btn-primary btn-block" id="creer">Créer</button>
       </form>
       </div>
       `);
@@ -177,17 +179,16 @@ function addCuve(num, name, color, level){
 
 }
 
-function addBoissons(name, short_name, color, levelAlcool){
+function addBoissons(name, shortName, color, levelAlcool, logo){
   $("#listBoissons").append(`
     <div class="col">
       <div class="media">
-        <img style="height:70px; width:70px;" src="${short_name}" class="align-self-center mr-3">
+        <img style="height:70px; width:70px;" src="${logo}" class="align-self-center mr-3">
         <div class="media-body align-self-center">
           <div class="row">
             <div class="col">
-              <h5 class="mt-0">${name}</h5>
-              `+ ((levelAlcool=="0") ? "" : levelAlcool + "° d'alcool") + `
-              </div>
+              <h5 class="mt-0">${name}</h5>`+ ((parseInt(levelAlcool)==0) ? "" : levelAlcool + "° d'alcool") + `
+            </div>
             <div class="col align-self-center text-right">
               <button type="button" class="btn btn-secondary">Modifier</button>
             </div>
@@ -196,6 +197,32 @@ function addBoissons(name, short_name, color, levelAlcool){
       </div>
     </div>
     `);
+}
+
+function createBoisson(){
+  $("#formNewBoisson #creer").attr("disabled", "true")
+  setTimeout(function(){
+  $("#formNewBoisson #creer").removeAttr("disabled")
+  }, 1000);
+  var nomCourt = $("#formNewBoisson #nomCourt").val()
+  var nomAffichage = $("#formNewBoisson #nomAffichage").val()
+  var couleur = $("#formNewBoisson #couleur").val()
+  var pourcentageAlcool = $("#formNewBoisson #pourcentageAlcool").val()
+
+  image = $("#formNewBoisson #logo").prop('files')[0]
+
+  if(image!=undefined){
+    var reader = new FileReader();
+    var rawData = new ArrayBuffer();
+
+    reader.onload = function(e) {
+        rawData = e.target.result;
+        sendMessage("add|boisson|" + nomAffichage + "|" + nomCourt  + "|" + couleur  + "|" +  pourcentageAlcool  + "|" + rawData);
+    }
+    reader.readAsDataURL(image);
+  }else{
+    sendMessage("add|boisson|" + nomAffichage + "|" + nomCourt  + "|" + couleur  + "|" +  pourcentageAlcool  + "| ");
+  }
 }
 
 $( document ).ready(function() {

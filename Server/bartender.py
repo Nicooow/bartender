@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from py import parser, serverWs, bdd
+from py import parser, serverWs, bdd, errors
 from py.bcolors import bcolors
 import json
 
@@ -30,6 +30,8 @@ class Bartender():
 
     def log(self, func, text):
         color = ["", ""];
+        maxLength = 100
+        text = text[:maxLength] + ("..." if len(text)>maxLength else "")
         colorFunc = {'ServerWs' : [bcolors.CYELLOW, bcolors.CYELLOW2],
                      'Parser' : [bcolors.CVIOLET, bcolors.CVIOLET2],
                      'Bdd' : [bcolors.CBLUE, bcolors.CBLUE2]}
@@ -51,7 +53,12 @@ class Bartender():
             sys.exit(0)
 
     def message_received(self, client, server, msg):
-        self.parser.parse(client, server, msg)
+        try:
+            self.parser.parse(client, server, msg)
+        except errors.ArgumentError as e:
+            self.ws.send_message(client, "error|warning|L'argument suivant est invalide : " + str(e.text))
+        except Exception as e:
+            self.ws.send_message(client, "error|danger|Erreur : " + str(e))
 
     def sendCuves(self, client):
         for i in self.cuves:
@@ -72,14 +79,6 @@ class Bartender():
 
     def sendBoissons(self, client):
         for i in self.boissons:
-            boisson = self.boissons[i]
-            packet = []
-            packet.append("addElement")
-            packet.append("boisson")
-            packet.append(str(boisson.nomAffichage))
-            packet.append("img/boisson/" + str(boisson.id) + ".png")
-            packet.append(str(boisson.couleur))
-            packet.append(str(boisson.pourcentageAlcool))
-            self.ws.send_message(client, "|".join(packet))
+            self.ws.send_message(client, self.boissons[i].addPacket())
 
 Bartender()
