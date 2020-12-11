@@ -51,6 +51,7 @@ function connexionServeur(){
   socket.onopen = function(event) {
       $("#connexion").hide();
       $("#page").show();
+      setPage("accueil")
 
       this.onclose = function(event) {
           $("#page").hide()
@@ -135,7 +136,7 @@ function setPage(page){
         </div>
         <div class="form-group">
           <label for="nomCourt">Logo de la boisson (.png)</label>
-          <input type="file" class="form-control" accept="image/png" id="logo">
+          <input type="file" disabled class="form-control" accept="image/png" id="logo">
         </div>
         <button type="submit" class="btn btn-primary btn-block">Créer</button>
       </form>

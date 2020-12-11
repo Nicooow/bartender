@@ -33,4 +33,3 @@ class ServerWs(threading.Thread):
 
     def new_client(self, client, server):
         self.bartender.log("ServerWs", f"Nouvelle connexion (id:{client['id']})")
-        self.send_message(client, "page|accueil")
