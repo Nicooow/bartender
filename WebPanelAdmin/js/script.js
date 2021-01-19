@@ -33,7 +33,7 @@ function connexionServeur(){
   $("#connexion").show();
 
   try {
-      socket = new WebSocket("ws://192.168.1.73:12345");
+      socket = new WebSocket("ws://192.168.3.22:12345");
   } catch (exception) {
       console.error(exception);
       erreur("danger", "impossible de se connecter au serveur ("+exception+")");
@@ -116,7 +116,7 @@ function setPage(page){
     $("#page").html(`<h1>Liste des boissons</h1> <button type="button" onclick="setPage('newBoisson')" style="margin-bottom: 10px;" class="align-self-center btn btn-outline-info btn-block">Nouvelle boisson</button> <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3" id="listBoissons"> </div>`);
     sendMessage("ask|boissons");
   }else if(page=="newBoisson"){
-    showBoissonModele(true, 0, "", "", "#000", "", "abc")
+    showBoissonModele(true, 0, "", "", "#000", "", "")
   }
   if ($(window).width() <= 800) {
     $('.navbar-toggler:not(.collapsed)').click();
@@ -125,30 +125,31 @@ function setPage(page){
 
 function showBoissonModele(isNew, id, nomAffichage, nomCourt , couleur,  pourcentageAlcool, logo){
   $("#page").html(`
-    <h2>Nouvelle boisson</h2>
-    <div class="jumbotron mx-auto" style="max-width: 600px;">
-    <form action="javascript:createBoisson()" id="formNewBoisson">
+    <h1>`+(isNew ? "Nouvelle boisson" : ("Modification de la boisson " + id))+`</h1>
+    <div class="jumbotron mx-auto" style="padding:2rem; max-width: 600px;">
+    <form action="javascript:updateBoisson(${isNew}, ${id})" id="formBoisson">
       <div class="form-group">
         <label for="nomAffichage">Nom complet</label>
-        <input type="text" value="`+nomAffichage+`" class="form-control" id="nomAffichage" placeholder="Nom d'affichage complet">
+        <input type="text" value="${nomAffichage}" class="form-control" id="nomAffichage" placeholder="Nom d'affichage complet">
       </div>
       <div class="form-group">
         <label for="nomCourt">Nom court</label>
-        <input type="text" value="`+nomCourt+`" class="form-control" id="nomCourt" placeholder="Sans espace">
+        <input type="text" value="${nomCourt}" class="form-control" id="nomCourt" placeholder="Sans espace">
       </div>
       <div class="form-group">
         <label for="nomCourt">Couleur de la boisson</label>
-        <input type="color" value="`+couleur+`" class="form-control" id="couleur">
+        <input type="color" value="${couleur}" class="form-control" id="couleur">
       </div>
       <div class="form-group">
         <label for="nomCourt">Pourcentage d'alcool de la boisson</label>
-        <input type="number" value="`+pourcentageAlcool+`" step="0.01" class="form-control" id="pourcentageAlcool" placeholder="0 si non alcoolisé, séparé par un .">
+        <input type="number" value="${pourcentageAlcool}" step="0.01" class="form-control" id="pourcentageAlcool" placeholder="0 si non alcoolisé, séparé par un .">
       </div>
       <div class="form-group">
+        ` + (logo!="" ? ('<img style="height:70px; width:70px;" src="'+logo+'" class="align-self-center mr-3">') : '') + `
         <label for="nomCourt">Logo de la boisson (.png)</label>
         <input type="file" class="form-control" accept="image/png" id="logo">
       </div>
-      <button type="submit" class="btn btn-primary btn-block" id="creer">Créer</button>
+      <button type="submit" class="btn btn-primary btn-block" id="btn">`+(isNew ? "Créer" : "Modifier")+`</button>
     </form>
     </div>
     `);
@@ -183,9 +184,17 @@ function addCuve(num, name, color, level){
 
 }
 
-function addBoisson(id, nomAffichage, nomCourt , couleur,  pourcentageAlcool, logo){
+function addBoisson(id, nomAffichage, nomCourt, couleur, pourcentageAlcool, logo){
   $("#listBoissons").append(`
     <div class="col">
+      <form id="data_boisson_${id}">
+        <input type="hidden" id="id" value="${id}">
+        <input type="hidden" id="nomAffichage" value="${nomAffichage}">
+        <input type="hidden" id="nomCourt" value="${nomCourt}">
+        <input type="hidden" id="couleur" value="${couleur}">
+        <input type="hidden" id="pourcentageAlcool" value="${pourcentageAlcool}">
+        <input type="hidden" id="logo" value="${logo}">
+      </form>
       <div class="media">
         <img style="height:70px; width:70px;" src="${logo}" class="align-self-center mr-3">
         <div class="media-body align-self-center">
@@ -194,26 +203,37 @@ function addBoisson(id, nomAffichage, nomCourt , couleur,  pourcentageAlcool, lo
               <h5 class="mt-0">${nomAffichage}</h5>`+ ((parseInt(pourcentageAlcool)==0) ? "" : pourcentageAlcool + "° d'alcool") + `
             </div>
             <div class="col align-self-center text-right">
-              <button type="button" class="btn btn-secondary">Modifier</button>
+              <button type="button" class="btn btn-secondary" onclick="modifyBoisson('#data_boisson_${id}')">Modifier</button>
             </div>
           </div>
-          </div>
+        </div>
       </div>
     </div>
     `);
 }
 
-function createBoisson(){
-  $("#formNewBoisson #creer").attr("disabled", "true")
-  setTimeout(function(){
-  $("#formNewBoisson #creer").removeAttr("disabled")
-  }, 1000);
-  var nomCourt = $("#formNewBoisson #nomCourt").val()
-  var nomAffichage = $("#formNewBoisson #nomAffichage").val()
-  var couleur = $("#formNewBoisson #couleur").val()
-  var pourcentageAlcool = $("#formNewBoisson #pourcentageAlcool").val()
+function modifyBoisson(dataSource){
+  var id = $(dataSource + " #id").val()
+  var nomCourt = $(dataSource + " #nomCourt").val()
+  var nomAffichage = $(dataSource + " #nomAffichage").val()
+  var couleur = $(dataSource + " #couleur").val()
+  var pourcentageAlcool = $(dataSource + " #pourcentageAlcool").val()
+  var logo = $(dataSource + " #logo").val()
 
-  image = $("#formNewBoisson #logo").prop('files')[0]
+  showBoissonModele(false, id, nomAffichage, nomCourt , couleur,  pourcentageAlcool, logo)
+}
+
+function updateBoisson(isNew, id){
+  $("#formBoisson #btn").attr("disabled", "true")
+  setTimeout(function(){
+  $("#formBoisson #btn").removeAttr("disabled")
+  }, 1000);
+  var nomCourt = $("#formBoisson #nomCourt").val()
+  var nomAffichage = $("#formBoisson #nomAffichage").val()
+  var couleur = $("#formBoisson #couleur").val()
+  var pourcentageAlcool = $("#formBoisson #pourcentageAlcool").val()
+
+  image = $("#formBoisson #logo").prop('files')[0]
 
   if(image!=undefined){
     var reader = new FileReader();
@@ -221,11 +241,19 @@ function createBoisson(){
 
     reader.onload = function(e) {
         rawData = e.target.result;
-        sendMessage("add|boisson|" + nomAffichage + "|" + nomCourt  + "|" + couleur  + "|" +  pourcentageAlcool  + "|" + rawData);
+        if(isNew){
+          sendMessage("add|boisson|" + nomAffichage + "|" + nomCourt  + "|" + couleur  + "|" +  pourcentageAlcool  + "|" + rawData);
+        }else{
+          sendMessage("update|boisson|" + id + "|" + nomAffichage + "|" + nomCourt  + "|" + couleur  + "|" +  pourcentageAlcool  + "|" + rawData);
+        }
     }
     reader.readAsDataURL(image);
   }else{
-    sendMessage("add|boisson|" + nomAffichage + "|" + nomCourt  + "|" + couleur  + "|" +  pourcentageAlcool  + "| ");
+    if(isNew){
+      sendMessage("add|boisson|" + nomAffichage + "|" + nomCourt  + "|" + couleur  + "|" +  pourcentageAlcool  + "| ");
+    }else{
+      sendMessage("update|boisson|" + id + "|" + nomAffichage + "|" + nomCourt  + "|" + couleur  + "|" +  pourcentageAlcool  + "|");
+    }
   }
 }
 
