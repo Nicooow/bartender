@@ -125,7 +125,12 @@ function setPage(page){
                      </div><br><h5>Autres informations</h5>`);
     sendMessage("ask|cuves");
   }else if(page=="listBoissons"){
-    $("#page").html(`<h1>Liste des boissons</h1> <button type="button" onclick="setPage('newBoisson')" style="margin-bottom: 10px;" class="align-self-center btn btn-outline-info btn-block">Nouvelle boisson</button> <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3" id="listBoissons"> </div>`);
+    $("#page").html(`<h1>Liste des boissons</h1>
+      <div class="d-flex w-100" role="group">
+        <button type="button" onclick="setPage('newBoisson')" style="width:auto; margin-bottom: 10px; margin-right:10px;" class="w-100 align-self-center btn btn-outline-info">Nouvelle boisson</button>
+        <button type="button" onclick="setPage('newBoisson')" style="margin-bottom: 10px;" class="align-self-center btn btn-outline-danger"><i class="bi-trash-fill"></i></button>
+      </div>
+      <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3" id="listBoissons"> </div>`);
     sendMessage("ask|boissons");
   }else if(page=="newBoisson"){
     showBoissonModele(true, 0, "", "", "#000", "", "")
