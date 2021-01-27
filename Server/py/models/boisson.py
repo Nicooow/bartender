@@ -20,3 +20,15 @@ class Boisson():
         packet.append(str(self.pourcentageAlcool))
         packet.append(str(self.logo))
         return "|".join(packet)
+
+    def updatePacket(self):
+        packet = []
+        packet.append("updateElement")
+        packet.append(str(self.id))
+        packet.append("boisson")
+        packet.append(str(self.nomAffichage))
+        packet.append(str(self.nomCourt))
+        packet.append(str(self.couleur))
+        packet.append(str(self.pourcentageAlcool))
+        packet.append(str(self.logo))
+        return "|".join(packet)

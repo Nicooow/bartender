@@ -68,3 +68,23 @@ class BDD():
         self.db.commit()
         self.bartender.log("Bdd", f"Boisson créée (id:{self.cursor.lastrowid})")
         return self.bartender.boissons[self.cursor.lastrowid]
+
+    def updateBoisson(self, idToUpdate, nomAffichage, nomCourt, couleur, pourcentageAlcool, logo):
+        if(not int(idToUpdate) in self.bartender.boissons):
+            raise Exception("Boisson inexistante. Cette erreur n'est pas censée arriver.")
+
+        boisson = self.bartender.boissons[int(idToUpdate)]
+
+        if(logo == ""):
+            logo = boisson.logo
+
+        sql = ("UPDATE boisson SET nomAffichage = %s, nomCourt = %s, couleur = %s, pourcentageAlcool = %s, logo = %s WHERE id = %s")
+        self.cursor.execute(sql, (nomAffichage, nomCourt, couleur, pourcentageAlcool, logo, idToUpdate))
+        boisson.nomAffichage = nomAffichage
+        boisson.nomCourt = nomCourt
+        boisson.couleur = couleur
+        boisson.pourcentageAlcool = pourcentageAlcool
+        boisson.logo = logo
+        self.db.commit()
+        self.bartender.log("Bdd", f"Boisson modifiée (id:{self.cursor.lastrowid})")
+        return boisson
