@@ -88,3 +88,14 @@ class BDD():
         self.db.commit()
         self.bartender.log("Bdd", f"Boisson modifiée (id:{self.cursor.lastrowid})")
         return boisson
+
+    def deleteBoisson(self, idToDelete):
+        if(not int(idToDelete) in self.bartender.boissons):
+            raise Exception("Boisson inexistante. Cette erreur n'est pas censée arriver.")
+
+        sql = ("DELETE FROM boisson WHERE id = %s")
+        self.cursor.execute(sql, (idToDelete,))
+        self.db.commit()
+        del self.bartender.boissons[int(idToDelete)]
+
+        self.bartender.log("Bdd", f"Boisson supprimée (id:{self.cursor.lastrowid})")

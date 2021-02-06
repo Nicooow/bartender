@@ -28,6 +28,10 @@ class ServerWs(threading.Thread):
         self.bartender.log("ServerWs", f"Envoie (id:{client['id']}) : {msg}")
         self.server.send_message(client, msg)
 
+    def send_message_to_all(self, msg):
+        self.bartender.log("ServerWs", f"Envoie (all) : {msg}")
+        self.server.send_message_to_all(msg)
+
     def message_received(self, client, server, msg):
         self.bartender.log("ServerWs", f"Reçu (id:{client['id']}) : {msg}")
         self.bartender.message_received(client, server, msg)

@@ -33,7 +33,7 @@ function connexionServeur(){
   $("#connexion").show();
 
   try {
-      socket = new WebSocket("ws://192.168.1.73:12345");
+      socket = new WebSocket("ws://192.168.3.31:12345");
   } catch (exception) {
       console.error(exception);
       erreur("danger", "impossible de se connecter au serveur ("+exception+")");
@@ -108,6 +108,11 @@ function parseMessage(message){
       $("#boisson_"+ idToUpdate +" #text_alcool_boisson").html(parseInt(args[6])==0 ? "" : args[6] + "° d'alcool")
       $("#boisson_"+ idToUpdate +" #logo_boisson").attr("src",args[7])
     }
+  }else if(fnct == "deleteElement"){
+    if(args[1] == "boisson"){
+      idToDelete = args[2];
+      $("#boisson_"+idToDelete).remove()
+    }
   }else if(fnct == "error"){
     erreur(args[1], args[2])
   }
@@ -128,7 +133,7 @@ function setPage(page){
     $("#page").html(`<h1>Liste des boissons</h1>
       <div class="d-flex w-100" role="group">
         <button type="button" onclick="setPage('newBoisson')" style="width:auto; margin-bottom: 10px; margin-right:10px;" class="w-100 align-self-center btn btn-outline-info">Nouvelle boisson</button>
-        <button type="button" onclick="setPage('newBoisson')" style="margin-bottom: 10px;" class="align-self-center btn btn-outline-danger"><i class="bi-trash-fill"></i></button>
+        <button type="button" onclick="toggleSuppressionBoisson()" style="margin-bottom: 10px;" class="align-self-center btn btn-outline-danger" id="toggleSuppressionBoisson"><i class="bi-trash-fill"></i></button>
       </div>
       <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3" id="listBoissons"> </div>`);
     sendMessage("ask|boissons");
@@ -202,6 +207,14 @@ function addCuve(num, name, color, level){
 }
 
 function addBoisson(id, nomAffichage, nomCourt, couleur, pourcentageAlcool, logo){
+
+  hideDelete = " hide"
+  hideModify = ""
+  if ($("#toggleSuppressionBoisson").hasClass("btn-danger")){
+      hideDelete = ""
+      hideModify = " hide"
+  }
+
   $("#listBoissons").append(`
     <div class="col" id="boisson_${id}">
       <form id="data_boisson_${id}">
@@ -220,7 +233,8 @@ function addBoisson(id, nomAffichage, nomCourt, couleur, pourcentageAlcool, logo
               <h5 class="mt-0" id="nomAffichage_boisson">${nomAffichage}</h5><span id="text_alcool_boisson">`+ ((parseInt(pourcentageAlcool)==0) ? "" : pourcentageAlcool + "° d'alcool") + `</span>
             </div>
             <div class="col align-self-center text-right">
-              <button type="button" class="btn btn-secondary" onclick="modifyBoisson('#data_boisson_${id}')">Modifier</button>
+              <button type="button" class="btn btn-secondary btn-modify-boisson${hideModify}" onclick="modifyBoisson('#data_boisson_${id}')">Modifier</button>
+              <button type="button" class="btn btn-danger btn-delete-boisson${hideDelete}" onclick="deleteBoisson(${id})">Supprimer</button>
             </div>
           </div>
         </div>
@@ -238,6 +252,11 @@ function modifyBoisson(dataSource){
   var logo = $(dataSource + " #logo").val()
 
   showBoissonModele(false, id, nomAffichage, nomCourt , couleur,  pourcentageAlcool, logo)
+}
+
+function deleteBoisson(id){
+  sendMessage("delete|boisson|" + id);
+  console.log("DELETe")
 }
 
 function updateBoisson(isNew, id){
@@ -272,6 +291,13 @@ function updateBoisson(isNew, id){
       sendMessage("update|" + id + "|boisson|" + nomAffichage + "|" + nomCourt  + "|" + couleur  + "|" +  pourcentageAlcool  + "|");
     }
   }
+}
+
+function toggleSuppressionBoisson(){
+  $(".btn-delete-boisson").toggleClass("hide");
+  $(".btn-modify-boisson").toggleClass("hide");
+  $("#toggleSuppressionBoisson").toggleClass("btn-outline-danger")
+  $("#toggleSuppressionBoisson").toggleClass("btn-danger")
 }
 
 $( document ).ready(function() {

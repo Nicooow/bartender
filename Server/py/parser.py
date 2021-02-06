@@ -61,3 +61,14 @@ class Parser():
                         self.bartender.log("Bdd", f"Erreur lors de la modification d'une boisson")
                         print(str(e))
                         raise e
+
+        elif(command=="delete"):
+            if(args[0] == "boisson"):
+                idToDelete = args[1]
+                try:
+                    self.bartender.bdd.deleteBoisson(idToDelete)
+                    self.bartender.ws.send_message_to_all("deleteElement|boisson|" + str(idToDelete))
+                except Exception as e:
+                    self.bartender.log("Bdd", f"Erreur lors de la suppression d'une boisson")
+                    print(str(e))
+                    raise e
