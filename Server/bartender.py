@@ -38,6 +38,20 @@ class Bartender():
         if(self.debug):
             print(f"{bcolors.CEND}[{color[0]}{func}{bcolors.CEND}] {color[1]}{text}{bcolors.CEND}")
 
+    def newClient(self, client, server):
+        client["data"] = {}
+        client["data"]["editingStopPacket"] = None
+        client["data"]["editingObject"] = None
+
+    def clientLeft(self, client, server):
+        packet = client["data"]["editingStopPacket"]
+        editingObject = client["data"]["editingObject"]
+        if(packet != None):
+            for other in self.ws.getOtherClients(client):
+                self.ws.send_message(other, packet)
+        if(editingObject != None):
+            editingObject.editing = False
+
     def loadConfig(self):
         self.log('loadConfig', "Chargement de la configuration...")
         try:
@@ -55,8 +69,10 @@ class Bartender():
             self.parser.parse(client, server, msg)
         except errors.ArgumentError as e:
             self.ws.send_message(client, "error|warning|L'argument suivant est invalide : " + str(e.text))
+        except errors.ExceptionInfo as e:
+            self.ws.send_message(client, "error|info|" + str(e.text))
         except Exception as e:
-            self.ws.send_message(client, "error|danger|Erreur : " + str(e))
+            self.ws.send_message(client, "error|danger|" + str(e))
 
     def sendCuves(self, client):
         for i in self.cuves:

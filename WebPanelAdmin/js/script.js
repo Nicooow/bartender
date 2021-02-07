@@ -1,5 +1,6 @@
 var socket = null;
 var pageActuel = "";
+var pageActuelId = -1;
 
 function switchMode(){
   if($(".bootstrap-dark").length){
@@ -26,7 +27,11 @@ function switchModeEtat(jour){
 }
 
 function erreur(type, texte){
-  $("#errors").append('<div class="alert alert-'+type+' alert-dismissible fade show" role="alert"><strong>Erreur :</strong> '+texte+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>')
+  if(type=="info"){
+    $("#errors").append('<div class="alert alert-'+type+' alert-dismissible fade show" role="alert"><strong>Info :</strong> '+texte+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>')
+  }else{
+    $("#errors").append('<div class="alert alert-'+type+' alert-dismissible fade show" role="alert"><strong>Erreur :</strong> '+texte+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>')
+  }
 }
 
 function connexionServeur(){
@@ -79,7 +84,7 @@ function parseMessage(message){
     if(args[1] == "cuve"){
       addCuve(args[2], args[3], args[4], args[5]);
     }else if(args[1] == "boisson"){
-      addBoisson(args[2], args[3], args[4], args[5],  args[6], args[7]);
+      addBoisson(args[2], args[3], args[4], args[5],  args[6], args[7], args[8]);
     }
   }else if(fnct == "animation"){
     if(args[1] == "cuves"){
@@ -113,12 +118,22 @@ function parseMessage(message){
       idToDelete = args[2];
       $("#boisson_"+idToDelete).remove()
     }
+  }else if(fnct == "editingElement"){
+    if(args[1] == "boisson"){
+      idEditing = args[2];
+      isEditing = Boolean(parseInt(args[3]))
+      toggleCantEditBoisson(idEditing, isEditing)
+    }
   }else if(fnct == "error"){
     erreur(args[1], args[2])
   }
 }
 
-function setPage(page){
+function setPage(page, arg1){
+  if(pageActuel=="modifyBoisson"){
+    sendMessage("editing|boisson|" + pageActuelId + "|0");
+  }
+
   pageActuel = page;
   $("#navbarSupportedContent .nav-item.active").removeClass("active");
   $("#navbarSupportedContent .btn-"+page).addClass("active")
@@ -139,6 +154,9 @@ function setPage(page){
     sendMessage("ask|boissons");
   }else if(page=="newBoisson"){
     showBoissonModele(true, 0, "", "", "#000", "", "")
+  }else if(page=="modifyBoisson"){
+    modifyBoisson(`#data_boisson_${arg1}`)
+    pageActuelId = arg1
   }
   if ($(window).width() <= 800) {
     $('.navbar-toggler:not(.collapsed)').click();
@@ -206,10 +224,10 @@ function addCuve(num, name, color, level){
 
 }
 
-function addBoisson(id, nomAffichage, nomCourt, couleur, pourcentageAlcool, logo){
-
+function addBoisson(id, nomAffichage, nomCourt, couleur, pourcentageAlcool, editing, logo){
   hideDelete = " hide"
   hideModify = ""
+  editing = Boolean(parseInt(editing))
   if ($("#toggleSuppressionBoisson").hasClass("btn-danger")){
       hideDelete = ""
       hideModify = " hide"
@@ -217,6 +235,9 @@ function addBoisson(id, nomAffichage, nomCourt, couleur, pourcentageAlcool, logo
 
   $("#listBoissons").append(`
     <div class="col" id="boisson_${id}">
+      <div class="boisson_hide `+(editing ? "" : "hide")+`" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;z-index: 1;display: flex;justify-content: center;align-items: center;border-radius:5px;background-color:#5f59597a;">
+          <p style="margin-bottom: 0; font-weight: 700;">En cours de modification...</p>
+      </div>
       <form id="data_boisson_${id}">
         <input type="hidden" id="id" value="${id}">
         <input type="hidden" id="nomAffichage" value="${nomAffichage}">
@@ -225,7 +246,7 @@ function addBoisson(id, nomAffichage, nomCourt, couleur, pourcentageAlcool, logo
         <input type="hidden" id="pourcentageAlcool" value="${pourcentageAlcool}">
         <input type="hidden" id="logo" value="${logo}">
       </form>
-      <div class="media">
+      <div class="media `+(editing ? "blur" : "")+`">
         <img style="height:70px; width:70px;" src="${logo}" class="align-self-center mr-3" id="logo_boisson">
         <div class="media-body align-self-center">
           <div class="row">
@@ -233,7 +254,7 @@ function addBoisson(id, nomAffichage, nomCourt, couleur, pourcentageAlcool, logo
               <h5 class="mt-0" id="nomAffichage_boisson">${nomAffichage}</h5><span id="text_alcool_boisson">`+ ((parseInt(pourcentageAlcool)==0) ? "" : pourcentageAlcool + "° d'alcool") + `</span>
             </div>
             <div class="col align-self-center text-right">
-              <button type="button" class="btn btn-secondary btn-modify-boisson${hideModify}" onclick="modifyBoisson('#data_boisson_${id}')">Modifier</button>
+              <button type="button" class="btn btn-secondary btn-modify-boisson${hideModify}" onclick="setPage('modifyBoisson', ${id})">Modifier</button>
               <button type="button" class="btn btn-danger btn-delete-boisson${hideDelete}" onclick="deleteBoisson(${id})">Supprimer</button>
             </div>
           </div>
@@ -251,6 +272,7 @@ function modifyBoisson(dataSource){
   var pourcentageAlcool = $(dataSource + " #pourcentageAlcool").val()
   var logo = $(dataSource + " #logo").val()
 
+  sendMessage("editing|boisson|" + id + "|1");
   showBoissonModele(false, id, nomAffichage, nomCourt , couleur,  pourcentageAlcool, logo)
 }
 
@@ -298,6 +320,16 @@ function toggleSuppressionBoisson(){
   $(".btn-modify-boisson").toggleClass("hide");
   $("#toggleSuppressionBoisson").toggleClass("btn-outline-danger")
   $("#toggleSuppressionBoisson").toggleClass("btn-danger")
+}
+
+function toggleCantEditBoisson(id, etat){
+  if(etat){
+    $("#boisson_"+id+" .boisson_hide").removeClass("hide");
+    $("#boisson_"+id+" .media").addClass("blur");
+  }else{
+    $("#boisson_"+id+" .boisson_hide").addClass("hide");
+    $("#boisson_"+id+" .media").removeClass("blur");
+  }
 }
 
 $( document ).ready(function() {

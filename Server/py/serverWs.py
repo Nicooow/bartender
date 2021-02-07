@@ -18,6 +18,7 @@ class ServerWs(threading.Thread):
             self.server = WebsocketServer(self.bartender.config["ws"]["port"], host=self.bartender.config["ws"]["ip"], loglevel=logging.NOTSET)
             self.server.set_fn_new_client(self.new_client)
             self.server.set_fn_message_received(self.message_received)
+            self.server.set_fn_client_left(self.client_left)
             self.bartender.log("ServerWs", f"Serveur démarré")
             self.server.run_forever()
         except Exception as e:
@@ -38,6 +39,11 @@ class ServerWs(threading.Thread):
 
     def new_client(self, client, server):
         self.bartender.log("ServerWs", f"Nouvelle connexion (id:{client['id']})")
+        self.bartender.newClient(client, server)
+
+    def client_left(self, client, server):
+        self.bartender.log("ServerWs", f"Déconnexion (id:{client['id']})")
+        self.bartender.clientLeft(client, server)
 
     def getOtherClients(self, client):
         clients = []

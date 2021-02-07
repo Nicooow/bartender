@@ -1,3 +1,7 @@
 .hide {
   display: none !important;
 }
+
+.blur {
+  filter: blur(1.2px) !important;
+}

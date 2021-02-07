@@ -8,6 +8,7 @@ class Boisson():
         self.couleur = couleur
         self.pourcentageAlcool = pourcentageAlcool
         self.logo = logo
+        self.editing = False
 
     def addPacket(self):
         packet = []
@@ -18,6 +19,7 @@ class Boisson():
         packet.append(str(self.nomCourt))
         packet.append(str(self.couleur))
         packet.append(str(self.pourcentageAlcool))
+        packet.append(str(int(self.editing)))
         packet.append(str(self.logo))
         return "|".join(packet)
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from py.errors import ArgumentError
+from py.errors import ArgumentError, ExceptionInfo
 
 class Parser():
     def __init__(self, bartender):
@@ -72,3 +72,38 @@ class Parser():
                     self.bartender.log("Bdd", f"Erreur lors de la suppression d'une boisson")
                     print(str(e))
                     raise e
+
+        elif(command=="editing"):
+            if(args[0] == "boisson"):
+                idEditing = args[1]
+                isEditing = args[2]
+
+                if(not int(idEditing) in self.bartender.boissons):
+                    raise Exception("Boisson inexistante. Cette erreur n'est pas censée arriver.")
+
+                editingBoisson = self.bartender.boissons[int(idEditing)]
+
+                if((editingBoisson.editing == True) and (client["data"]["editingObject"] != editingBoisson)):
+                    if(bool(int(isEditing))):
+                        self.bartender.ws.send_message(client, "page|accueil")
+                        raise Exception("Cette boisson est déjà en modification.")
+
+                if(bool(int(isEditing))):
+                    if(client["data"]["editingObject"] != None):
+                        self.bartender.ws.send_message(client, "page|accueil")
+                        raise Exception("Vous êtes déjà en train de modifier un élément.")
+                    editingBoisson.editing = True
+                    client["data"]["editingStopPacket"] = "editingElement|boisson|" + str(idEditing) + "|0"
+                    client["data"]["editingObject"] = editingBoisson
+                else:
+                    editingBoisson.editing = False
+                    if(client["data"]["editingObject"] != editingBoisson):
+                        client["data"]["editingObject"].editing = False
+                        for other in self.bartender.ws.getOtherClients(client):
+                            self.bartender.ws.send_message(other, client["data"]["editingStopPacket"])
+                        raise ExceptionInfo("Vous n'étiez pas censer modifier cet élément.")
+                    client["data"]["editingStopPacket"] = None
+                    client["data"]["editingObject"] = None
+
+                for other in self.bartender.ws.getOtherClients(client):
+                    self.bartender.ws.send_message(other, "editingElement|boisson|" + str(idEditing) + "|" + str(isEditing))
