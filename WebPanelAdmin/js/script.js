@@ -38,7 +38,7 @@ function connexionServeur(){
   $("#connexion").show();
 
   try {
-      socket = new WebSocket("ws://192.168.3.31:12345");
+      socket = new WebSocket("ws://192.168.3.34:12345");
   } catch (exception) {
       console.error(exception);
       erreur("danger", "impossible de se connecter au serveur ("+exception+")");
@@ -235,27 +235,31 @@ function addBoisson(id, nomAffichage, nomCourt, couleur, pourcentageAlcool, edit
 
   $("#listBoissons").append(`
     <div class="col" id="boisson_${id}">
-      <div class="boisson_hide `+(editing ? "" : "hide")+`" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;z-index: 1;display: flex;justify-content: center;align-items: center;border-radius:5px;background-color:#5f59597a;">
-          <p style="margin-bottom: 0; font-weight: 700;">En cours de modification...</p>
-      </div>
-      <form id="data_boisson_${id}">
-        <input type="hidden" id="id" value="${id}">
-        <input type="hidden" id="nomAffichage" value="${nomAffichage}">
-        <input type="hidden" id="nomCourt" value="${nomCourt}">
-        <input type="hidden" id="couleur" value="${couleur}">
-        <input type="hidden" id="pourcentageAlcool" value="${pourcentageAlcool}">
-        <input type="hidden" id="logo" value="${logo}">
-      </form>
-      <div class="media `+(editing ? "blur" : "")+`">
-        <img style="height:70px; width:70px;" src="${logo}" class="align-self-center mr-3" id="logo_boisson">
-        <div class="media-body align-self-center">
-          <div class="row">
-            <div class="col">
-              <h5 class="mt-0" id="nomAffichage_boisson">${nomAffichage}</h5><span id="text_alcool_boisson">`+ ((parseInt(pourcentageAlcool)==0) ? "" : pourcentageAlcool + "° d'alcool") + `</span>
-            </div>
-            <div class="col align-self-center text-right">
-              <button type="button" class="btn btn-secondary btn-modify-boisson${hideModify}" onclick="setPage('modifyBoisson', ${id})">Modifier</button>
-              <button type="button" class="btn btn-danger btn-delete-boisson${hideDelete}" onclick="deleteBoisson(${id})">Supprimer</button>
+      <div class="card" style="margin-bottom:10px;word-wrap:unset;padding:5px;">
+        <div class="card-body" style="padding:0;padding-right: 10px;padding-left: 10px;">
+          <div class="boisson_hide `+(editing ? "" : "hide")+`" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;z-index: 1;display: flex;justify-content: center;align-items: center;border-radius:5px;background-color:#5f59597a;">
+              <p style="margin-bottom: 0; font-weight: 700;">En cours de modification...</p>
+          </div>
+          <form id="data_boisson_${id}">
+            <input type="hidden" id="id" value="${id}">
+            <input type="hidden" id="nomAffichage" value="${nomAffichage}">
+            <input type="hidden" id="nomCourt" value="${nomCourt}">
+            <input type="hidden" id="couleur" value="${couleur}">
+            <input type="hidden" id="pourcentageAlcool" value="${pourcentageAlcool}">
+            <input type="hidden" id="logo" value="${logo}">
+          </form>
+          <div class="media `+(editing ? "blur" : "")+`">
+            <img style="height:70px; width:70px;" src="${logo}" class="align-self-center mr-3" id="logo_boisson">
+            <div class="media-body align-self-center">
+              <div class="row">
+                <div class="col">
+                  <h5 class="mt-0" id="nomAffichage_boisson">${nomAffichage}</h5><span id="text_alcool_boisson">`+ ((parseInt(pourcentageAlcool)==0) ? "" : pourcentageAlcool + "° d'alcool") + `</span>
+                </div>
+                <div class="col align-self-center text-right">
+                  <button type="button" class="btn btn-secondary btn-modify-boisson${hideModify}" onclick="setPage('modifyBoisson', ${id})">Modifier</button>
+                  <button type="button" class="btn btn-danger btn-delete-boisson${hideDelete}" onclick="deleteBoisson(${id})">Supprimer</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
