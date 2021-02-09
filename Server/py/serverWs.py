@@ -2,7 +2,7 @@
 #https://github.com/Pithikos/python-websocket-server
 
 import logging
-import threading, time
+import threading
 from websocket_server import WebsocketServer
 
 class ServerWs(threading.Thread):
@@ -19,11 +19,19 @@ class ServerWs(threading.Thread):
             self.server.set_fn_new_client(self.new_client)
             self.server.set_fn_message_received(self.message_received)
             self.server.set_fn_client_left(self.client_left)
-            self.bartender.log("ServerWs", f"Serveur démarré")
+            self.bartender.log("ServerWs", "Serveur démarré")
             self.server.run_forever()
         except Exception as e:
-            self.bartender.log("ServerWs", f"Erreur lors du démarrage du serveur : " + str(e))
+            self.bartender.log("ServerWs", "Erreur lors du démarrage du serveur : " + str(e))
 
+    def close(self):
+        self.bartender.log("ServerWs", "Arrêt du serveur websocket...")
+        try:
+            self.server.server_close()
+            self.server = None
+            self.bartender.log("ServerWs", "Arrêté")
+        except Exception as e:
+            self.bartender.log("ServerWs", "Erreur lors de l'arrêt du serveur : " + str(e))
 
     def send_message(self, client, msg):
         self.bartender.log("ServerWs", f"Envoie (id:{client['id']}) : {msg}")

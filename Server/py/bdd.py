@@ -22,6 +22,14 @@ class BDD():
             self.bartender.log("Bdd", "Erreur lors de la connexion : " + str(e))
             self.db = None
 
+    def disconnect(self):
+        self.bartender.log("Bdd", "Déconnexion de la base de donnée...")
+        try:
+            self.db.close()
+            self.bartender.log("Bdd", "Déconnecté")
+        except Exception as e:
+            self.bartender.log("Bdd", "Erreur lors de la déconnexion : " + str(e))
+            self.db = None
 
     def load(self):
         self.bartender.log("Bdd", "Chargement des données...")

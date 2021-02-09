@@ -82,7 +82,11 @@ function parseMessage(message){
     setPage(args[1]);
   }else if(fnct == "addElement"){
     if(args[1] == "cuve"){
-      addCuve(args[2], args[3], args[4], args[5]);
+      if(pageActuel=="accueil"){
+         addCuveAccueil(args[2], args[3], args[4], args[5]);
+      }else if(pageActuel=="listCuves"){
+         addCuve(args[2], args[3], args[4], args[5]);
+      }
     }else if(args[1] == "boisson"){
       addBoisson(args[2], args[3], args[4], args[5],  args[6], args[7], args[8]);
     }
@@ -157,6 +161,13 @@ function setPage(page, arg1){
   }else if(page=="modifyBoisson"){
     modifyBoisson(`#data_boisson_${arg1}`)
     pageActuelId = arg1
+  }else if(page=="listCuves"){
+    $("#page").html(`<h1>Liste des cuves</h1>
+      <div class="d-flex w-100" role="group">
+        <button type="button" onclick="" style="width:auto; margin-bottom: 10px; margin-right:10px;" class="w-100 align-self-center btn btn-outline-info">Nouvelle cuve</button>
+        <button type="button" onclick="" style="margin-bottom: 10px;" class="align-self-center btn btn-outline-danger" id="toggleSuppressionCuve"><i class="bi-trash-fill"></i></button>
+      </div>`);
+    sendMessage("ask|boissons");
   }
   if ($(window).width() <= 800) {
     $('.navbar-toggler:not(.collapsed)').click();
@@ -195,7 +206,7 @@ function showBoissonModele(isNew, id, nomAffichage, nomCourt , couleur,  pourcen
     `);
 }
 
-function addCuve(num, name, color, level){
+function addCuveAccueil(num, name, color, level){
   $("#listCuves").append(`
     <div class="col-xs-4">
       <div class="card text-center" style="width: 7rem;">
@@ -334,6 +345,10 @@ function toggleCantEditBoisson(id, etat){
     $("#boisson_"+id+" .boisson_hide").addClass("hide");
     $("#boisson_"+id+" .media").removeClass("blur");
   }
+}
+
+function addCuve(){
+
 }
 
 $( document ).ready(function() {

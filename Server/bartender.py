@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import sys
+import json
+import time
 from py import parser, serverWs, bdd, errors
 from py.bcolors import bcolors
-import json
 
 class Bartender():
     def __init__(self, debug = True):
@@ -24,10 +26,15 @@ class Bartender():
         self.loadConfig()
         self.bdd.connect()
         self.bdd.load()
+        self.ws.daemon = True
         self.ws.start()
 
+    def exit(self):
+        self.bdd.disconnect()
+        self.ws.close()
+
     def log(self, func, text):
-        color = ["", ""];
+        color = ["", ""]
         maxLength = 100
         text = text[:maxLength] + ("..." if len(text)>maxLength else "")
         colorFunc = {'ServerWs' : [bcolors.CYELLOW, bcolors.CYELLOW2],
@@ -61,7 +68,6 @@ class Bartender():
         except Exception as e:
             self.log('loadConfig', "Erreur lors du chargement de la configuration, fermeture.")
             print(str(e))
-            import sys
             sys.exit(0)
 
     def message_received(self, client, server, msg):
@@ -95,4 +101,12 @@ class Bartender():
         for i in self.boissons:
             self.ws.send_message(client, self.boissons[i].addPacket())
 
-Bartender()
+bar = Bartender()
+
+while 1:
+    try:
+        time.sleep(1)
+    except KeyboardInterrupt:
+        break
+
+bar.exit()
