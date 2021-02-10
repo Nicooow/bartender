@@ -11,17 +11,24 @@ class Cuve():
         self.debitmetreMlParTick = debitmetreMlParTick
 
     def addPacket(self):
-        pass
-        """
         packet = []
         packet.append("addElement")
-        packet.append("boisson")
+        packet.append("cuve")
         packet.append(str(self.id))
-        packet.append(str(self.nomAffichage))
-        packet.append(str(self.nomCourt))
-        packet.append(str(self.couleur))
-        packet.append(str(self.pourcentageAlcool))
-        packet.append(str(int(self.editing)))
-        packet.append(str(self.logo))
+        packet.append(str(self.quantitee))
+        packet.append(str(self.quantiteeMax))
+        packet.append(str(int( (100-(self.quantitee*100/self.quantiteeMax))/100*250 ))) # pourcentage remplis
+        packet.append(str(self.pompePinId))
+        packet.append(str(self.debitmetrePinId))
+        packet.append(str(self.debitmetreMlParTick))
+        if(self.boisson == None):
+            packet.append("-1")
+            packet.append("nomAffichage")
+            packet.append("nom")
+            packet.append("#fff")
+        else:
+            packet.append(str(self.boisson.id))
+            packet.append(str(self.boisson.nomAffichage))
+            packet.append(str(self.boisson.nomCourt))
+            packet.append(str(self.boisson.couleur))
         return "|".join(packet)
-        """

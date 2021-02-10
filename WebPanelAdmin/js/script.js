@@ -83,7 +83,7 @@ function parseMessage(message){
   }else if(fnct == "addElement"){
     if(args[1] == "cuve"){
       if(pageActuel=="accueil"){
-         addCuveAccueil(args[2], args[3], args[4], args[5]);
+         addCuveAccueil(args[2], args[11], args[12], args[5]);
       }else if(pageActuel=="listCuves"){
          addCuve(args[2], args[3], args[4], args[5]);
       }

@@ -3,6 +3,7 @@
 import sys
 import json
 import time
+import traceback
 from py import parser, serverWs, bdd, errors
 from py.bcolors import bcolors
 
@@ -79,22 +80,12 @@ class Bartender():
             self.ws.send_message(client, "error|info|" + str(e.text))
         except Exception as e:
             self.ws.send_message(client, "error|danger|" + str(e))
+            if(self.debug):
+                traceback.print_exc()
 
     def sendCuves(self, client):
         for i in self.cuves:
-            cuve = self.cuves[i]
-            packet = []
-            packet.append("addElement")
-            packet.append("cuve")
-            packet.append(str(cuve.id))
-            if(cuve.boisson == None):
-                packet.append("?")
-                packet.append("#fff")
-            else:
-                packet.append(cuve.boisson.nomCourt)
-                packet.append(cuve.boisson.couleur)
-            packet.append(str(int( (100-(cuve.quantitee*100/cuve.quantiteeMax))/100*250 )))
-            self.ws.send_message(client, "|".join(packet))
+            self.ws.send_message(client, self.cuves[i].addPacket())
         self.ws.send_message(client, "animation|cuves")
 
     def sendBoissons(self, client):
