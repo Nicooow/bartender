@@ -17,7 +17,7 @@ class Cuve():
         packet.append(str(self.id))
         packet.append(str(self.quantitee))
         packet.append(str(self.quantiteeMax))
-        packet.append(str(int( (100-(self.quantitee*100/self.quantiteeMax))/100*250 ))) # pourcentage remplis
+        packet.append(str(int( (100-(self.quantitee*100/self.quantiteeMax))/100*250 ))) # niveau remplis /250
         packet.append(str(self.pompePinId))
         packet.append(str(self.debitmetrePinId))
         packet.append(str(self.debitmetreMlParTick))

@@ -85,7 +85,7 @@ function parseMessage(message){
       if(pageActuel=="accueil"){
          addCuveAccueil(args[2], args[11], args[12], args[5]);
       }else if(pageActuel=="listCuves"){
-         addCuve(args[2], args[3], args[4], args[5]);
+         addCuve(args[2], args[3], args[4], args[5],  args[6], args[7], args[8], args[9], args[10], args[11], args[12]);
       }
     }else if(args[1] == "boisson"){
       addBoisson(args[2], args[3], args[4], args[5],  args[6], args[7], args[8]);
@@ -166,8 +166,9 @@ function setPage(page, arg1){
       <div class="d-flex w-100" role="group">
         <button type="button" onclick="" style="width:auto; margin-bottom: 10px; margin-right:10px;" class="w-100 align-self-center btn btn-outline-info">Nouvelle cuve</button>
         <button type="button" onclick="" style="margin-bottom: 10px;" class="align-self-center btn btn-outline-danger" id="toggleSuppressionCuve"><i class="bi-trash-fill"></i></button>
-      </div>`);
-    sendMessage("ask|boissons");
+      </div>
+      <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3" id="listCuves"> </div>`);
+    sendMessage("ask|cuves");
   }
   if ($(window).width() <= 800) {
     $('.navbar-toggler:not(.collapsed)').click();
@@ -347,8 +348,85 @@ function toggleCantEditBoisson(id, etat){
   }
 }
 
-function addCuve(){
+function addCuve(id, quantitee, quantiteeMax, niveau, pompePinId, dmPinId, debitmetreMlParTick, bId, bNomAffiche, bNomCourt, bCouleur){
+    hideDelete = " hide"
+    hideModify = ""
+    editing = Boolean(parseInt(0))
+    if ($("#toggleSuppressionCuve").hasClass("btn-danger")){
+        hideDelete = ""
+        hideModify = " hide"
+    }
 
+    $("#listCuves").append(`
+      <div class="col" id="cuve_${id}">
+        <div class="card" style="margin-bottom:10px;word-wrap:unset;padding:5px;">
+          <div class="card-body" style="padding:0;padding-right: 10px;padding-left: 10px;">
+            <div class="cuve_hide `+(editing ? "" : "hide")+`" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;z-index: 1;display: flex;justify-content: center;align-items: center;border-radius:5px;background-color:#5f59597a;">
+                <p style="margin-bottom: 0; font-weight: 700;">En cours de modification...</p>
+            </div>
+            <form id="data_cuve_${id}">
+              <input type="hidden" id="id" value="${id}">
+              <input type="hidden" id="quantitee" value="${quantitee}">
+              <input type="hidden" id="quantiteeMax" value="${quantiteeMax}">
+              <input type="hidden" id="niveau" value="${niveau}">
+              <input type="hidden" id="pompePinId" value="${pompePinId}">
+              <input type="hidden" id="dmPinId" value="${dmPinId}">
+              <input type="hidden" id="debitmetreMlParTick" value="${debitmetreMlParTick}">
+              <input type="hidden" id="bId" value="${bId}">
+              <input type="hidden" id="bNomAffiche" value="${bNomAffiche}">
+              <input type="hidden" id="bNomCourt" value="${bNomCourt}">
+              <input type="hidden" id="bCouleur" value="${bCouleur}">
+            </form>
+            <div class="media `+(editing ? "blur" : "")+`">
+              <div class="media-body">
+
+                <div class="row">
+                  <div class="text-center" style="flex:1">
+                    <h4>${id}# ${bNomCourt}</h4>
+                  </div>
+                </div>
+
+                <div class="row" style="margin-top:15px;margin-bottom:15px;">
+                  <div class="col text-center align-self-center" style="flex: unset; width: 0px; margin-left:10px;">
+                    <div class="banner">
+                      <div class="fill" id="cuve-${id}-level" style="transform: translate(0, 250px);">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="300px" height="300px" viewBox="0 0 300 300" enable-background="new 0 0 300 300" xml:space="preserve">
+                          <path id="cuve-${id}-color" class="waveShape" style="fill: ${bCouleur};" d="M300,300V2.5c0,0-0.6-0.1-1.1-0.1c0,0-25.5-2.3-40.5-2.4c-15,0-40.6,2.4-40.6,2.4
+                      c-12.3,1.1-30.3,1.8-31.9,1.9c-2-0.1-19.7-0.8-32-1.9c0,0-25.8-2.3-40.8-2.4c-15,0-40.8,2.4-40.8,2.4c-12.3,1.1-30.4,1.8-32,1.9
+                      c-2-0.1-20-0.8-32.2-1.9c0,0-3.1-0.3-8.1-0.7V300H300z" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col text-center" style="font-size: 0.9em; line-height: 15px;">
+                    <p><b>Quantitée / Max</b><br>
+                    ${quantitee} / ${quantiteeMax}</p>
+                    <p><b>Pin de la Pompe</b><br>
+                    ${pompePinId}</p>
+                    <p><b>Pin du débitmètre</b><br>
+                    ${dmPinId}<p>
+                    <p><b>Ml par Tick du débitmètre</b><br>
+                    ${debitmetreMlParTick}<p>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col align-self-center text-center">
+                    <button type="button" class="btn btn-secondary btn-modify-boisson${hideModify}" onclick="setPage('modifyBoisson', ${id})">Modifier</button>
+                    <button type="button" class="btn btn-danger btn-delete-boisson${hideDelete}" onclick="deleteBoisson(${id})">Supprimer</button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      `);
+
+      setTimeout(function(){
+        $("#cuve-"+id+"-level").css("transform", "translate(0,"+niveau+"px)")
+      }, 10);
 }
 
 $( document ).ready(function() {
