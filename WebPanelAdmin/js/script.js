@@ -88,7 +88,7 @@ function parseMessage(message){
          addCuve(args[2], args[3], args[4], args[5],  args[6], args[7], args[8], args[9], args[10], args[11], args[12]);
       }
     }else if(args[1] == "boisson"){
-      if(pageActuel=="modifyCuve"){
+      if(pageActuel=="modifyCuve" || pageActuel=="newCuve"){
         addBoissonSelect(args[2], args[3], args[4], args[5],  args[6], args[7], args[8]);
       }else{
         addBoisson(args[2], args[3], args[4], args[5],  args[6], args[7], args[8]);
@@ -168,13 +168,15 @@ function setPage(page, arg1){
   }else if(page=="modifyBoisson"){
     modifyBoisson(`#data_boisson_${arg1}`)
     pageActuelId = arg1
+  }else if(page=="newCuve"){
+    showCuveModele(true, 0, 0, 0, 0, 0, 0, -1)
   }else if(page=="modifyCuve"){
     modifyCuve(`#data_cuve_${arg1}`)
     pageActuelId = arg1
   }else if(page=="listCuves"){
     $("#page").html(`<h1>Liste des cuves</h1>
       <div class="d-flex w-100" role="group">
-        <button type="button" onclick="" style="width:auto; margin-bottom: 10px; margin-right:10px;" class="w-100 align-self-center btn btn-outline-info">Nouvelle cuve</button>
+        <button type="button" onclick="setPage('newCuve')" style="width:auto; margin-bottom: 10px; margin-right:10px;" class="w-100 align-self-center btn btn-outline-info">Nouvelle cuve</button>
         <button type="button" onclick="toggleSuppressionCuve()" style="margin-bottom: 10px;" class="align-self-center btn btn-outline-danger" id="toggleSuppressionCuve"><i class="bi-trash-fill"></i></button>
       </div>
       <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3" id="listCuves"> </div>
@@ -564,7 +566,7 @@ function showCuveModele(isNew, id, quantite, quantiteMax, pompePinId, dmPinId, d
                 <div class="media-body align-self-center">
                   <div class="row">
                     <div class="col">
-                      <h5 class="mt-0" id="nomAffichage_boisson">Boisson</h5><span id="text_alcool_boisson">Chargement...</span>
+                      <h5 class="mt-0" id="nomAffichage_boisson">Boisson</h5><span id="text_alcool_boisson">`+(parseInt(bId)=="-1" ? "Boisson non sélectionnée" : "Chargement...")+`</span>
                     </div>
                   </div>
                 </div>
