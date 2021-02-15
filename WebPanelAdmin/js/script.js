@@ -327,7 +327,7 @@ function addBoissonSelect(id, nomAffichage, nomCourt, couleur, pourcentageAlcool
 
   $("#listBoissons").append(`
     <div class="col" id="boisson_${id}">
-      <div class="card highlightOnHover" style="margin-bottom:10px;word-wrap:unset;padding:5px;">
+      <div class="card highlightOnHover" style="margin-bottom:10px;word-wrap:unset;padding:5px;" onClick="selectBoisson(${id})">
         <div class="card-body" style="padding:0;padding-right: 10px;padding-left: 10px;">
           <div class="boisson_hide `+(editing ? "" : "hide")+`" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;z-index: 1;display: flex;justify-content: center;align-items: center;border-radius:5px;background-color:#5f59597a;">
               <p style="margin-bottom: 0; font-weight: 700;">En cours de modification...</p>
@@ -346,6 +346,13 @@ function addBoissonSelect(id, nomAffichage, nomCourt, couleur, pourcentageAlcool
       </div>
     </div>
     `);
+}
+
+function selectBoisson(id){
+  $("#selectedBoisson .highlightOnHover").attr('id', 'boisson_'+id)
+  $("#selectedBoisson #bId").val(id)
+  sendMessage("ask|updateBoisson|"+id)
+  $("#selectBoissonModal").modal("hide");
 }
 
 function modifyBoisson(dataSource){
@@ -534,8 +541,9 @@ function showCuveModele(isNew, id, quantite, quantiteMax, pompePinId, dmPinId, d
     <h1>`+(isNew ? "Nouvelle cuve" : ("Modification de la cuve " + id))+`</h1>
     <div class="jumbotron mx-auto" style="padding:2rem; max-width: 600px;">
     <form action="javascript:updateCuve(${isNew}, ${id})" id="formBoisson">
-      <div class="form-group">
-        <label for="boisson">Boisson contenue</label>
+      <div class="form-group" id="selectedBoisson">
+        <input type="hidden" id="bId" value="${bId}">
+        <label>Boisson contenue</label>
           <div class="card highlightOnHover" id="boisson_${bId}" onclick="showPopupSelectBoisson()" style="margin-bottom:10px;word-wrap:unset;padding:5px;">
             <div class="card-body" style="padding:0;padding-right: 10px;padding-left: 10px;">
               <div class="boisson_hide hide" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;z-index: 1;display: flex;justify-content: center;align-items: center;border-radius:5px;background-color:#5f59597a;">
