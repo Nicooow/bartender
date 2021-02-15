@@ -8,8 +8,8 @@ pourcentageAlcool
 - cuve
 id
 #idBoisson
-quantitee (mL)
-quantiteeMax (mL)
+quantite (mL)
+quantiteMax (mL)
 pompePinId
 debitmetrePinId
 debitmetreMlParTick

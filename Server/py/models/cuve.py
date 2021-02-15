@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 class Cuve():
-    def __init__(self, id, boisson, quantitee, quantiteeMax, pompePinId, debitmetrePinId, debitmetreMlParTick):
+    def __init__(self, id, boisson, quantite, quantiteMax, pompePinId, debitmetrePinId, debitmetreMlParTick):
         self.id = id
         self.boisson = boisson
-        self.quantitee = quantitee
-        self.quantiteeMax = quantiteeMax
+        self.quantite = quantite
+        self.quantiteMax = quantiteMax
         self.pompePinId = pompePinId
         self.debitmetrePinId = debitmetrePinId
         self.debitmetreMlParTick = debitmetreMlParTick
@@ -15,9 +15,9 @@ class Cuve():
         packet.append("addElement")
         packet.append("cuve")
         packet.append(str(self.id))
-        packet.append(str(self.quantitee))
-        packet.append(str(self.quantiteeMax))
-        packet.append(str(int( (100-(self.quantitee*100/self.quantiteeMax))/100*250 ))) # niveau remplis /250
+        packet.append(str(self.quantite))
+        packet.append(str(self.quantiteMax))
+        packet.append(str(int( (100-(self.quantite*100/self.quantiteMax))/100*250 ))) # niveau remplis /250
         packet.append(str(self.pompePinId))
         packet.append(str(self.debitmetrePinId))
         packet.append(str(self.debitmetreMlParTick))

@@ -179,11 +179,11 @@ function setPage(page, arg1){
       </div>
       <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3" id="listCuves"> </div>
 
-      <div class="modal fade" id="addQuantiteeModal" tabindex="-1" role="dialog" aria-labelledby="addQuantiteeModalLabel" aria-hidden="true">
+      <div class="modal fade" id="addQuantiteModal" tabindex="-1" role="dialog" aria-labelledby="addQuantiteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Ajouter une quantitée à la cuve X</h5>
+              <h5 class="modal-title" id="exampleModalLabel">Ajouter une quantité à la cuve X</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -191,7 +191,7 @@ function setPage(page, arg1){
             <div class="modal-body">
               <form>
                 <div class="form-group">
-                  <label for="recipient-name" class="col-form-label">Quantitée à ajouter (<b>en CL</b>):</label>
+                  <label for="recipient-name" class="col-form-label">Quantité à ajouter (<b>en CL</b>):</label>
                   <input type="number" class="form-control" id="recipient-name">
                 </div>
               </form>
@@ -416,8 +416,8 @@ function toggleCantEditBoisson(id, etat){
   }
 }
 
-function showPopupAddQuantitee(id){
-  $("#addQuantiteeModal").modal("show");
+function showPopupAddQuantite(id){
+  $("#addQuantiteModal").modal("show");
 }
 
 function showPopupSelectBoisson(){
@@ -429,18 +429,18 @@ function showPopupSelectBoisson(){
 
 function modifyCuve(dataSource){
   var id = $(dataSource + " #id").val()
-  var quantitee = $(dataSource + " #quantitee").val()
-  var quantiteeMax = $(dataSource + " #quantiteeMax").val()
+  var quantite = $(dataSource + " #quantite").val()
+  var quantiteMax = $(dataSource + " #quantiteMax").val()
   var pompePinId = $(dataSource + " #pompePinId").val()
   var dmPinId = $(dataSource + " #dmPinId").val()
   var debitmetreMlParTick = $(dataSource + " #debitmetreMlParTick").val()
   var bId = $(dataSource + " #bId").val()
 
   sendMessage("editing|cuve|" + id + "|1");
-  showCuveModele(false, id, quantitee, quantiteeMax, pompePinId, dmPinId, debitmetreMlParTick, bId)
+  showCuveModele(false, id, quantite, quantiteMax, pompePinId, dmPinId, debitmetreMlParTick, bId)
 }
 
-function addCuve(id, quantitee, quantiteeMax, niveau, pompePinId, dmPinId, debitmetreMlParTick, bId, bNomAffiche, bNomCourt, bCouleur){
+function addCuve(id, quantite, quantiteMax, niveau, pompePinId, dmPinId, debitmetreMlParTick, bId, bNomAffiche, bNomCourt, bCouleur){
     hideDelete = " hide"
     hideModify = ""
     editing = Boolean(parseInt(0))
@@ -458,8 +458,8 @@ function addCuve(id, quantitee, quantiteeMax, niveau, pompePinId, dmPinId, debit
             </div>
             <form id="data_cuve_${id}">
               <input type="hidden" id="id" value="${id}">
-              <input type="hidden" id="quantitee" value="${quantitee}">
-              <input type="hidden" id="quantiteeMax" value="${quantiteeMax}">
+              <input type="hidden" id="quantite" value="${quantite}">
+              <input type="hidden" id="quantiteMax" value="${quantiteMax}">
               <input type="hidden" id="niveau" value="${niveau}">
               <input type="hidden" id="pompePinId" value="${pompePinId}">
               <input type="hidden" id="dmPinId" value="${dmPinId}">
@@ -491,8 +491,8 @@ function addCuve(id, quantitee, quantiteeMax, niveau, pompePinId, dmPinId, debit
                     </div>
                   </div>
                   <div class="col text-center align-self-center" style="font-size: 0.9em; line-height: 15px; flex:2;">
-                    <p><b>Quantitée / Max</b><br>
-                    ${quantitee} / ${quantiteeMax}</p>
+                    <p><b>Quantité / Max</b><br>
+                    ${quantite} / ${quantiteMax}</p>
                     <p><b>Pin de la pompe</b><br>
                     ${pompePinId}</p>
                     <p><b>Pin du débitmètre</b><br>
@@ -506,7 +506,7 @@ function addCuve(id, quantitee, quantiteeMax, niveau, pompePinId, dmPinId, debit
                     <button type="button" class="btn btn-outline-info btn-sm btn-block">+1L</button>
                     <button type="button" class="btn btn-outline-info btn-sm btn-block">+1.5L</button>
                     <button type="button" class="btn btn-outline-info btn-sm btn-block">+2L</button>
-                    <button type="button" class="btn btn-info btn-sm btn-block" onclick="showPopupAddQuantitee(${id})">...</button>
+                    <button type="button" class="btn btn-info btn-sm btn-block" onclick="showPopupAddQuantite(${id})">...</button>
                   </div>
                 </div>
 
@@ -529,7 +529,7 @@ function addCuve(id, quantitee, quantiteeMax, niveau, pompePinId, dmPinId, debit
       }, 10);
 }
 
-function showCuveModele(isNew, id, quantitee, quantiteeMax, pompePinId, dmPinId, debitmetreMlParTick, bId){
+function showCuveModele(isNew, id, quantite, quantiteMax, pompePinId, dmPinId, debitmetreMlParTick, bId){
   $("#page").html(`
     <h1>`+(isNew ? "Nouvelle cuve" : ("Modification de la cuve " + id))+`</h1>
     <div class="jumbotron mx-auto" style="padding:2rem; max-width: 600px;">
@@ -555,12 +555,12 @@ function showCuveModele(isNew, id, quantitee, quantiteeMax, pompePinId, dmPinId,
           </div>
       </div>
       <div class="form-group">
-        <label for="quantitee">Quantitée actuelle</label>
-        <input type="number" value="${quantitee}" class="form-control" id="quantitee" placeholder="0">
+        <label for="quantite">Quantité actuelle</label>
+        <input type="number" value="${quantite}" class="form-control" id="quantite" placeholder="0">
       </div>
       <div class="form-group">
-        <label for="quantiteeMax">Quantitée maximum</label>
-        <input type="number" value="${quantiteeMax}" class="form-control" id="quantiteeMax" placeholder="5000">
+        <label for="quantiteMax">Quantité maximum</label>
+        <input type="number" value="${quantiteMax}" class="form-control" id="quantiteMax" placeholder="5000">
       </div>
       <div class="form-group">
         <label for="pompePinId">Pin de la pompe</label>
