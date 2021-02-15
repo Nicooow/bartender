@@ -504,15 +504,15 @@ function addCuve(id, quantite, quantiteMax, niveau, pompePinId, dmPinId, debitme
                     ${pompePinId}</p>
                     <p><b>Pin du débitmètre</b><br>
                     ${dmPinId}<p>
-                    <p><b>ML par Tick du débitmètre</b><br>
+                    <p><b>mL par Tick du débitmètre</b><br>
                     ${debitmetreMlParTick}<p>
                   </div>
                   <div class="col align-self-center">
-                    <button type="button" class="btn btn-outline-info btn-sm btn-block">+70CL</button>
-                    <button type="button" class="btn btn-outline-info btn-sm btn-block">+75CL</button>
-                    <button type="button" class="btn btn-outline-info btn-sm btn-block">+1L</button>
-                    <button type="button" class="btn btn-outline-info btn-sm btn-block">+1.5L</button>
-                    <button type="button" class="btn btn-outline-info btn-sm btn-block">+2L</button>
+                    <button type="button" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+0700)>parseInt(quantiteMax) ? ' disabled' : '')+`>+70CL</button>
+                    <button type="button" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+0750)>parseInt(quantiteMax) ? ' disabled' : '')+`>+75CL</button>
+                    <button type="button" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+1000)>parseInt(quantiteMax) ? ' disabled' : '')+`>+1L</button>
+                    <button type="button" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+1500)>parseInt(quantiteMax) ? ' disabled' : '')+`>+1.5L</button>
+                    <button type="button" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+2000)>parseInt(quantiteMax) ? ' disabled' : '')+`>+2L</button>
                     <button type="button" class="btn btn-info btn-sm btn-block" onclick="showPopupAddQuantite(${id})">...</button>
                   </div>
                 </div>
