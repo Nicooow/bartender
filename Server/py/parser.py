@@ -19,6 +19,13 @@ class Parser():
                 self.bartender.sendCuves(client)
             elif(args[0] == "boissons"):
                 self.bartender.sendBoissons(client)
+            elif(args[0] == "updateBoisson"):
+                try:
+                    idAsk = int(args[1])
+                    askedBoisson = self.bartender.boissons[idAsk]
+                    self.bartender.ws.send_message(client, askedBoisson.updatePacket())
+                except:
+                    pass
 
         elif(command=="add" or command=="update"):
             if(command=="update"):
@@ -48,7 +55,7 @@ class Parser():
                         for other in self.bartender.ws.getOtherClients(client):
                             self.bartender.ws.send_message(other, newBoisson.addPacket())
                     except Exception as e:
-                        self.bartender.log("Bdd", f"Erreur lors de la création d'une boisson")
+                        self.bartender.log("Bdd", "Erreur lors de la création d'une boisson")
                         print(str(e))
                         raise e
                 else:

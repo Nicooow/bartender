@@ -88,7 +88,11 @@ function parseMessage(message){
          addCuve(args[2], args[3], args[4], args[5],  args[6], args[7], args[8], args[9], args[10], args[11], args[12]);
       }
     }else if(args[1] == "boisson"){
-      addBoisson(args[2], args[3], args[4], args[5],  args[6], args[7], args[8]);
+      if(pageActuel=="modifyCuve"){
+        addBoissonSelect(args[2], args[3], args[4], args[5],  args[6], args[7], args[8]);
+      }else{
+        addBoisson(args[2], args[3], args[4], args[5],  args[6], args[7], args[8]);
+      }
     }
   }else if(fnct == "animation"){
     if(args[1] == "cuves"){
@@ -136,7 +140,9 @@ function parseMessage(message){
 function setPage(page, arg1){
   if(pageActuel=="modifyBoisson"){
     sendMessage("editing|boisson|" + pageActuelId + "|0");
-  }
+  }else if(pageActuel=="modifyCuve"){
+      sendMessage("editing|cuve|" + pageActuelId + "|0");
+    }
 
   pageActuel = page;
   $("#navbarSupportedContent .nav-item.active").removeClass("active");
@@ -154,12 +160,16 @@ function setPage(page, arg1){
         <button type="button" onclick="setPage('newBoisson')" style="width:auto; margin-bottom: 10px; margin-right:10px;" class="w-100 align-self-center btn btn-outline-info">Nouvelle boisson</button>
         <button type="button" onclick="toggleSuppressionBoisson()" style="margin-bottom: 10px;" class="align-self-center btn btn-outline-danger" id="toggleSuppressionBoisson"><i class="bi-trash-fill"></i></button>
       </div>
-      <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3" id="listBoissons"> </div>`);
+      <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3" id="listBoissons"> </div>
+    `);
     sendMessage("ask|boissons");
   }else if(page=="newBoisson"){
     showBoissonModele(true, 0, "", "", "#000", "", "")
   }else if(page=="modifyBoisson"){
     modifyBoisson(`#data_boisson_${arg1}`)
+    pageActuelId = arg1
+  }else if(page=="modifyCuve"){
+    modifyCuve(`#data_cuve_${arg1}`)
     pageActuelId = arg1
   }else if(page=="listCuves"){
     $("#page").html(`<h1>Liste des cuves</h1>
@@ -167,7 +177,33 @@ function setPage(page, arg1){
         <button type="button" onclick="" style="width:auto; margin-bottom: 10px; margin-right:10px;" class="w-100 align-self-center btn btn-outline-info">Nouvelle cuve</button>
         <button type="button" onclick="" style="margin-bottom: 10px;" class="align-self-center btn btn-outline-danger" id="toggleSuppressionCuve"><i class="bi-trash-fill"></i></button>
       </div>
-      <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3" id="listCuves"> </div>`);
+      <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3" id="listCuves"> </div>
+
+      <div class="modal fade" id="addQuantiteeModal" tabindex="-1" role="dialog" aria-labelledby="addQuantiteeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Ajouter une quantitée à la cuve X</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <label for="recipient-name" class="col-form-label">Quantitée à ajouter (<b>en CL</b>):</label>
+                  <input type="number" class="form-control" id="recipient-name">
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+              <button type="button" class="btn btn-primary">Ajouter</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      `);
     sendMessage("ask|cuves");
   }
   if ($(window).width() <= 800) {
@@ -280,6 +316,38 @@ function addBoisson(id, nomAffichage, nomCourt, couleur, pourcentageAlcool, edit
     `);
 }
 
+function addBoissonSelect(id, nomAffichage, nomCourt, couleur, pourcentageAlcool, editing, logo){
+  hideDelete = " hide"
+  hideModify = ""
+  editing = Boolean(parseInt(editing))
+  if ($("#toggleSuppressionBoisson").hasClass("btn-danger")){
+      hideDelete = ""
+      hideModify = " hide"
+  }
+
+  $("#listBoissons").append(`
+    <div class="col" id="boisson_${id}">
+      <div class="card highlightOnHover" style="margin-bottom:10px;word-wrap:unset;padding:5px;">
+        <div class="card-body" style="padding:0;padding-right: 10px;padding-left: 10px;">
+          <div class="boisson_hide `+(editing ? "" : "hide")+`" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;z-index: 1;display: flex;justify-content: center;align-items: center;border-radius:5px;background-color:#5f59597a;">
+              <p style="margin-bottom: 0; font-weight: 700;">En cours de modification...</p>
+          </div>
+          <div class="media `+(editing ? "blur" : "")+`">
+            <img style="height:70px; width:70px;" src="${logo}" class="align-self-center mr-3" id="logo_boisson">
+            <div class="media-body align-self-center">
+              <div class="row">
+                <div class="col">
+                  <h5 class="mt-0" id="nomAffichage_boisson">${nomAffichage}</h5><span id="text_alcool_boisson">`+ ((parseInt(pourcentageAlcool)==0) ? "" : pourcentageAlcool + "° d'alcool") + `</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    `);
+}
+
 function modifyBoisson(dataSource){
   var id = $(dataSource + " #id").val()
   var nomCourt = $(dataSource + " #nomCourt").val()
@@ -348,6 +416,30 @@ function toggleCantEditBoisson(id, etat){
   }
 }
 
+function showPopupAddQuantitee(id){
+  $("#addQuantiteeModal").modal("show");
+}
+
+function showPopupSelectBoisson(){
+  $("#listBoissons").html("");
+  $("#selectBoissonModal").modal("show");
+  $('.modal').css('overflow-y', 'auto');
+  sendMessage("ask|boissons");
+}
+
+function modifyCuve(dataSource){
+  var id = $(dataSource + " #id").val()
+  var quantitee = $(dataSource + " #quantitee").val()
+  var quantiteeMax = $(dataSource + " #quantiteeMax").val()
+  var pompePinId = $(dataSource + " #pompePinId").val()
+  var dmPinId = $(dataSource + " #dmPinId").val()
+  var debitmetreMlParTick = $(dataSource + " #debitmetreMlParTick").val()
+  var bId = $(dataSource + " #bId").val()
+
+  sendMessage("editing|cuve|" + id + "|1");
+  showCuveModele(false, id, quantitee, quantiteeMax, pompePinId, dmPinId, debitmetreMlParTick, bId)
+}
+
 function addCuve(id, quantitee, quantiteeMax, niveau, pompePinId, dmPinId, debitmetreMlParTick, bId, bNomAffiche, bNomCourt, bCouleur){
     hideDelete = " hide"
     hideModify = ""
@@ -387,7 +479,7 @@ function addCuve(id, quantitee, quantiteeMax, niveau, pompePinId, dmPinId, debit
                 </div>
 
                 <div class="row" style="margin-top:15px;margin-bottom:15px;">
-                  <div class="col text-center align-self-center" style="flex: unset; width: 0px; margin-left:10px;">
+                  <div class="col text-center align-self-center" style="left:18px">
                     <div class="banner">
                       <div class="fill" id="cuve-${id}-level" style="transform: translate(0, 250px);">
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="300px" height="300px" viewBox="0 0 300 300" enable-background="new 0 0 300 300" xml:space="preserve">
@@ -398,21 +490,29 @@ function addCuve(id, quantitee, quantiteeMax, niveau, pompePinId, dmPinId, debit
                       </div>
                     </div>
                   </div>
-                  <div class="col text-center" style="font-size: 0.9em; line-height: 15px;">
+                  <div class="col text-center align-self-center" style="font-size: 0.9em; line-height: 15px; flex:2;">
                     <p><b>Quantitée / Max</b><br>
                     ${quantitee} / ${quantiteeMax}</p>
-                    <p><b>Pin de la Pompe</b><br>
+                    <p><b>Pin de la pompe</b><br>
                     ${pompePinId}</p>
                     <p><b>Pin du débitmètre</b><br>
                     ${dmPinId}<p>
-                    <p><b>Ml par Tick du débitmètre</b><br>
+                    <p><b>ML par Tick du débitmètre</b><br>
                     ${debitmetreMlParTick}<p>
+                  </div>
+                  <div class="col align-self-center">
+                    <button type="button" class="btn btn-outline-info btn-sm btn-block">+70CL</button>
+                    <button type="button" class="btn btn-outline-info btn-sm btn-block">+75CL</button>
+                    <button type="button" class="btn btn-outline-info btn-sm btn-block">+1L</button>
+                    <button type="button" class="btn btn-outline-info btn-sm btn-block">+1.5L</button>
+                    <button type="button" class="btn btn-outline-info btn-sm btn-block">+2L</button>
+                    <button type="button" class="btn btn-info btn-sm btn-block" onclick="showPopupAddQuantitee(${id})">...</button>
                   </div>
                 </div>
 
                 <div class="row">
                   <div class="col align-self-center text-center">
-                    <button type="button" class="btn btn-secondary btn-modify-boisson${hideModify}" onclick="setPage('modifyBoisson', ${id})">Modifier</button>
+                    <button type="button" class="btn btn-secondary btn-modify-boisson${hideModify}" onclick="setPage('modifyCuve', ${id})">Modifier</button>
                     <button type="button" class="btn btn-danger btn-delete-boisson${hideDelete}" onclick="deleteBoisson(${id})">Supprimer</button>
                   </div>
                 </div>
@@ -429,10 +529,81 @@ function addCuve(id, quantitee, quantiteeMax, niveau, pompePinId, dmPinId, debit
       }, 10);
 }
 
+function showCuveModele(isNew, id, quantitee, quantiteeMax, pompePinId, dmPinId, debitmetreMlParTick, bId){
+  $("#page").html(`
+    <h1>`+(isNew ? "Nouvelle cuve" : ("Modification de la cuve " + id))+`</h1>
+    <div class="jumbotron mx-auto" style="padding:2rem; max-width: 600px;">
+    <form action="javascript:updateCuve(${isNew}, ${id})" id="formBoisson">
+      <div class="form-group">
+        <label for="boisson">Boisson contenue</label>
+          <div class="card highlightOnHover" id="boisson_${bId}" onclick="showPopupSelectBoisson()" style="margin-bottom:10px;word-wrap:unset;padding:5px;">
+            <div class="card-body" style="padding:0;padding-right: 10px;padding-left: 10px;">
+              <div class="boisson_hide hide" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;z-index: 1;display: flex;justify-content: center;align-items: center;border-radius:5px;background-color:#5f59597a;">
+                  <p style="margin-bottom: 0; font-weight: 700;">En cours de modification...</p>
+              </div>
+              <div class="media">
+                <img style="height:70px; width:70px;" src="" class="align-self-center mr-3" id="logo_boisson">
+                <div class="media-body align-self-center">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="mt-0" id="nomAffichage_boisson">Boisson</h5><span id="text_alcool_boisson">Chargement...</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="form-group">
+        <label for="quantitee">Quantitée actuelle</label>
+        <input type="number" value="${quantitee}" class="form-control" id="quantitee" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label for="quantiteeMax">Quantitée maximum</label>
+        <input type="number" value="${quantiteeMax}" class="form-control" id="quantiteeMax" placeholder="5000">
+      </div>
+      <div class="form-group">
+        <label for="pompePinId">Pin de la pompe</label>
+        <input type="number" value="${pompePinId}" class="form-control" id="pompePinId" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label for="dmPinId">Pin du débitmètre</label>
+        <input type="number" value="${dmPinId}" class="form-control" id="dmPinId" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label for="debitmetreMlParTick">Nombre de ML par Tick du débitmètre</label>
+        <input type="number" value="${debitmetreMlParTick}" class="form-control" id="debitmetreMlParTick" placeholder="0">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block" id="btn">`+(isNew ? "Créer" : "Modifier")+`</button>
+    </form>
+    </div>
+
+    <div class="modal fade" id="selectBoissonModal" tabindex="-1" role="dialog" aria-labelledby="selectBoissonModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Sélectionne la boisson contenue dans la cuve</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row row-cols-1" id="listBoissons"> </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    `);
+
+    sendMessage("ask|updateBoisson|" + bId);
+}
+
 $( document ).ready(function() {
   $("#connexion").show();
   setTimeout(function(){
     connexionServeur();
   }, 500);
-
 });

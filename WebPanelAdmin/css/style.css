@@ -5,3 +5,13 @@
 .blur {
   filter: blur(1.2px) !important;
 }
+
+.highlightOnHover {
+  cursor: pointer;
+}
+
+.highlightOnHover:hover {
+  border-color: #b3d7ff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
