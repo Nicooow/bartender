@@ -175,7 +175,7 @@ function setPage(page, arg1){
     $("#page").html(`<h1>Liste des cuves</h1>
       <div class="d-flex w-100" role="group">
         <button type="button" onclick="" style="width:auto; margin-bottom: 10px; margin-right:10px;" class="w-100 align-self-center btn btn-outline-info">Nouvelle cuve</button>
-        <button type="button" onclick="" style="margin-bottom: 10px;" class="align-self-center btn btn-outline-danger" id="toggleSuppressionCuve"><i class="bi-trash-fill"></i></button>
+        <button type="button" onclick="toggleSuppressionCuve()" style="margin-bottom: 10px;" class="align-self-center btn btn-outline-danger" id="toggleSuppressionCuve"><i class="bi-trash-fill"></i></button>
       </div>
       <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3" id="listCuves"> </div>
 
@@ -447,6 +447,14 @@ function modifyCuve(dataSource){
   showCuveModele(false, id, quantite, quantiteMax, pompePinId, dmPinId, debitmetreMlParTick, bId)
 }
 
+function toggleSuppressionCuve(){
+  $(".btn-delete-cuve").toggleClass("hide");
+  $(".btn-modify-cuve").toggleClass("hide");
+  $(".btn-toggle-cuve").toggleClass("hide");
+  $("#toggleSuppressionCuve").toggleClass("btn-outline-danger")
+  $("#toggleSuppressionCuve").toggleClass("btn-danger")
+}
+
 function addCuve(id, quantite, quantiteMax, niveau, pompePinId, dmPinId, debitmetreMlParTick, bId, bNomAffiche, bNomCourt, bCouleur){
     hideDelete = " hide"
     hideModify = ""
@@ -508,8 +516,8 @@ function addCuve(id, quantite, quantiteMax, niveau, pompePinId, dmPinId, debitme
                     ${debitmetreMlParTick}<p>
                   </div>
                   <div class="col align-self-center">
-                    <button type="button" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+0700)>parseInt(quantiteMax) ? ' disabled' : '')+`>+70CL</button>
-                    <button type="button" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+0750)>parseInt(quantiteMax) ? ' disabled' : '')+`>+75CL</button>
+                    <button type="button" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+700)>parseInt(quantiteMax) ? ' disabled' : '')+`>+70CL</button>
+                    <button type="button" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+750)>parseInt(quantiteMax) ? ' disabled' : '')+`>+75CL</button>
                     <button type="button" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+1000)>parseInt(quantiteMax) ? ' disabled' : '')+`>+1L</button>
                     <button type="button" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+1500)>parseInt(quantiteMax) ? ' disabled' : '')+`>+1.5L</button>
                     <button type="button" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+2000)>parseInt(quantiteMax) ? ' disabled' : '')+`>+2L</button>
@@ -519,8 +527,10 @@ function addCuve(id, quantite, quantiteMax, niveau, pompePinId, dmPinId, debitme
 
                 <div class="row">
                   <div class="col align-self-center text-center">
-                    <button type="button" class="btn btn-secondary btn-modify-boisson${hideModify}" onclick="setPage('modifyCuve', ${id})">Modifier</button>
-                    <button type="button" class="btn btn-danger btn-delete-boisson${hideDelete}" onclick="deleteBoisson(${id})">Supprimer</button>
+                    <button type="button" class="btn btn-secondary btn-modify-cuve${hideModify}" onclick="setPage('modifyCuve', ${id})">Modifier</button>
+                    <button type="button" class="btn btn-danger btn-delete-cuve${hideDelete}" onclick="deleteCuve(${id})">Supprimer</button>
+                    <!--<button type="button" class="btn btn-success btn-toggle-cuve${hideModify}" onclick="setPage('modifyCuve', ${id})">Activer</button>-->
+                    <button type="button" class="btn btn-warning btn-toggle-cuve${hideModify}" onclick="setPage('modifyCuve', ${id})">Désactiver</button>
                   </div>
                 </div>
 
