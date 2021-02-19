@@ -13,6 +13,7 @@ class Cuve():
         self.enabled = enabled
 
     def addPacket(self):
+        self.quantite = round(float(self.quantite), 2)
         packet = []
         packet.append("addElement")
         packet.append("cuve")
@@ -38,6 +39,7 @@ class Cuve():
         return "|".join(packet)
 
     def updatePacket(self):
+        self.quantite = round(float(self.quantite), 2)
         packet = []
         packet.append("updateElement")
         packet.append(str(self.id))

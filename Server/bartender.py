@@ -4,7 +4,7 @@ import sys
 import json
 import time
 import traceback
-from py import parser, serverWs, bdd, errors
+from py import parser, serverWs, gpioHandler, bdd, errors
 from py.bcolors import bcolors
 
 class Bartender():
@@ -16,6 +16,7 @@ class Bartender():
         self.bdd = bdd.BDD(self)
         self.parser = parser.Parser(self)
         self.ws = serverWs.ServerWs(self)
+        self.gpio = gpioHandler.GPIOHandler(self)
 
         # DONNEES
         self.boissons = {}
@@ -29,10 +30,12 @@ class Bartender():
         self.bdd.load()
         self.ws.daemon = True
         self.ws.start()
+        self.gpio.load()
 
     def exit(self):
         self.bdd.disconnect()
         self.ws.close()
+        self.gpio.stop()
 
     def log(self, func, text):
         color = ["", ""]
@@ -40,7 +43,8 @@ class Bartender():
         text = text[:maxLength] + ("..." if len(text)>maxLength else "")
         colorFunc = {'ServerWs' : [bcolors.CYELLOW, bcolors.CYELLOW2],
                      'Parser' : [bcolors.CVIOLET, bcolors.CVIOLET2],
-                     'Bdd' : [bcolors.CBLUE, bcolors.CBLUE2]}
+                     'Bdd' : [bcolors.CBLUE, bcolors.CBLUE2],
+                     'GPIO' : [bcolors.CGREEN, bcolors.CGREEN2]}
         if(func in colorFunc):
             color = colorFunc[func]
         if(self.debug):

@@ -38,7 +38,7 @@ function connexionServeur(){
   $("#connexion").show();
 
   try {
-      socket = new WebSocket("ws://192.168.3.34:12345");
+      socket = new WebSocket("ws://192.168.3.31:12345");
   } catch (exception) {
       console.error(exception);
       erreur("danger", "impossible de se connecter au serveur ("+exception+")");
