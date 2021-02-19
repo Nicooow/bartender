@@ -306,7 +306,7 @@ function addBoisson(id, nomAffichage, nomCourt, couleur, pourcentageAlcool, edit
       <div class="card" style="margin-bottom:10px;word-wrap:unset;padding:5px;">
         <div class="card-body" style="padding:0;padding-right: 10px;padding-left: 10px;">
           <div class="boisson_hide `+(editing ? "" : "hide")+`" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;z-index: 1;display: flex;justify-content: center;align-items: center;border-radius:5px;background-color:#5f59597a;">
-              <p style="margin-bottom: 0; font-weight: 700;">En cours de modification...</p>
+              <p style="margin-bottom: 0; font-weight: 700;text-shadow: 0 0 5px #ff0000;">En cours de modification...</p>
           </div>
           <form id="data_boisson_${id}">
             <input type="hidden" id="id" value="${id}">
@@ -350,7 +350,7 @@ function addBoissonSelect(id, nomAffichage, nomCourt, couleur, pourcentageAlcool
       <div class="card highlightOnHover" style="margin-bottom:10px;word-wrap:unset;padding:5px;" onClick="selectBoisson(${id})">
         <div class="card-body" style="padding:0;padding-right: 10px;padding-left: 10px;">
           <div class="boisson_hide `+(editing ? "" : "hide")+`" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;z-index: 1;display: flex;justify-content: center;align-items: center;border-radius:5px;background-color:#5f59597a;">
-              <p style="margin-bottom: 0; font-weight: 700;">En cours de modification...</p>
+              <p style="margin-bottom: 0; font-weight: 700;text-shadow: 0 0 5px #ff0000;">En cours de modification...</p>
           </div>
           <div class="media `+(editing ? "blur" : "")+`">
             <img style="height:70px; width:70px;" src="${logo}" class="align-self-center mr-3" id="logo_boisson">
@@ -488,7 +488,7 @@ function addCuve(id, quantite, quantiteMax, niveau, pompePinId, dmPinId, debitme
         <div class="card" style="margin-bottom:10px;word-wrap:unset;padding:5px;">
           <div class="card-body" style="padding:0;padding-right: 10px;padding-left: 10px;">
             <div class="cuve_hide `+(editing ? "" : "hide")+`" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;z-index: 1;display: flex;justify-content: center;align-items: center;border-radius:5px;background-color:#5f59597a;">
-                <p style="margin-bottom: 0; font-weight: 700;">En cours de modification...</p>
+                <p style="margin-bottom: 0; font-weight: 700;text-shadow: 0 0 5px #ff0000;">En cours de modification...</p>
             </div>
             <form id="data_cuve_${id}">
               <input type="hidden" id="id" value="${id}">
@@ -576,7 +576,7 @@ function showCuveModele(isNew, id, quantite, quantiteMax, pompePinId, dmPinId, d
           <div class="card highlightOnHover" id="boisson_${bId}" onclick="showPopupSelectBoisson()" style="margin-bottom:10px;word-wrap:unset;padding:5px;">
             <div class="card-body" style="padding:0;padding-right: 10px;padding-left: 10px;">
               <div class="boisson_hide hide" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;z-index: 1;display: flex;justify-content: center;align-items: center;border-radius:5px;background-color:#5f59597a;">
-                  <p style="margin-bottom: 0; font-weight: 700;">En cours de modification...</p>
+                  <p style="margin-bottom: 0; font-weight: 700;text-shadow: 0 0 5px #ff0000;">En cours de modification...</p>
               </div>
               <div class="media">
                 <img style="height:70px; width:70px;" src="" class="align-self-center mr-3" id="logo_boisson">
