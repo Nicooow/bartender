@@ -9,6 +9,7 @@ class Cuve():
         self.pompePinId = pompePinId
         self.debitmetrePinId = debitmetrePinId
         self.debitmetreMlParTick = debitmetreMlParTick
+        self.editing = False
 
     def addPacket(self):
         packet = []
@@ -31,6 +32,7 @@ class Cuve():
             packet.append(str(self.boisson.nomAffichage))
             packet.append(str(self.boisson.nomCourt))
             packet.append(str(self.boisson.couleur))
+        packet.append(str(int(self.editing)))
         return "|".join(packet)
 
     def updatePacket(self):

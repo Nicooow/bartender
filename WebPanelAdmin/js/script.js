@@ -85,7 +85,7 @@ function parseMessage(message){
       if(pageActuel=="accueil"){
          addCuveAccueil(args[2], args[11], args[12], args[5]);
       }else if(pageActuel=="listCuves"){
-         addCuve(args[2], args[3], args[4], args[5],  args[6], args[7], args[8], args[9], args[10], args[11], args[12]);
+         addCuve(args[2], args[3], args[4], args[5],  args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13]);
       }
     }else if(args[1] == "boisson"){
       if(pageActuel=="modifyCuve" || pageActuel=="newCuve"){
@@ -145,7 +145,11 @@ function parseMessage(message){
     $("#boisson_"+idToDelete).remove()
     }
   }else if(fnct == "editingElement"){
-    if(args[1] == "boisson"){
+    if(args[1] == "cuve"){
+      idEditing = args[2];
+      isEditing = Boolean(parseInt(args[3]))
+      toggleCantEditCuve(idEditing, isEditing)
+    }else if(args[1] == "boisson"){
       idEditing = args[2];
       isEditing = Boolean(parseInt(args[3]))
       toggleCantEditBoisson(idEditing, isEditing)
@@ -474,10 +478,10 @@ function toggleSuppressionCuve(){
   $("#toggleSuppressionCuve").toggleClass("btn-danger")
 }
 
-function addCuve(id, quantite, quantiteMax, niveau, pompePinId, dmPinId, debitmetreMlParTick, bId, bNomAffiche, bNomCourt, bCouleur){
+function addCuve(id, quantite, quantiteMax, niveau, pompePinId, dmPinId, debitmetreMlParTick, bId, bNomAffiche, bNomCourt, bCouleur, editing){
     hideDelete = " hide"
     hideModify = ""
-    editing = Boolean(parseInt(0))
+    editing = Boolean(parseInt(editing))
     if ($("#toggleSuppressionCuve").hasClass("btn-danger")){
         hideDelete = ""
         hideModify = " hide"
@@ -660,6 +664,16 @@ function updateCuve(isNew, id){
 
 function deleteCuve(id) {
   sendMessage("delete|cuve|" + id);
+}
+
+function toggleCantEditCuve(id, etat){
+  if(etat){
+    $("#cuve_"+id+" .cuve_hide").removeClass("hide");
+    $("#cuve_"+id+" .media").addClass("blur");
+  }else{
+    $("#cuve_"+id+" .cuve_hide").addClass("hide");
+    $("#cuve_"+id+" .media").removeClass("blur");
+  }
 }
 
 $( document ).ready(function() {

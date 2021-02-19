@@ -190,3 +190,37 @@ class Parser():
 
                 for other in self.bartender.ws.getOtherClients(client):
                     self.bartender.ws.send_message(other, "editingElement|boisson|" + str(idEditing) + "|" + str(isEditing))
+
+            if(args[0] == "cuve"):
+                idEditing = args[1]
+                isEditing = args[2]
+
+                if(not int(idEditing) in self.bartender.cuves):
+                    raise Exception("Cuve inexistante. Cette erreur n'est pas censée arriver.")
+
+                editingCuve = self.bartender.cuves[int(idEditing)]
+
+                if((editingCuve.editing == True) and (client["data"]["editingObject"] != editingCuve)):
+                    if(bool(int(isEditing))):
+                        self.bartender.ws.send_message(client, "page|accueil")
+                        raise Exception("Cette cuve est déjà en modification.")
+
+                if(bool(int(isEditing))):
+                    if(client["data"]["editingObject"] != None):
+                        self.bartender.ws.send_message(client, "page|accueil")
+                        raise Exception("Vous êtes déjà en train de modifier un élément.")
+                    editingCuve.editing = True
+                    client["data"]["editingStopPacket"] = "editingElement|cuve|" + str(idEditing) + "|0"
+                    client["data"]["editingObject"] = editingCuve
+                else:
+                    editingCuve.editing = False
+                    if(client["data"]["editingObject"] != editingCuve):
+                        client["data"]["editingObject"].editing = False
+                        for other in self.bartender.ws.getOtherClients(client):
+                            self.bartender.ws.send_message(other, client["data"]["editingStopPacket"])
+                        raise ExceptionInfo("Vous n'étiez pas censer modifier cet élément.")
+                    client["data"]["editingStopPacket"] = None
+                    client["data"]["editingObject"] = None
+
+                for other in self.bartender.ws.getOtherClients(client):
+                    self.bartender.ws.send_message(other, "editingElement|cuve|" + str(idEditing) + "|" + str(isEditing))
