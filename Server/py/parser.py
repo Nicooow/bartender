@@ -143,7 +143,16 @@ class Parser():
                     self.bartender.bdd.deleteBoisson(idToDelete)
                     self.bartender.ws.send_message_to_all("deleteElement|boisson|" + str(idToDelete))
                 except Exception as e:
-                    self.bartender.log("Bdd", f"Erreur lors de la suppression d'une boisson")
+                    self.bartender.log("Bdd", "Erreur lors de la suppression d'une boisson")
+                    print(str(e))
+                    raise e
+            if(args[0] == "cuve"):
+                idToDelete = args[1]
+                try:
+                    self.bartender.bdd.deleteCuve(idToDelete)
+                    self.bartender.ws.send_message_to_all("deleteElement|cuve|" + str(idToDelete))
+                except Exception as e:
+                    self.bartender.log("Bdd", "Erreur lors de la suppression d'une cuve")
                     print(str(e))
                     raise e
 

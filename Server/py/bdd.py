@@ -151,3 +151,14 @@ class BDD():
         self.db.commit()
         self.bartender.log("Bdd", f"Cuve modifiée (id:{self.cursor.lastrowid})")
         return cuve
+
+    def deleteCuve(self, idToDelete):
+        if(not int(idToDelete) in self.bartender.cuves):
+            raise Exception("Cuve inexistante. Cette erreur n'est pas censée arriver.")
+
+        sql = ("DELETE FROM cuve WHERE id = %s")
+        self.cursor.execute(sql, (idToDelete,))
+        self.db.commit()
+        del self.bartender.cuves[int(idToDelete)]
+
+        self.bartender.log("Bdd", f"Cuve supprimée (id:{self.cursor.lastrowid})")

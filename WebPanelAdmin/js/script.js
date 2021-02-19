@@ -136,9 +136,13 @@ function parseMessage(message){
       $("#boisson_"+ idToUpdate +" #logo_boisson").attr("src",args[7])
     }
   }else if(fnct == "deleteElement"){
-    if(args[1] == "boisson"){
+    if(args[1] == "cuve"){
       idToDelete = args[2];
-      $("#boisson_"+idToDelete).remove()
+      $("#cuve_"+idToDelete).remove()
+    }
+    else if(args[1] == "boisson"){
+    idToDelete = args[2];
+    $("#boisson_"+idToDelete).remove()
     }
   }else if(fnct == "editingElement"){
     if(args[1] == "boisson"){
@@ -261,7 +265,7 @@ function showBoissonModele(isNew, id, nomAffichage, nomCourt , couleur,  pourcen
 
 function addCuveAccueil(num, name, color, level){
   $("#listCuves").append(`
-    <div class="col-xs-4">
+    <div class="col-xs-4" id="cuve_${num}">
       <div class="card text-center" style="width: 7rem;">
         <div class="card-body">
           <h5 class="card-title">Cuve ${num}</h5>
@@ -385,7 +389,6 @@ function modifyBoisson(dataSource){
 
 function deleteBoisson(id){
   sendMessage("delete|boisson|" + id);
-  console.log("DELETe")
 }
 
 function updateBoisson(isNew, id){
@@ -653,6 +656,10 @@ function updateCuve(isNew, id){
   }else{
     sendMessage("update|" + id + "|cuve|" + quantite + "|" + quantiteMax  + "|" + pompePinId  + "|" +  dmPinId  + "|" + debitmetreMlParTick + "|" + bId);
   }
+}
+
+function deleteCuve(id) {
+  sendMessage("delete|cuve|" + id);
 }
 
 $( document ).ready(function() {
