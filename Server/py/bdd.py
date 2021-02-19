@@ -141,7 +141,7 @@ class BDD():
         cuve = self.bartender.cuves[int(idToUpdate)]
 
         sql = ("UPDATE cuve SET idBoisson = %s, quantite = %s, quantiteMax = %s, pompePinId = %s, debitmetrePinId = %s, debitmetreMlParTick = %s, enabled=%s WHERE id = %s")
-        self.cursor.execute(sql, (bId, quantite, quantiteMax, pompePinId, dmPinId, dmMlParTick, idToUpdate, enabled))
+        self.cursor.execute(sql, (bId, quantite, quantiteMax, pompePinId, dmPinId, dmMlParTick, enabled, idToUpdate))
         cuve.boisson = boisson
         cuve.quantite = quantite
         cuve.quantiteMax = quantiteMax
