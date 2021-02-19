@@ -115,6 +115,17 @@ function parseMessage(message){
        $("#cuve_"+ idToUpdate +" #text_dmPinId_cuve").html(args[7])
        $("#cuve_"+ idToUpdate +" #text_debitmetreMlParTick_cuve").html(args[8])
 
+       $("#data_cuve_" + idToUpdate + " #quantite").val(args[3])
+       $("#data_cuve_" + idToUpdate + " #quantiteMax").val(args[4])
+       $("#data_cuve_" + idToUpdate + " #niveau").val(args[5])
+       $("#data_cuve_" + idToUpdate + " #pompePinId").val(args[6])
+       $("#data_cuve_" + idToUpdate + " #dmPinId").val(args[7])
+       $("#data_cuve_" + idToUpdate + " #debitmetreMlParTick").val(args[8])
+       $("#data_cuve_" + idToUpdate + " #bId").val(args[9])
+       $("#data_cuve_" + idToUpdate + " #bNomAffiche").val(args[10])
+       $("#data_cuve_" + idToUpdate + " #bNomCourt").val(args[11])
+       $("#data_cuve_" + idToUpdate + " #bCouleur").val(args[12])
+
        $("#cuve_"+ idToUpdate +" #button_700_cuve").prop("disabled",parseInt(args[3])+700>parseInt(args[4]));
        $("#cuve_"+ idToUpdate +" #button_750_cuve").prop("disabled",parseInt(args[3])+750>parseInt(args[4]));
        $("#cuve_"+ idToUpdate +" #button_1000_cuve").prop("disabled",parseInt(args[3])+1000>parseInt(args[4]));
@@ -164,7 +175,7 @@ function setPage(page, arg1){
     sendMessage("editing|boisson|" + pageActuelId + "|0");
   }else if(pageActuel=="modifyCuve"){
       sendMessage("editing|cuve|" + pageActuelId + "|0");
-    }
+  }
 
   pageActuel = page;
   $("#navbarSupportedContent .nav-item.active").removeClass("active");
@@ -207,7 +218,7 @@ function setPage(page, arg1){
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Ajouter une quantité à la cuve X</h5>
+              <h5 class="modal-title" id="exampleModalLabel">Ajouter une quantité à la cuve <span id="modal_cuve_id">X</span></h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -215,14 +226,14 @@ function setPage(page, arg1){
             <div class="modal-body">
               <form>
                 <div class="form-group">
-                  <label for="recipient-name" class="col-form-label">Quantité à ajouter (<b>en CL</b>):</label>
-                  <input type="number" class="form-control" id="recipient-name">
+                  <label for="sumQuantity" class="col-form-label">Quantité à ajouter (<b>en CL</b>):</label>
+                  <input type="number" class="form-control" id="sumQuantity">
                 </div>
               </form>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-              <button type="button" class="btn btn-primary">Ajouter</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="addCuveQuantity($('#modal_cuve_id').html(), $('#sumQuantity').val())">Ajouter</button>
             </div>
           </div>
         </div>
@@ -447,6 +458,7 @@ function toggleCantEditBoisson(id, etat){
 }
 
 function showPopupAddQuantite(id){
+  $("#modal_cuve_id").html(id)
   $("#addQuantiteModal").modal("show");
 }
 
@@ -539,11 +551,11 @@ function addCuve(id, quantite, quantiteMax, niveau, pompePinId, dmPinId, debitme
                     <span id="text_debitmetreMlParTick_cuve">${debitmetreMlParTick}</span><p>
                   </div>
                   <div class="col align-self-center">
-                    <button type="button" id="button_700_cuve" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+700)>parseInt(quantiteMax) ? ' disabled' : '')+`>+70CL</button>
-                    <button type="button" id="button_750_cuve" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+750)>parseInt(quantiteMax) ? ' disabled' : '')+`>+75CL</button>
-                    <button type="button" id="button_1000_cuve" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+1000)>parseInt(quantiteMax) ? ' disabled' : '')+`>+1L</button>
-                    <button type="button" id="button_1500_cuve" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+1500)>parseInt(quantiteMax) ? ' disabled' : '')+`>+1.5L</button>
-                    <button type="button" id="button_2000_cuve" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+2000)>parseInt(quantiteMax) ? ' disabled' : '')+`>+2L</button>
+                    <button type="button" id="button_700_cuve" onclick="addCuveQuantity(${id}, 700)" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+700)>parseInt(quantiteMax) ? ' disabled' : '')+`>+70CL</button>
+                    <button type="button" id="button_750_cuve" onclick="addCuveQuantity(${id}, 750)" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+750)>parseInt(quantiteMax) ? ' disabled' : '')+`>+75CL</button>
+                    <button type="button" id="button_1000_cuve" onclick="addCuveQuantity(${id}, 1000)" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+1000)>parseInt(quantiteMax) ? ' disabled' : '')+`>+1L</button>
+                    <button type="button" id="button_1500_cuve" onclick="addCuveQuantity(${id}, 1500)" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+1500)>parseInt(quantiteMax) ? ' disabled' : '')+`>+1.5L</button>
+                    <button type="button" id="button_2000_cuve" onclick="addCuveQuantity(${id}, 2000)" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+2000)>parseInt(quantiteMax) ? ' disabled' : '')+`>+2L</button>
                     <button type="button" id="button_more_cuve" class="btn btn-info btn-sm btn-block" onclick="showPopupAddQuantite(${id})"`+(parseInt(quantite)>=parseInt(quantiteMax) ? ' disabled' : '')+`>...</button>
                   </div>
                 </div>
@@ -674,6 +686,10 @@ function toggleCantEditCuve(id, etat){
     $("#cuve_"+id+" .cuve_hide").addClass("hide");
     $("#cuve_"+id+" .media").removeClass("blur");
   }
+}
+
+function addCuveQuantity(id, quantity){
+  sendMessage(`addCuveQuantity|${id}|${quantity}`);
 }
 
 $( document ).ready(function() {

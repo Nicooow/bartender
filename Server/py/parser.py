@@ -224,3 +224,28 @@ class Parser():
 
                 for other in self.bartender.ws.getOtherClients(client):
                     self.bartender.ws.send_message(other, "editingElement|cuve|" + str(idEditing) + "|" + str(isEditing))
+
+        elif(command=="addCuveQuantity"):
+            idToUpdate = args[0]
+            sumQuantite = args[1]
+
+            try:
+                sumQuantite = float(sumQuantite.replace(',', "."))
+            except:
+                raise ArgumentError("Quantité à ajouter (nombre incorrecte)")
+
+            if(not int(idToUpdate) in self.bartender.cuves):
+                raise Exception("Cuve inexistante. Cette erreur n'est pas censée arriver.")
+
+            cuve = self.bartender.cuves[int(idToUpdate)]
+
+            if(cuve.quantite+sumQuantite>cuve.quantiteMax):
+                raise Exception("La quantité actuelle ne peut dépasser la quantité maximum")
+
+            try:
+                updateCuve = self.bartender.bdd.updateCuve(cuve.id, cuve.quantite + sumQuantite, cuve.quantiteMax, cuve.pompePinId, cuve.debitmetrePinId, cuve.debitmetreMlParTick, cuve.boisson.id)
+                self.bartender.ws.send_message_to_all(updateCuve.updatePacket())
+            except Exception as e:
+                self.bartender.log("Bdd", "Erreur lors de l'ajout d'une quantité dans une cuve")
+                print(str(e))
+                raise e
