@@ -10,7 +10,7 @@
     -moz-transform: scale(0.5);
 }
 .banner .fill {
-    transition: 1.5s ease-in-out;
+    /*transition: 1.5s ease-in-out;*/
 }
 .banner .waveShape {
     animation-name: waveAction;
