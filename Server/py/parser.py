@@ -64,6 +64,13 @@ class Parser():
                         self.bartender.ws.send_message(client, "page|listBoissons")
                         for other in self.bartender.ws.getOtherClients(client):
                             self.bartender.ws.send_message(other, updateBoisson.updatePacket())
+
+                        for i in self.bartender.cuves:
+                            cuve = self.bartender.cuves[i]
+                            if(cuve.boisson == updateBoisson):
+                                for other in self.bartender.ws.getOtherClients(client):
+                                    self.bartender.ws.send_message(other, cuve.updatePacket())
+
                     except Exception as e:
                         self.bartender.log("Bdd", "Erreur lors de la modification d'une boisson")
                         print(str(e))
