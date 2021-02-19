@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 class Cuve():
-    def __init__(self, id, boisson, quantite, quantiteMax, pompePinId, debitmetrePinId, debitmetreMlParTick):
+    def __init__(self, id, boisson, quantite, quantiteMax, pompePinId, debitmetrePinId, debitmetreMlParTick, enabled):
         self.id = id
         self.boisson = boisson
         self.quantite = quantite
@@ -10,6 +10,7 @@ class Cuve():
         self.debitmetrePinId = debitmetrePinId
         self.debitmetreMlParTick = debitmetreMlParTick
         self.editing = False
+        self.enabled = enabled
 
     def addPacket(self):
         packet = []
@@ -33,6 +34,7 @@ class Cuve():
             packet.append(str(self.boisson.nomCourt))
             packet.append(str(self.boisson.couleur))
         packet.append(str(int(self.editing)))
+        packet.append(str(int(self.enabled)))
         return "|".join(packet)
 
     def updatePacket(self):

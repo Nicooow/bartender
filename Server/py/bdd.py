@@ -54,7 +54,7 @@ class BDD():
             self.cursor.execute("SELECT * FROM cuve")
             for c in self.cursor:
                 bCuve = boissons[c[1]] if (c[1] in boissons) else None
-                cuve = Cuve(c[0], bCuve, c[2], c[3], c[4], c[5], c[6])
+                cuve = Cuve(c[0], bCuve, c[2], c[3], c[4], c[5], c[6], c[7])
                 cuves[c[0]] = cuve
             self.bartender.log("Bdd", f"{len(cuves)} cuves chargés")
         except Exception as e:

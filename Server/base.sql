@@ -62,7 +62,8 @@ CREATE TABLE `cuve` (
   `quantiteMax` float DEFAULT NULL,
   `pompePinId` int(11) DEFAULT NULL,
   `debitmetrePinId` int(11) DEFAULT NULL,
-  `debitmetreMlParTick` float DEFAULT NULL
+  `debitmetreMlParTick` float DEFAULT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
