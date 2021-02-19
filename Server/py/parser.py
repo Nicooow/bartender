@@ -127,7 +127,10 @@ class Parser():
                         raise e
                 else:
                     try:
-                        updateCuve = self.bartender.bdd.updateCuve(idToUpdate, quantite, quantiteMax, pompePinId, dmPinId, dmMlParTick, bId)
+                        if(not int(idToUpdate) in self.bartender.cuves):
+                            raise Exception("Cuve inexistante. Cette erreur n'est pas censée arriver.")
+                        editingCuve = self.bartender.cuves[int(idToUpdate)]
+                        updateCuve = self.bartender.bdd.updateCuve(idToUpdate, quantite, quantiteMax, pompePinId, dmPinId, dmMlParTick, bId, editingCuve.enabled)
                         self.bartender.ws.send_message(client, "page|listCuves")
                         for other in self.bartender.ws.getOtherClients(client):
                             self.bartender.ws.send_message(other, updateCuve.updatePacket())
