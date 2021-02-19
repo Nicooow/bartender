@@ -59,17 +59,17 @@ CREATE TABLE `cuve` (
   `id` int(11) NOT NULL,
   `idBoisson` int(11) DEFAULT NULL,
   `quantite` float DEFAULT NULL,
-  `quantitemax` float DEFAULT NULL,
+  `quantiteMax` float DEFAULT NULL,
   `pompePinId` int(11) DEFAULT NULL,
   `debitmetrePinId` int(11) DEFAULT NULL,
-  `debitmetreMlParTick` int(11) DEFAULT NULL
+  `debitmetreMlParTick` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `cuve`
 --
 
-INSERT INTO `cuve` (`id`, `idBoisson`, `quantite`, `quantitemax`, `pompePinId`, `debitmetrePinId`, `debitmetreMlParTick`) VALUES
+INSERT INTO `cuve` (`id`, `idBoisson`, `quantite`, `quantiteMax`, `pompePinId`, `debitmetrePinId`, `debitmetreMlParTick`) VALUES
 (1, 3, 2500, 5000, NULL, NULL, NULL),
 (2, 2, 2800, 3000, NULL, NULL, NULL),
 (3, NULL, 100, 3000, NULL, NULL, NULL);

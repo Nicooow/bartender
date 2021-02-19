@@ -23,8 +23,31 @@ class Cuve():
         packet.append(str(self.debitmetreMlParTick))
         if(self.boisson == None):
             packet.append("-1")
-            packet.append("nomAffichage")
-            packet.append("nom")
+            packet.append("???")
+            packet.append("?")
+            packet.append("#fff")
+        else:
+            packet.append(str(self.boisson.id))
+            packet.append(str(self.boisson.nomAffichage))
+            packet.append(str(self.boisson.nomCourt))
+            packet.append(str(self.boisson.couleur))
+        return "|".join(packet)
+
+    def updatePacket(self):
+        packet = []
+        packet.append("updateElement")
+        packet.append(str(self.id))
+        packet.append("cuve")
+        packet.append(str(self.quantite))
+        packet.append(str(self.quantiteMax))
+        packet.append(str(int( (100-(self.quantite*100/self.quantiteMax))/100*250 ))) # niveau remplis /250
+        packet.append(str(self.pompePinId))
+        packet.append(str(self.debitmetrePinId))
+        packet.append(str(self.debitmetreMlParTick))
+        if(self.boisson == None):
+            packet.append("-1")
+            packet.append("???")
+            packet.append("?")
             packet.append("#fff")
         else:
             packet.append(str(self.boisson.id))

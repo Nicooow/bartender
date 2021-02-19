@@ -107,3 +107,47 @@ class BDD():
         del self.bartender.boissons[int(idToDelete)]
 
         self.bartender.log("Bdd", f"Boisson supprimée (id:{self.cursor.lastrowid})")
+
+    def newCuve(self, quantite, quantiteMax, pompePinId, dmPinId, dmMlParTick, bId):
+        if(not int(bId) in self.bartender.boissons):
+            if(int(bId) == -1):
+                boisson = None
+            else:
+                raise Exception("Boisson contenue inexistante. Cette erreur n'est pas censée arriver.")
+        else:
+            boisson = self.bartender.boissons[int(bId)]
+
+        sql = ("INSERT INTO cuve "
+                      "(idBoisson, quantite, quantiteMax, pompePinId, debitmetrePinId, debitmetreMlParTick)"
+                      "VALUES (%s, %s, %s, %s, %s, %s)")
+        self.cursor.execute(sql, (bId, quantite, quantiteMax, pompePinId, dmPinId, dmMlParTick))
+        self.bartender.cuves[self.cursor.lastrowid] = Cuve(self.cursor.lastrowid, boisson, quantite, quantiteMax, pompePinId, dmPinId, dmMlParTick)
+        self.db.commit()
+        self.bartender.log("Bdd", f"Cuve créée (id:{self.cursor.lastrowid})")
+        return self.bartender.cuves[self.cursor.lastrowid]
+
+    def updateCuve(self, idToUpdate, quantite, quantiteMax, pompePinId, dmPinId, dmMlParTick, bId):
+        if(not int(bId) in self.bartender.boissons):
+            if(int(bId) == -1):
+                boisson = None
+            else:
+                raise Exception("Boisson contenue inexistante. Cette erreur n'est pas censée arriver.")
+        else:
+            boisson = self.bartender.boissons[int(bId)]
+
+        if(not int(idToUpdate) in self.bartender.cuves):
+            raise Exception("Cuve inexistante. Cette erreur n'est pas censée arriver.")
+
+        cuve = self.bartender.cuves[int(idToUpdate)]
+
+        sql = ("UPDATE cuve SET idBoisson = %s, quantite = %s, quantiteMax = %s, pompePinId = %s, debitmetrePinId = %s, debitmetreMlParTick = %s WHERE id = %s")
+        self.cursor.execute(sql, (bId, quantite, quantiteMax, pompePinId, dmPinId, dmMlParTick, idToUpdate))
+        cuve.boisson = boisson
+        cuve.quantite = quantite
+        cuve.quantiteMax = quantiteMax
+        cuve.pompePinId = pompePinId
+        cuve.debitmetrePinId = dmPinId
+        cuve.debitmetreMlParTick = dmMlParTick
+        self.db.commit()
+        self.bartender.log("Bdd", f"Cuve modifiée (id:{self.cursor.lastrowid})")
+        return cuve

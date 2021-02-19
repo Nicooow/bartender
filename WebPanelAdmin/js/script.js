@@ -102,12 +102,26 @@ function parseMessage(message){
       }, 500);
     }
   }else if(fnct == "updateElement"){
-    if(args[2] == "cuve"){
-       if(pageActuel == "accueil"){
-         $("#cuve-"+args[2]+"-name").html(args[3])
-         $("#cuve-"+args[2]+"-color").css("fill", args[4])
-         $("#cuve-"+args[2]+"-level").css("transform", "translate(0,"+args[5]+"px)")
-       }
+    if(args[2] == "cuve"){ // quantite3, quantiteMax4, niveau5, pompePinId6, dmPinId7, debitmetreMlParTick8, bId, bNomAffiche, bNomCourt, bCouleur
+       idToUpdate = args[1]
+
+       $("#cuve-"+idToUpdate+"-name").html(args[11])
+       $("#cuve-"+idToUpdate+"-color").css("fill", args[12])
+       $("#cuve-"+idToUpdate+"-level").css("transform", "translate(0,"+args[5]+"px)")
+
+       $("#cuve_"+ idToUpdate +" #text_quantite_cuve").html(args[3])
+       $("#cuve_"+ idToUpdate +" #text_quantiteMax_cuve").html(args[4])
+       $("#cuve_"+ idToUpdate +" #text_pompePinId_cuve").html(args[6])
+       $("#cuve_"+ idToUpdate +" #text_dmPinId_cuve").html(args[7])
+       $("#cuve_"+ idToUpdate +" #text_debitmetreMlParTick_cuve").html(args[8])
+
+       $("#cuve_"+ idToUpdate +" #button_700_cuve").prop("disabled",parseInt(args[3])+700>parseInt(args[4]));
+       $("#cuve_"+ idToUpdate +" #button_750_cuve").prop("disabled",parseInt(args[3])+750>parseInt(args[4]));
+       $("#cuve_"+ idToUpdate +" #button_1000_cuve").prop("disabled",parseInt(args[3])+1000>parseInt(args[4]));
+       $("#cuve_"+ idToUpdate +" #button_1500_cuve").prop("disabled",parseInt(args[3])+1500>parseInt(args[4]));
+       $("#cuve_"+ idToUpdate +" #button_2000_cuve").prop("disabled",parseInt(args[3])+2000>parseInt(args[4]));
+       $("#cuve_"+ idToUpdate +" #button_more_cuve").prop("disabled",parseInt(args[3])>=parseInt(args[4]));
+
     }else if(args[2] == "boisson"){
       idToUpdate = args[1]
 
@@ -491,7 +505,7 @@ function addCuve(id, quantite, quantiteMax, niveau, pompePinId, dmPinId, debitme
 
                 <div class="row">
                   <div class="text-center" style="flex:1">
-                    <h4>${id}# ${bNomCourt}</h4>
+                    <h4>${id}# <span id="cuve-${id}-name">${bNomCourt}</span></h4>
                   </div>
                 </div>
 
@@ -509,21 +523,21 @@ function addCuve(id, quantite, quantiteMax, niveau, pompePinId, dmPinId, debitme
                   </div>
                   <div class="col text-center align-self-center" style="font-size: 0.9em; line-height: 15px; flex:2;">
                     <p><b>Quantité / Max</b><br>
-                    ${quantite} / ${quantiteMax}</p>
+                    <span id="text_quantite_cuve">${quantite}</span> / <span id="text_quantiteMax_cuve">${quantiteMax}</span></p>
                     <p><b>Pin de la pompe</b><br>
-                    ${pompePinId}</p>
+                    <span id="text_pompePinId_cuve">${pompePinId}</span></p>
                     <p><b>Pin du débitmètre</b><br>
-                    ${dmPinId}<p>
+                    <span id="text_dmPinId_cuve">${dmPinId}</span><p>
                     <p><b>mL par Tick du débitmètre</b><br>
-                    ${debitmetreMlParTick}<p>
+                    <span id="text_debitmetreMlParTick_cuve">${debitmetreMlParTick}</span><p>
                   </div>
                   <div class="col align-self-center">
-                    <button type="button" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+700)>parseInt(quantiteMax) ? ' disabled' : '')+`>+70CL</button>
-                    <button type="button" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+750)>parseInt(quantiteMax) ? ' disabled' : '')+`>+75CL</button>
-                    <button type="button" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+1000)>parseInt(quantiteMax) ? ' disabled' : '')+`>+1L</button>
-                    <button type="button" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+1500)>parseInt(quantiteMax) ? ' disabled' : '')+`>+1.5L</button>
-                    <button type="button" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+2000)>parseInt(quantiteMax) ? ' disabled' : '')+`>+2L</button>
-                    <button type="button" class="btn btn-info btn-sm btn-block" onclick="showPopupAddQuantite(${id})">...</button>
+                    <button type="button" id="button_700_cuve" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+700)>parseInt(quantiteMax) ? ' disabled' : '')+`>+70CL</button>
+                    <button type="button" id="button_750_cuve" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+750)>parseInt(quantiteMax) ? ' disabled' : '')+`>+75CL</button>
+                    <button type="button" id="button_1000_cuve" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+1000)>parseInt(quantiteMax) ? ' disabled' : '')+`>+1L</button>
+                    <button type="button" id="button_1500_cuve" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+1500)>parseInt(quantiteMax) ? ' disabled' : '')+`>+1.5L</button>
+                    <button type="button" id="button_2000_cuve" class="btn btn-outline-info btn-sm btn-block"`+((parseInt(quantite)+2000)>parseInt(quantiteMax) ? ' disabled' : '')+`>+2L</button>
+                    <button type="button" id="button_more_cuve" class="btn btn-info btn-sm btn-block" onclick="showPopupAddQuantite(${id})"`+(parseInt(quantite)>=parseInt(quantiteMax) ? ' disabled' : '')+`>...</button>
                   </div>
                 </div>
 
@@ -552,7 +566,7 @@ function showCuveModele(isNew, id, quantite, quantiteMax, pompePinId, dmPinId, d
   $("#page").html(`
     <h1>`+(isNew ? "Nouvelle cuve" : ("Modification de la cuve " + id))+`</h1>
     <div class="jumbotron mx-auto" style="padding:2rem; max-width: 600px;">
-    <form action="javascript:updateCuve(${isNew}, ${id})" id="formBoisson">
+    <form action="javascript:updateCuve(${isNew}, ${id})" id="formCuve">
       <div class="form-group" id="selectedBoisson">
         <input type="hidden" id="bId" value="${bId}">
         <label>Boisson contenue</label>
@@ -576,11 +590,11 @@ function showCuveModele(isNew, id, quantite, quantiteMax, pompePinId, dmPinId, d
       </div>
       <div class="form-group">
         <label for="quantite">Quantité actuelle</label>
-        <input type="number" value="${quantite}" class="form-control" id="quantite" placeholder="0">
+        <input type="number" value="${quantite}" class="form-control" id="quantite" step="0.01" placeholder="0">
       </div>
       <div class="form-group">
         <label for="quantiteMax">Quantité maximum</label>
-        <input type="number" value="${quantiteMax}" class="form-control" id="quantiteMax" placeholder="5000">
+        <input type="number" value="${quantiteMax}" class="form-control" id="quantiteMax" step="0.01" placeholder="5000">
       </div>
       <div class="form-group">
         <label for="pompePinId">Pin de la pompe</label>
@@ -592,7 +606,7 @@ function showCuveModele(isNew, id, quantite, quantiteMax, pompePinId, dmPinId, d
       </div>
       <div class="form-group">
         <label for="debitmetreMlParTick">Nombre de ML par Tick du débitmètre</label>
-        <input type="number" value="${debitmetreMlParTick}" class="form-control" id="debitmetreMlParTick" placeholder="0">
+        <input type="number" value="${debitmetreMlParTick}" class="form-control" id="debitmetreMlParTick" step="0.01" placeholder="0">
       </div>
       <button type="submit" class="btn btn-primary btn-block" id="btn">`+(isNew ? "Créer" : "Modifier")+`</button>
     </form>
@@ -619,6 +633,26 @@ function showCuveModele(isNew, id, quantite, quantiteMax, pompePinId, dmPinId, d
     `);
 
     sendMessage("ask|updateBoisson|" + bId);
+}
+
+function updateCuve(isNew, id){
+  $("#formCuve #btn").attr("disabled", "true")
+  setTimeout(function(){
+  $("#formCuve #btn").removeAttr("disabled")
+  }, 1000);
+
+  var quantite = $("#formCuve #quantite").val()
+  var quantiteMax = $("#formCuve #quantiteMax").val()
+  var pompePinId = $("#formCuve #pompePinId").val()
+  var dmPinId = $("#formCuve #dmPinId").val()
+  var debitmetreMlParTick = $("#formCuve #debitmetreMlParTick").val()
+  var bId = $("#formCuve #bId").val()
+
+  if(isNew){
+    sendMessage("add|cuve|" + quantite + "|" + quantiteMax  + "|" + pompePinId  + "|" +  dmPinId  + "|" + debitmetreMlParTick + "|" + bId);
+  }else{
+    sendMessage("update|" + id + "|cuve|" + quantite + "|" + quantiteMax  + "|" + pompePinId  + "|" +  dmPinId  + "|" + debitmetreMlParTick + "|" + bId);
+  }
 }
 
 $( document ).ready(function() {
