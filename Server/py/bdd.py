@@ -126,7 +126,7 @@ class BDD():
         self.bartender.log("Bdd", f"Cuve créée (id:{self.cursor.lastrowid})")
         return self.bartender.cuves[self.cursor.lastrowid]
 
-    def updateCuve(self, idToUpdate, quantite, quantiteMax, pompePinId, dmPinId, dmMlParTick, bId):
+    def updateCuve(self, idToUpdate, quantite, quantiteMax, pompePinId, dmPinId, dmMlParTick, bId, enabled):
         if(not int(bId) in self.bartender.boissons):
             if(int(bId) == -1):
                 boisson = None
@@ -140,14 +140,15 @@ class BDD():
 
         cuve = self.bartender.cuves[int(idToUpdate)]
 
-        sql = ("UPDATE cuve SET idBoisson = %s, quantite = %s, quantiteMax = %s, pompePinId = %s, debitmetrePinId = %s, debitmetreMlParTick = %s WHERE id = %s")
-        self.cursor.execute(sql, (bId, quantite, quantiteMax, pompePinId, dmPinId, dmMlParTick, idToUpdate))
+        sql = ("UPDATE cuve SET idBoisson = %s, quantite = %s, quantiteMax = %s, pompePinId = %s, debitmetrePinId = %s, debitmetreMlParTick = %s, enabled=%s WHERE id = %s")
+        self.cursor.execute(sql, (bId, quantite, quantiteMax, pompePinId, dmPinId, dmMlParTick, idToUpdate, enabled))
         cuve.boisson = boisson
         cuve.quantite = quantite
         cuve.quantiteMax = quantiteMax
         cuve.pompePinId = pompePinId
         cuve.debitmetrePinId = dmPinId
         cuve.debitmetreMlParTick = dmMlParTick
+        cuve.enabled = enabled
         self.db.commit()
         self.bartender.log("Bdd", f"Cuve modifiée (id:{self.cursor.lastrowid})")
         return cuve

@@ -83,9 +83,9 @@ function parseMessage(message){
   }else if(fnct == "addElement"){
     if(args[1] == "cuve"){
       if(pageActuel=="accueil"){
-         addCuveAccueil(args[2], args[11], args[12], args[5]);
+         addCuveAccueil(args[2], args[11], args[12], args[5], args[14]);
       }else if(pageActuel=="listCuves"){
-         addCuve(args[2], args[3], args[4], args[5],  args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13]);
+         addCuve(args[2], args[3], args[4], args[5],  args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14]);
       }
     }else if(args[1] == "boisson"){
       if(pageActuel=="modifyCuve" || pageActuel=="newCuve"){
@@ -164,6 +164,25 @@ function parseMessage(message){
       idEditing = args[2];
       isEditing = Boolean(parseInt(args[3]))
       toggleCantEditBoisson(idEditing, isEditing)
+    }
+  }else if(fnct == "toggleElement"){
+    if(args[1] == "cuve"){
+      idToggle = args[2]
+      toggle = Boolean(parseInt(args[3]))
+
+      if(toggle){
+        $("#cuve_" + idToggle + " .btn-toggle-cuve").removeClass("btn-success");
+        $("#cuve_" + idToggle + " .btn-toggle-cuve").addClass("btn-warning");
+        $("#cuve_" + idToggle + " .btn-toggle-cuve").html("Désactiver");
+        $("#cuve_" + idToggle + " .btn-toggle-cuve").attr("onclick",`toggleCuve(${idToggle}, 0)`);
+        $(".tinyCuve#cuve_" + idToggle).removeClass("blur")
+      }else{
+        $("#cuve_" + idToggle + " .btn-toggle-cuve").addClass("btn-success");
+        $("#cuve_" + idToggle + " .btn-toggle-cuve").removeClass("btn-warning");
+        $("#cuve_" + idToggle + " .btn-toggle-cuve").html("Activer");
+        $("#cuve_" + idToggle + " .btn-toggle-cuve").attr("onclick",`toggleCuve(${idToggle}, 1)`);
+        $(".tinyCuve#cuve_" + idToggle).addClass("blur")
+      }
     }
   }else if(fnct == "error"){
     erreur(args[1], args[2])
@@ -278,9 +297,10 @@ function showBoissonModele(isNew, id, nomAffichage, nomCourt , couleur,  pourcen
     `);
 }
 
-function addCuveAccueil(num, name, color, level){
+function addCuveAccueil(num, name, color, level, enabled){
+  blur = (Boolean(parseInt(enabled)) ? "" : " blur");
   $("#listCuves").append(`
-    <div class="col-xs-4" id="cuve_${num}">
+    <div class="col-xs-4 tinyCuve${blur}" id="cuve_${num}">
       <div class="card text-center" style="width: 7rem;">
         <div class="card-body">
           <h5 class="card-title">Cuve ${num}</h5>
@@ -490,10 +510,11 @@ function toggleSuppressionCuve(){
   $("#toggleSuppressionCuve").toggleClass("btn-danger")
 }
 
-function addCuve(id, quantite, quantiteMax, niveau, pompePinId, dmPinId, debitmetreMlParTick, bId, bNomAffiche, bNomCourt, bCouleur, editing){
+function addCuve(id, quantite, quantiteMax, niveau, pompePinId, dmPinId, debitmetreMlParTick, bId, bNomAffiche, bNomCourt, bCouleur, editing, enabled){
     hideDelete = " hide"
     hideModify = ""
     editing = Boolean(parseInt(editing))
+    enabled = Boolean(parseInt(enabled))
     if ($("#toggleSuppressionCuve").hasClass("btn-danger")){
         hideDelete = ""
         hideModify = " hide"
@@ -564,9 +585,9 @@ function addCuve(id, quantite, quantiteMax, niveau, pompePinId, dmPinId, debitme
                   <div class="col align-self-center text-center">
                     <button type="button" class="btn btn-secondary btn-modify-cuve${hideModify}" onclick="setPage('modifyCuve', ${id})">Modifier</button>
                     <button type="button" class="btn btn-danger btn-delete-cuve${hideDelete}" onclick="deleteCuve(${id})">Supprimer</button>
-                    <!--<button type="button" class="btn btn-success btn-toggle-cuve${hideModify}" onclick="setPage('modifyCuve', ${id})">Activer</button>-->
-                    <button type="button" class="btn btn-warning btn-toggle-cuve${hideModify}" onclick="setPage('modifyCuve', ${id})">Désactiver</button>
-                  </div>
+                    `+ (enabled ? `<button type="button" class="btn btn-warning btn-toggle-cuve${hideModify}" onclick="toggleCuve(${id}, 0)">Désactiver</button>`
+                             : `<button type="button" class="btn btn-success btn-toggle-cuve${hideModify}" onclick="toggleCuve(${id}, 1)">Activer</button>` ) +
+                  `</div>
                 </div>
 
               </div>
@@ -690,6 +711,10 @@ function toggleCantEditCuve(id, etat){
 
 function addCuveQuantity(id, quantity){
   sendMessage(`addCuveQuantity|${id}|${quantity}`);
+}
+
+function toggleCuve(id, toggle){
+  sendMessage(`toggle|cuve|${id}|${toggle}`);
 }
 
 $( document ).ready(function() {

@@ -243,9 +243,27 @@ class Parser():
                 raise Exception("La quantité actuelle ne peut dépasser la quantité maximum")
 
             try:
-                updateCuve = self.bartender.bdd.updateCuve(cuve.id, cuve.quantite + sumQuantite, cuve.quantiteMax, cuve.pompePinId, cuve.debitmetrePinId, cuve.debitmetreMlParTick, cuve.boisson.id)
+                updateCuve = self.bartender.bdd.updateCuve(cuve.id, cuve.quantite + sumQuantite, cuve.quantiteMax, cuve.pompePinId, cuve.debitmetrePinId, cuve.debitmetreMlParTick, cuve.boisson.id, cuve.enabled)
                 self.bartender.ws.send_message_to_all(updateCuve.updatePacket())
             except Exception as e:
                 self.bartender.log("Bdd", "Erreur lors de l'ajout d'une quantité dans une cuve")
                 print(str(e))
                 raise e
+
+        elif(command=="toggle"):
+            if(args[0]=="cuve"):
+                idToToggle = int(args[1])
+                toggled = bool(int(args[2]))
+
+                if(not int(idToToggle) in self.bartender.cuves):
+                    raise Exception("Cuve inexistante. Cette erreur n'est pas censée arriver.")
+
+                cuve = self.bartender.cuves[int(idToToggle)]
+
+                try:
+                    updateCuve = self.bartender.bdd.updateCuve(cuve.id, cuve.quantite, cuve.quantiteMax, cuve.pompePinId, cuve.debitmetrePinId, cuve.debitmetreMlParTick, cuve.boisson.id, toggled)
+                    self.bartender.ws.send_message_to_all("toggleElement|cuve|" + str(idToToggle) + "|" + str(int(toggled)))
+                except Exception as e:
+                    self.bartender.log("Bdd", "Erreur lors de l'ajout d'une quantité dans une cuve")
+                    print(str(e))
+                    raise e
