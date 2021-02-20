@@ -121,7 +121,7 @@ class BDD():
                       "(idBoisson, quantite, quantiteMax, pompePinId, debitmetrePinId, debitmetreMlParTick)"
                       "VALUES (%s, %s, %s, %s, %s, %s)")
         self.cursor.execute(sql, (bId, quantite, quantiteMax, pompePinId, dmPinId, dmMlParTick))
-        self.bartender.cuves[self.cursor.lastrowid] = Cuve(self.cursor.lastrowid, boisson, quantite, quantiteMax, pompePinId, dmPinId, dmMlParTick)
+        self.bartender.cuves[self.cursor.lastrowid] = Cuve(self.cursor.lastrowid, boisson, quantite, quantiteMax, pompePinId, dmPinId, dmMlParTick, True)
         self.db.commit()
         self.bartender.log("Bdd", f"Cuve créée (id:{self.cursor.lastrowid})")
         return self.bartender.cuves[self.cursor.lastrowid]
