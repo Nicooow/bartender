@@ -9,8 +9,7 @@
 
   <link rel="stylesheet" type="text/css" href="css/bartender.css?v=3">
   <script src="js/jquery.min.js"></script>
-  <script src="js/bartender.js?v=2"></script>
-
+  <script src="./js/main.js" type="module"></script>
 </head>
 
 <body style="margin: 0; background-color: black; color:white;">
@@ -55,21 +54,20 @@
         </div>
     </div>
 
-
     <div id="validate" class="">
       <div class="list" style="height:40px;margin-top:50px;">
           <div class="subtitle"><h1 onclick="validate()">Valider</h1></div>
       </div>
     </div>
 
-    <div id="selection_alcool" class="selected">
+    <div id="selection_alcool" class="unselected">
       <div class="list" style="height:60px;margin-top:50px;">
           <div class="subtitle"><h1>Sélection de l'alcool</h1></div>
       </div>
-      <div class="list">
-        <div onclick="selectAlcool('clancampbell')" class="itemBoisson"><img src="img/clancampbell.png"></div>
-        <div onclick="selectAlcool('poliakov')" class="itemBoisson"><img src="img/poliakov.png"></div>
-        <div onclick="selectAlcool('jagermeister')" class="itemBoisson"><img src="img/jagermeister.png"></div>
+      <div class="list" id="list_alcool" type="salut">
+        <div onclick="selectAlcool('clancampbell')" class="itemBoisson" id="boisson_1"><img src="img/clancampbell.png"></div>
+        <div onclick="selectAlcool('poliakov')" class="itemBoisson" id="boisson_2"><img src="img/poliakov.png"></div>
+        <div onclick="selectAlcool('jagermeister')" class="itemBoisson" id="boisson_3"><img src="img/jagermeister.png"></div>
       </div>
     </div>
 
@@ -77,9 +75,9 @@
       <div class="list" style="height:60px;margin-top:50px;">
           <div class="subtitle"><h1>Sélection du diluant</h1></div>
       </div>
-      <div class="list">
-        <div onclick="selectDiluant('heineken')" class="itemBoisson"><img src="img/heineken.png"></div>
-        <div onclick="selectDiluant('ricard')" class="itemBoisson"><img src="img/ricard.png"></div>
+      <div class="list" id="list_diluant" type="coucou">
+        <div onclick="selectDiluant('heineken')" class="itemBoisson" id="boisson_4"><img src="img/heineken.png"></div>
+        <div onclick="selectDiluant('ricard')" class="itemBoisson" id="boisson_5"><img src="img/ricard.png"></div>
 
       </div>
     </div>

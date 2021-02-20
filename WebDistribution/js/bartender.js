@@ -1,3 +1,17 @@
+import {Server} from './server.js';
+
+export default class Bartender {
+  constructor(){
+    console.log("constructeur")
+  }
+}
+
+$( "body" ).click(function() {
+  console.log( "Handler for .click() called." );
+  let serv = new Server();
+  serv.connect()
+});
+
 function changeMode(mode){
   $(".on-sign").addClass("off-sign");
   $(".on-sign").removeClass("on-sign");
