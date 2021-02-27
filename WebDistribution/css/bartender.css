@@ -46,6 +46,10 @@ body {
   opacity: 0;
 }
 
+.totalHide{
+  opacity: 0 !important;
+}
+
 .hideScreensaver{
   -webkit-transition: opacity 0.7s;
   -moz-transition: opacity 0.7s;

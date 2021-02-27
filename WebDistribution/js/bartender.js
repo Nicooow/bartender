@@ -1,21 +1,41 @@
 import {Server} from './server.js';
+import {Vue} from './vue.js';
+import {Controller} from './controller.js';
 
 export default class Bartender {
   constructor(){
     console.log("constructeur")
+    this.Server = new Server(this);
+    this.Controller = new Controller(this);
+    this.Vue = new Vue(this);
+
+    // INITIALISATION
+    this.setLevelMode(2);
+    this.startTimeoutScreensaver();
   }
-}
 
-$( "body" ).click(function() {
-  console.log( "Handler for .click() called." );
-  let serv = new Server();
-  serv.connect()
-});
+  setLevelMode(level){
+    this.levelMode = level;
+    this.Vue.updateLevelMode(level);
+  }
 
-function changeMode(mode){
-  $(".on-sign").addClass("off-sign");
-  $(".on-sign").removeClass("on-sign");
-  $("#mode"+mode).addClass("on-sign");
+  setScreensaver(enable){
+    if(enable && !this.screensaverEnabled){
+      this.screensaverEnabled = true;
+      this.Vue.enterScreensaver();
+    }else if(enable == false){
+      this.screensaverEnabled = false;
+      this.Vue.exitScreensaver();
+    }
+  }
+
+  clearTimeoutScreensaver(){
+    clearTimeout(this.timeoutScreensaver);
+  }
+
+  startTimeoutScreensaver(){
+    this.timeoutScreensaver = window.setTimeout(() => {this.setScreensaver(true)}, 5 * 60 * 1000); // 5 minutes
+  }
 }
 
 function changeSelection(){
@@ -76,16 +96,6 @@ setInterval(function(){
   $("#barre").css("width", (p*20)+"%")
   $("#percent_text").html(Math.floor(p*20)+"%")
 },200);
-
-function enterScreensaver(){
-  $(".sign1").addClass("sign_veille");
-  $(".hideScreensaver").addClass("hide");
-}
-
-function exitScreensaver(){
-  $(".sign1").removeClass("sign_veille");
-  $(".hideScreensaver").removeClass("hide");
-}
 
 $( document ).ready(function() {
   //enterScreensaver();

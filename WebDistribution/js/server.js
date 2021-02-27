@@ -1,7 +1,7 @@
 export class Server {
   constructor() {
     this.socket = undefined
-    console.log("constructuer Server")
+    console.log("constructeur Server")
   }
 
   connect() {
