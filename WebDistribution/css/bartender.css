@@ -57,7 +57,7 @@ body {
 }
 
 .sign_veille {
-  top: 140px;
+  top: 155px;
   font-size: 10em;
   letter-spacing: 4;
 }
@@ -75,18 +75,18 @@ body {
 }
 
 .subtitle{
-font-size: 1.2em;
+  font-size: 1.2em;
   font-family: "Clip";
   text-transform: uppercase;
   color: #ffe6ff;
-    text-shadow: 0 0 0.6rem rgba(var(--color-theme), 0.65), 0 0 1.5rem rgba(var(--color-theme), 0.65),
-      -0.2rem 0.1rem 1rem rgba(var(--color-theme), 0.65), 0.2rem 0.1rem 1rem rgba(var(--color-theme), 0.65),
-      0 -0.5rem 2rem rgba(var(--color-theme), 0.65), 0 0.5rem 3rem rgba(var(--color-theme), 0.65);
-    animation: flicker 5s infinite;
+  text-shadow: 0 0 0.6rem rgba(var(--color-theme), 0.65), 0 0 1.5rem rgba(var(--color-theme), 0.65),
+    -0.2rem 0.1rem 1rem rgba(var(--color-theme), 0.65), 0.2rem 0.1rem 1rem rgba(var(--color-theme), 0.65),
+    0 -0.5rem 2rem rgba(var(--color-theme), 0.65), 0 0.5rem 3rem rgba(var(--color-theme), 0.65);
+  animation: flicker 5s infinite;
 }
 
 .subtitle-off{
-font-size: 1.2em;
+  font-size: 1.2em;
   font-family: "Clip";
   text-transform: uppercase;
   color: #a098a0;
@@ -290,9 +290,6 @@ font-size: 1.2em;
   }
 }
 
-.page{
-}
-
 #selection_alcool, #selection_diluant, #selected_alcool, #selected_diluant, #validate, #progression_text {
   position: absolute;
   width:100%;
@@ -440,4 +437,49 @@ font-size: 1.2em;
   transition: width 0.5s linear;
   border-radius: 50px;
   box-shadow: -0rem 0rem .7rem rgba(var(--color-theme), 1), 0rem 0rem .7rem rgba(var(--color-theme), 1);
+}
+
+#barInfo{
+  display: flex;
+  position: relative;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 100%;
+  height: 100px;
+  z-index: 2;
+  background-color: #fff;
+  box-shadow: 0px 0px 15px 1px rgba(var(--color-theme),1);
+  color: black;
+  background-color: rgba(var(--color-theme),0.7);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+#barInfo span{
+  font-size: 2em;
+}
+
+#barInfoBackground{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: rgba(var(--color-theme), 0.1);
+}
+
+#page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+#page.blur {
+  filter: blur(2px);
 }

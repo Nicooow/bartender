@@ -92,10 +92,10 @@ setInterval(function(){
   }
   p += 0.1;
   p = p%5;
-  //$("body").get(0).style.setProperty("--color-theme", r+", "+g+", "+b);
+  $("body").get(0).style.setProperty("--color-theme", r+", "+g+", "+b);
   $("#barre").css("width", (p*20)+"%")
   $("#percent_text").html(Math.floor(p*20)+"%")
-},200);
+},20);
 
 $( document ).ready(function() {
   //enterScreensaver();
