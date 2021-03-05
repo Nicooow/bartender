@@ -12,6 +12,8 @@ export default class Bartender {
     // INITIALISATION
     this.setLevelMode(2);
     this.startTimeoutScreensaver();
+    this.setScreensaver(true)
+    this.Server.connect();
   }
 
   setLevelMode(level){

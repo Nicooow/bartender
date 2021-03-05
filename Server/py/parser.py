@@ -14,7 +14,11 @@ class Parser():
 
         self.bartender.log("Parser", f"Parse {command} : {', '.join(args)}")
 
-        if(command == "ask"):
+        if(command == "setupAs"):
+            if(args[0] == "distributeur"):
+                self.bartender.setupDistributeur(client);
+
+        elif(command == "ask"):
             if(args[0] == "cuves"):
                 self.bartender.sendCuves(client)
             elif(args[0] == "boissons"):

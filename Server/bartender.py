@@ -29,6 +29,7 @@ class Bartender():
         self.boissons = {}
         self.cuves = {}
         self.config = {}
+        self.distributeur = None
 
         # INIT
         self.log('__init__', "Initialisation...")
@@ -70,7 +71,7 @@ class Bartender():
                 self.ws.send_message(other, packet)
         if(editingObject != None):
             editingObject.editing = False
-            
+
     def loadConfig(self):
         self.log('loadConfig', "Chargement de la configuration...")
         try:
@@ -102,6 +103,10 @@ class Bartender():
     def sendBoissons(self, client):
         for i in self.boissons:
             self.ws.send_message(client, self.boissons[i].addPacket())
+
+    def setupDistributeur(self, client):
+        self.log('setupDistributeur', "Distributeur connecté")
+        self.distributeur = client
 
 bar = Bartender()
 

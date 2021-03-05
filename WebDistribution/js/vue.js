@@ -5,6 +5,7 @@ export class Vue {
     console.log("constructeur Vue");
 
     this.setEvents();
+    this.timeoutBarInfo = undefined;
   }
 
   setEvents(){
@@ -26,5 +27,24 @@ export class Vue {
   exitScreensaver(){
     $(".sign1").removeClass("sign_veille");
     $(".hideScreensaver").removeClass("totalHide");
+  }
+
+  showBarInfo(message, timer = -1){
+    clearTimeout(this.timeoutBarInfo);
+
+    $("#page").addClass("blur");
+    $("#barInfoBackground").removeClass("hide");
+    $("#barInfo .subtitle").html(message);
+
+    if(timer != -1){
+      this.timeoutBarInfo = setTimeout(()=>{this.hideBarInfo()}, timer);
+    }
+  }
+
+  hideBarInfo(){
+    clearTimeout(this.timeoutBarInfo);
+    $("#page").removeClass("blur");
+    $("#barInfoBackground").addClass("hide");
+    $("#barInfo .subtitle").html("");
   }
 }
