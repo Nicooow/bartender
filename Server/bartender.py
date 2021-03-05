@@ -4,11 +4,18 @@ import sys
 import json
 import time
 import traceback
+import os
 from py import parser, serverWs, gpioHandler, bdd, errors
 from py.bcolors import bcolors
 
+application_path = (
+    os.path.dirname(sys.executable)
+    if getattr(sys, "frozen", False)
+    else os.path.dirname(os.path.abspath(__file__))
+)
+
 class Bartender():
-    def __init__(self, debug = True):
+    def __init__(self, debug=True):
         # PARAM
         self.debug = debug
 
@@ -40,11 +47,11 @@ class Bartender():
     def log(self, func, text):
         color = ["", ""]
         maxLength = 100
-        text = text[:maxLength] + ("..." if len(text)>maxLength else "")
-        colorFunc = {'ServerWs' : [bcolors.CYELLOW, bcolors.CYELLOW2],
-                     'Parser' : [bcolors.CVIOLET, bcolors.CVIOLET2],
-                     'Bdd' : [bcolors.CBLUE, bcolors.CBLUE2],
-                     'GPIO' : [bcolors.CGREEN, bcolors.CGREEN2]}
+        text = text[:maxLength] + ("..." if len(text) > maxLength else "")
+        colorFunc = {'ServerWs': [bcolors.CYELLOW, bcolors.CYELLOW2],
+                     'Parser': [bcolors.CVIOLET, bcolors.CVIOLET2],
+                     'Bdd': [bcolors.CBLUE, bcolors.CBLUE2],
+                     'GPIO': [bcolors.CGREEN, bcolors.CGREEN2]}
         if(func in colorFunc):
             color = colorFunc[func]
         if(self.debug):
@@ -63,11 +70,11 @@ class Bartender():
                 self.ws.send_message(other, packet)
         if(editingObject != None):
             editingObject.editing = False
-
+            
     def loadConfig(self):
         self.log('loadConfig', "Chargement de la configuration...")
         try:
-            with open('config.json') as json_file:
+            with open(os.path.join(application_path, 'config.json')) as json_file:
                 self.config = json.load(json_file)
                 self.log('loadConfig', "Configuration chargée")
         except Exception as e:
