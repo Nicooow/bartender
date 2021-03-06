@@ -311,14 +311,15 @@ body {
 }
 
 #selected_alcool{
-    top: 90px;
-    left: -100px;
+  width:auto;
+  top: 130px;
+  left: calc(512px - 170px - 5px);
 }
 
 #selected_diluant{
-    top: 90px;
-    left: 180px;
-    width: calc(100% - 180px);
+  width:auto;
+  top: 130px;
+  left: calc(512px);
 }
 
 #validate{
@@ -354,7 +355,6 @@ body {
 
 #selection_alcool.unselected{
     top: 255px;
-    filter: grayscale(90%);
     transform: scale(0);
 }
 
@@ -364,7 +364,6 @@ body {
 
 #selection_diluant.unselected{
     top: 255px;
-    filter: grayscale(90%);
     transform: scale(0);
 }
 
@@ -379,8 +378,8 @@ body {
 }
 
 #selected_alcool img, #selected_diluant img{
-  height: 110px;
-  width: 110px;
+  height: 75%;
+  width: 75%;
   margin-top: 10px;
 }
 
@@ -467,7 +466,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
+  z-index: 100;
   background-color: rgba(var(--color-theme), 0.1);
 }
 

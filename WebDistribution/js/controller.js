@@ -17,4 +17,17 @@ export class Controller {
       this.Bartender.startTimeoutScreensaver();
     }
   }
+
+  onBoissonClick(event){
+    var id = $(event.target).parent(".itemBoisson").data("id");
+    this.Bartender.boissonClicked(id);
+  }
+
+  onSelectedAlcoolClick(event){
+    this.Bartender.Vue.showSelectionAlcool();
+  }
+
+  onSelectedDiluantClick(event){
+    this.Bartender.Vue.showSelectionDiluant();
+  }
 }

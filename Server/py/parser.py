@@ -32,7 +32,8 @@ class Parser():
                     pass
             elif(args[0] == "availableBoissons"):
                 for b in self.bartender.getAvailableBoissons():
-                    self.bartender.ws.send_message(client, b.addPacket().replace("|boisson|", "|boissonAvailable|"))
+                    self.bartender.ws.send_message(client, b.addPacket().replace("|boisson|", "|availableBoissons|"))
+                self.bartender.ws.send_message(client, "askOk|availableBoissons")
 
         elif(command=="add" or command=="update"):
             if(command=="update"):

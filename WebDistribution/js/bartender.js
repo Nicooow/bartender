@@ -12,11 +12,13 @@ export default class Bartender {
 
     // VARS
     this.availableBoissons = [];
+    this.selectedAlcool = undefined;
+    this.selectedDiluant = undefined;
 
     // INITIALISATION
     this.setLevelMode(2);
     this.startTimeoutScreensaver();
-    this.setScreensaver(true)
+    //this.setScreensaver(true)
     this.Server.connect();
   }
 
@@ -43,37 +45,44 @@ export default class Bartender {
     this.timeoutScreensaver = window.setTimeout(() => {this.setScreensaver(true)}, 5 * 60 * 1000); // 5 minutes
   }
 
+  resetBoissonsData(){
+    this.selectedDiluant = undefined;
+    this.selectedAlcool = undefined;
+    this.availableBoissons = [];
+  }
+
   addAvailableBoisson(boisson){
-    this.availableBoissons.push(boisson);
+    this.availableBoissons[parseInt(boisson.id)] = boisson;
+  }
+
+  availableBoissonsReceived(){
+    this.Vue.resetBoissons();
+    this.Vue.showSelectionAlcool();
+    for(b in this.availableBoissons){
+      this.Vue.addBoisson(this.availableBoissons[b]);
+    }
+    this.Vue.setEventsBoissons();
+  }
+
+  boissonClicked(id){
+    if(parseInt(id) in this.availableBoissons){
+      var boisson = this.availableBoissons[parseInt(id)];
+      if(parseFloat(boisson.pourcentageAlcool)>0){
+        this.selectedAlcool = boisson;
+        this.Vue.showSelectionDiluant();
+      }else{
+        this.selectedDiluant = boisson;
+      }
+      this.Vue.setSelectedBoisson(boisson);
+    }
   }
 }
 
-function changeSelection(){
-  console.log("changeSelection")
-  $("#selection_alcool, #selection_diluant").toggleClass("selected");
-  $("#selection_alcool, #selection_diluant").toggleClass("unselected");
-}
 
-function selectAlcool(nom){
-  $("#selection_alcool, #selection_diluant").toggleClass("selected");
-  $("#selection_alcool, #selection_diluant").toggleClass("unselected");
-
-  $("#selected_alcool .subtitle-off").removeClass("subtitle-off").addClass("subtitle")
-  $("#selected_alcool img").attr('src','img/'+nom+'.png');
-}
-
-function selectDiluant(nom){
-  $("#selection_diluant").removeClass("selected");
-  $("#selection_diluant").addClass("unselected");
-
-  $("#selected_diluant .subtitle-off").removeClass("subtitle-off").addClass("subtitle")
-  $("#selected_diluant img").attr('src','img/'+nom+'.png');
-
-  setTimeout(function(){
-      $("#selected_alcool, #selected_diluant").addClass("ready");
-      $("#validate").toggleClass("ready")
-  }, 700);
-}
+setTimeout(function(){
+    $("#selected_alcool, #selected_diluant").addClass("ready");
+    $("#validate").toggleClass("ready")
+}, 1000000);
 
 function validate(){
   $("#selected_alcool, #selected_diluant").removeClass("ready");

@@ -27,7 +27,7 @@ export class Server {
 
     this.socket.onopen = () => {
         this.sendMessage("setupAs|distributeur");
-        this.Bartender.Vue.showBarInfo("Connexion réussie !", 1500);
+        this.Bartender.Vue.showBarInfo("Connexion réussie !", 1000);
         this.askAvailableBoissons();
 
         this.socket.onmessage = () => {
@@ -46,15 +46,19 @@ export class Server {
     console.log(args);
 
     if(fnct == "addElement"){
-      if(args[1] == "boissonAvailable"){
+      if(args[1] == "availableBoissons"){
         var boisson = new Boisson(args[2], args[3], args[4], args[5], args[6], args[8]);
         this.Bartender.addAvailableBoisson(boisson);
+      }
+    }else if(fnct == "askOk"){
+      if(args[1] == "availableBoissons"){
+        this.Bartender.availableBoissonsReceived();
       }
     }
   }
 
   askAvailableBoissons(){
-    this.Bartender.availableBoissons = [];
+    this.Bartender.resetBoissonsData();
     this.sendMessage("ask|availableBoissons");
   }
 }

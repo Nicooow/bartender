@@ -32,18 +32,18 @@
     </div>
 
     <div class="hideScreensaver">
-    <div id="selected_alcool" class="">
-      <div class="list" style="height:40px;margin-top:50px;">
-          <div class="subtitle-off"><h1>Alcool</h1></div>
+    <div id="selected_alcool" style="z-index:2;">
+      <div class="list" style="height:40px;">
+          <div class="subSelected subtitle-off"><h1>Alcool</h1></div>
       </div>
       <div class="list">
         <div class="itemBoisson"><img src="img/no.png"></div>
       </div>
     </div>
 
-    <div id="selected_diluant" class="">
-      <div class="list" style="height:40px;margin-top:50px;">
-          <div class="subtitle-off"><h1>Diluant</h1></div>
+    <div id="selected_diluant" style="z-index:2;">
+      <div class="list" style="height:40px;">
+          <div class="subSelected subtitle-off"><h1>Diluant</h1></div>
       </div>
       <div class="list">
         <div class="itemBoisson"><img src="img/no.png"></div>
@@ -54,7 +54,7 @@
         <div id="barre"></div>
     </div>
 
-    <div id="progression_text" class="">
+    <div id="progression_text" style="z-index:0;">
         <div class="list">
             <div class="subtitle"><h2 id="percent_text">%</h2></div>
         </div>
@@ -73,10 +73,7 @@
       <div class="list" style="height:60px;margin-top:50px;">
           <div class="subtitle"><h1>Sélection de l'alcool</h1></div>
       </div>
-      <div class="list" id="list_alcool" type="salut">
-        <div onclick="selectAlcool('clancampbell')" class="itemBoisson" id="boisson_1"><img src="img/clancampbell.png"></div>
-        <div onclick="selectAlcool('poliakov')" class="itemBoisson" id="boisson_2"><img src="img/poliakov.png"></div>
-        <div onclick="selectAlcool('jagermeister')" class="itemBoisson" id="boisson_3"><img src="img/jagermeister.png"></div>
+      <div class="list" id="list_alcool">
       </div>
     </div>
 
@@ -84,10 +81,7 @@
       <div class="list" style="height:60px;margin-top:50px;">
           <div class="subtitle"><h1>Sélection du diluant</h1></div>
       </div>
-      <div class="list" id="list_diluant" type="coucou">
-        <div onclick="selectDiluant('heineken')" class="itemBoisson" id="boisson_4"><img src="img/heineken.png"></div>
-        <div onclick="selectDiluant('ricard')" class="itemBoisson" id="boisson_5"><img src="img/ricard.png"></div>
-
+      <div class="list" id="list_diluant">
       </div>
     </div>
 
