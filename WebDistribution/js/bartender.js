@@ -1,6 +1,7 @@
 import {Server} from './server.js';
 import {Vue} from './vue.js';
 import {Controller} from './controller.js';
+import {Boisson} from './Boisson.js';
 
 export default class Bartender {
   constructor(){
@@ -8,6 +9,9 @@ export default class Bartender {
     this.Server = new Server(this);
     this.Controller = new Controller(this);
     this.Vue = new Vue(this);
+
+    // VARS
+    this.availableBoissons = [];
 
     // INITIALISATION
     this.setLevelMode(2);
@@ -37,6 +41,10 @@ export default class Bartender {
 
   startTimeoutScreensaver(){
     this.timeoutScreensaver = window.setTimeout(() => {this.setScreensaver(true)}, 5 * 60 * 1000); // 5 minutes
+  }
+
+  addAvailableBoisson(boisson){
+    this.availableBoissons.push(boisson);
   }
 }
 

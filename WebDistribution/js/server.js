@@ -1,3 +1,5 @@
+import {Boisson} from './Boisson.js';
+
 export class Server {
   constructor(bartender) {
     this.Bartender = bartender;
@@ -26,10 +28,33 @@ export class Server {
     this.socket.onopen = () => {
         this.sendMessage("setupAs|distributeur");
         this.Bartender.Vue.showBarInfo("Connexion réussie !", 1500);
+        this.askAvailableBoissons();
+
+        this.socket.onmessage = () => {
+            this.parseMessage(event.data);
+        };
     };
   }
 
   sendMessage(message){
     this.socket.send(message);
+  }
+
+  parseMessage(message){
+    var args = message.split("|");
+    var fnct = args[0];
+    console.log(args);
+
+    if(fnct == "addElement"){
+      if(args[1] == "boissonAvailable"){
+        var boisson = new Boisson(args[2], args[3], args[4], args[5], args[6], args[8]);
+        this.Bartender.addAvailableBoisson(boisson);
+      }
+    }
+  }
+
+  askAvailableBoissons(){
+    this.Bartender.availableBoissons = [];
+    this.sendMessage("ask|availableBoissons");
   }
 }

@@ -108,6 +108,18 @@ class Bartender():
         self.log('setupDistributeur', "Distributeur connecté")
         self.distributeur = client
 
+    def getAvailableBoissons(self):
+        boissons = []
+
+        for i in self.cuves:
+            c = self.cuves[i]
+            if(not c.enabled):
+                continue
+            boissons.append(c.boisson)
+
+        return boissons
+
+
 bar = Bartender()
 
 while 1:
