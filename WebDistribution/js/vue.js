@@ -49,6 +49,11 @@ export class Vue {
     }
   }
 
+  resetScreen(){
+    this.hidePreValidate();
+    this.hideSelections();
+  }
+
   hideBarInfo(){
     clearTimeout(this.timeoutBarInfo);
     $("#page").removeClass("blur");
@@ -57,16 +62,14 @@ export class Vue {
   }
 
   showSelectionAlcool(){
-    this.hidePreValidate();
-    this.hideSelections();
+    this.resetScreen()
     $("#selection_alcool").removeClass("unselected");
     $("#selection_alcool").addClass("selected");
     clearTimeout(this.Bartender.timeoutPreValidate);
   }
 
   showSelectionDiluant(){
-    this.hidePreValidate();
-    this.hideSelections();
+    this.resetScreen()
     $("#selection_diluant").removeClass("unselected");
     $("#selection_diluant").addClass("selected")
   }

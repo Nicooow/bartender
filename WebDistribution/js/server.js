@@ -28,6 +28,8 @@ export class Server {
     this.socket.onopen = () => {
         this.sendMessage("setupAs|distributeur");
         this.Bartender.Vue.showBarInfo("Connexion réussie !", 1000);
+        this.Bartender.Vue.setSelectedBoisson(-1);
+        this.Bartender.Vue.setSelectedBoisson(-2);
         this.askAvailableBoissons();
 
         this.socket.onmessage = () => {
