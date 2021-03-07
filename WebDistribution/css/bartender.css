@@ -340,13 +340,12 @@ body {
 
 #selected_alcool.ready{
     top: 205px;
-    left: -290px;
+    left: 120px;
 }
 
 #selected_diluant.ready{
     top: 205px;
-    left: 600px;
-    width: calc(100% - 600px);
+    left: 745px;
 }
 
 #selection_alcool.selected{

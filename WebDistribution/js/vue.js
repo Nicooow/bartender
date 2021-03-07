@@ -57,12 +57,15 @@ export class Vue {
   }
 
   showSelectionAlcool(){
+    this.hidePreValidate();
     this.hideSelections();
     $("#selection_alcool").removeClass("unselected");
     $("#selection_alcool").addClass("selected");
+    clearTimeout(this.Bartender.timeoutPreValidate);
   }
 
   showSelectionDiluant(){
+    this.hidePreValidate();
     this.hideSelections();
     $("#selection_diluant").removeClass("unselected");
     $("#selection_diluant").addClass("selected")
@@ -86,14 +89,38 @@ export class Vue {
     $(cat).append(html);
   }
 
-  setSelectedBoisson(boisson){
-    var cat = parseFloat(boisson.pourcentageAlcool)>0 ? "#selected_alcool" : "#selected_diluant";
-    if(boisson == undefined){
-      $(cat+" .subSelected").addClass("subtitle-off").removeClass("subtitle");
-      $(cat+" img").attr("src", "img/no.png");
+  addNoBoisson(){
+    var html = `<div class="itemBoisson" id="boisson_-1" data-id="-1"><img src="img/no.png"></div>`;
+    $("#list_alcool").append(html);
+    html = `<div class="itemBoisson" id="boisson_-2" data-id="-2"><img src="img/no.png"></div>`;
+    $("#list_diluant").append(html);
+  }
+
+  setSelectedBoisson(id){
+    if(id==-1){
+      $("#selected_alcool .subSelected").addClass("subtitle-off").removeClass("subtitle");
+      $("#selected_alcool img").attr("src", "img/no.png");
+    }else if(id==-2){
+      $("#selected_diluant .subSelected").addClass("subtitle-off").removeClass("subtitle");
+      $("#selected_diluant img").attr("src", "img/no.png");
     }else{
+      var boisson = this.Bartender.availableBoissons[parseInt(id)];
+      var cat = parseFloat(boisson.pourcentageAlcool)>0 ? "#selected_alcool" : "#selected_diluant";
       $(cat+" .subSelected").addClass("subtitle").removeClass("subtitle-off");
       $(cat+" img").attr("src", boisson.logo);
     }
+  }
+
+  showPreValidate(){
+    this.hideSelections();
+    $("#selected_alcool").addClass("ready");
+    $("#selected_diluant").addClass("ready");
+    $("#validate").addClass("ready");
+  }
+
+  hidePreValidate(){
+    $("#selected_alcool").removeClass("ready");
+    $("#selected_diluant").removeClass("ready");
+    $("#validate").removeClass("ready");
   }
 }

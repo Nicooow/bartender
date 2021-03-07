@@ -1,7 +1,7 @@
 import {Server} from './server.js';
 import {Vue} from './vue.js';
 import {Controller} from './controller.js';
-import {Boisson} from './Boisson.js';
+import {Boisson} from './boisson.js';
 
 export default class Bartender {
   constructor(){
@@ -14,6 +14,7 @@ export default class Bartender {
     this.availableBoissons = [];
     this.selectedAlcool = undefined;
     this.selectedDiluant = undefined;
+    this.timeoutPreValidate = undefined;
 
     // INITIALISATION
     this.setLevelMode(2);
@@ -61,10 +62,12 @@ export default class Bartender {
     for(b in this.availableBoissons){
       this.Vue.addBoisson(this.availableBoissons[b]);
     }
+    this.Vue.addNoBoisson();
     this.Vue.setEventsBoissons();
   }
 
   boissonClicked(id){
+    clearTimeout(this.timeoutPreValidate);
     if(parseInt(id) in this.availableBoissons){
       var boisson = this.availableBoissons[parseInt(id)];
       if(parseFloat(boisson.pourcentageAlcool)>0){
@@ -72,17 +75,25 @@ export default class Bartender {
         this.Vue.showSelectionDiluant();
       }else{
         this.selectedDiluant = boisson;
+        this.checkPreValidate();
       }
-      this.Vue.setSelectedBoisson(boisson);
+      this.Vue.setSelectedBoisson(parseInt(id));
+    }else if(parseInt(id)==-1){
+      this.selectedAlcool = undefined;
+      this.Vue.setSelectedBoisson(-1);
+      this.Vue.showSelectionDiluant();
+    }else if(parseInt(id)==-2){
+      this.selectedDiluant = undefined;
+      this.Vue.setSelectedBoisson(-2);
+      this.checkPreValidate();
     }
   }
+
+  checkPreValidate(){
+    if(!(this.selectedAlcool == undefined && this.selectedDiluant == undefined))
+      this.timeoutPreValidate = setTimeout(() => {this.Vue.showPreValidate()}, 1000);
+  }
 }
-
-
-setTimeout(function(){
-    $("#selected_alcool, #selected_diluant").addClass("ready");
-    $("#validate").toggleClass("ready")
-}, 1000000);
 
 function validate(){
   $("#selected_alcool, #selected_diluant").removeClass("ready");
