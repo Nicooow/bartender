@@ -105,6 +105,9 @@ class Bartender():
             self.ws.send_message(client, self.boissons[i].addPacket())
 
     def setupDistributeur(self, client):
+        if(self.distributeur is not None):
+            self.log('setupDistributeur', "Déconnexion de l'ancien distributeur...")
+            self.ws.kickClient(self.distributeur)
         self.log('setupDistributeur', "Distributeur connecté")
         self.distributeur = client
 

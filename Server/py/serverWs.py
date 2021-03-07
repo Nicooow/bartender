@@ -59,3 +59,6 @@ class ServerWs(threading.Thread):
             if(other!=client):
                 clients.append(other)
         return clients
+
+    def kickClient(self, client):
+        client['handler'].send_text("", opcode=0x8)
