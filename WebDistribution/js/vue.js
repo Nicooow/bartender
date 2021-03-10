@@ -15,6 +15,7 @@ export class Vue {
     $( "#selected_diluant img" ).click(() => {this.Controller.onSelectedDiluantClick(event)});
     $( "#selected_alcool h1" ).click(() => {this.Controller.onSelectedAlcoolClick(event)});
     $( "#selected_diluant h1" ).click(() => {this.Controller.onSelectedDiluantClick(event)});
+    $( "#validate" ).click(() => {this.Controller.onValidateClick(event)});
   }
 
   setEventsBoissons(){

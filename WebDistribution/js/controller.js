@@ -30,4 +30,8 @@ export class Controller {
   onSelectedDiluantClick(event){
     this.Bartender.Vue.showSelectionDiluant();
   }
+
+  onValidateClick(event){
+    this.Bartender.sendChoices();
+  }
 }

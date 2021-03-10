@@ -15,6 +15,9 @@ export default class Bartender {
     this.selectedAlcool = undefined;
     this.selectedDiluant = undefined;
     this.timeoutPreValidate = undefined;
+    this.levelMode = 0;
+    this.glassCapacity = 20; // en Cl
+    this.alcoolPercentPerMode = [10, 20, 30];
 
     // INITIALISATION
     this.setLevelMode(2);
@@ -92,6 +95,37 @@ export default class Bartender {
   checkPreValidate(){
     if(!(this.selectedAlcool == undefined && this.selectedDiluant == undefined))
       this.timeoutPreValidate = setTimeout(() => {this.Vue.showPreValidate()}, 1000);
+  }
+
+  getQuantityWithMode(boisson){
+    if(parseFloat(boisson.pourcentageAlcool)>0){
+      return this.glassCapacity * this.alcoolPercentPerMode[this.levelMode-1] / 100;
+    }else{
+      return this.glassCapacity - (this.glassCapacity * this.alcoolPercentPerMode[this.levelMode-1] / 100);
+    }
+  }
+
+  sendChoices(){
+    this.Server.sendMessage("createMenu");
+
+    var boissons = [];
+
+    if(this.selectedAlcool == undefined && this.selectedDiluant == undefined){
+        return;
+    }else if(this.selectedAlcool != undefined && this.selectedDiluant != undefined){
+      boissons.push([this.selectedAlcool, this.getQuantityWithMode(this.selectedAlcool)]);
+      boissons.push([this.selectedDiluant, this.getQuantityWithMode(this.selectedDiluant)]);
+    }else if(this.selectedAlcool != undefined && this.selectedDiluant == undefined){
+      boissons.push([this.selectedAlcool, this.getQuantityWithMode(this.selectedAlcool)]);
+    }else if(this.selectedAlcool == undefined && this.selectedDiluant != undefined){
+      boissons.push([this.selectedDiluant, this.glassCapacity]);
+    }
+
+    for(b in boissons){
+      this.Server.sendMessage("addMenu|" + boissons[b][0].id + "|" + boissons[b][1]);
+    }
+
+    this.Server.sendMessage("startMenu");
   }
 }
 

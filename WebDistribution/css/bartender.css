@@ -323,7 +323,9 @@ body {
 }
 
 #validate{
-  top:220px;
+  width:auto;
+  top: 310px;
+  left: calc(512px - 122px);
   transform: scaleX(0);
   -webkit-transition: transform 0.9s ease;
   -moz-transition:transform 0.9s ease;

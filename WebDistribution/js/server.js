@@ -15,7 +15,7 @@ export class Server {
         console.error(exception);
     }
 
-    this.socket.onerror = () => {
+    this.socket.onerror = (error) => {
         console.error(error);
         this.Bartender.Vue.showBarInfo("Erreur avec le serveur !");
     };
