@@ -167,11 +167,15 @@ class Parser():
                             raise Exception("Cuve inexistante. Cette erreur n'est pas censée arriver.")
                         editingCuve = self.bartender.cuves[int(idToUpdate)]
                         dmPinId_old = editingCuve.debitmetrePinId
+                        pompePinId_old = editingCuve.pompePinId
 
                         updateCuve = self.bartender.bdd.updateCuve(idToUpdate, quantite, quantiteMax, pompePinId, dmPinId, dmMlParTick, bId, editingCuve.enabled)
                         if(int(dmPinId_old) != int(dmPinId)):
                             self.bartender.gpio.unsetupPinDebitmetre(editingCuve, dmPinId_old)
                             self.bartender.gpio.setupPinDebitmetre(updateCuve, dmPinId)
+                        if(int(pompePinId_old) != int(pompePinId)):
+                            self.bartender.gpio.unsetupPinPompe(editingCuve, pompePinId_old)
+                            self.bartender.gpio.setupPinPompe(updateCuve, pompePinId)
                         self.bartender.ws.send_message(client, "page|listCuves")
                         for other in self.bartender.ws.getOtherClients(client):
                             self.bartender.ws.send_message(other, updateCuve.updatePacket())

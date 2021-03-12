@@ -10,6 +10,7 @@ class GPIOHandler():
     def __init__(self, bartender):
         self.bartender = bartender
         self.indexPinDebitmetre = {}
+        self.indexPinPompe = {}
 
     def load(self):
         self.bartender.log("GPIO", "Initialisation...")
@@ -19,6 +20,7 @@ class GPIOHandler():
             try:
                 cuve = self.bartender.cuves[i]
                 self.setupPinDebitmetre(cuve, cuve.debitmetrePinId)
+                self.setupPinPompe(cuve, cuve.pompePinId)
             except Exception as e:
                 self.bartender.log("GPIO", f"Impossible de configurer le pin {cuve.debitmetrePinId} en input... (débitmètre)")
                 print(e)
@@ -44,3 +46,14 @@ class GPIOHandler():
         GPIO.remove_event_detect(pin)
         GPIO.cleanup(pin)
         del self.indexPinDebitmetre[int(pin)]
+
+    def setupPinPompe(self, pompe, pin):
+        self.bartender.log("GPIO", f"Ajout du pin {pin} en output... (pompe)")
+        GPIO.setup(int(pin), GPIO.OUT)
+        self.indexPinPompe[int(pin)] = pompe
+
+    def unsetupPinPompe(self, pompe, pin):
+        self.bartender.log("GPIO", f"Suppression du pin {pin} en output... (pompe)")
+        GPIO.remove_event_detect(pin)
+        GPIO.cleanup(pin)
+        del self.indexPinPompe[int(pin)]
