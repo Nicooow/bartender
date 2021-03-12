@@ -18,6 +18,26 @@ class Parser():
             if(args[0] == "distributeur"):
                 self.bartender.setupDistributeur(client);
 
+        elif(command == "createMenu"):
+            self.bartender.services = []
+
+        elif(command == "addService"):
+            idBoisson = int(args[0])
+            quantite = float(args[1])
+
+            if(idBoisson not in self.bartender.boissons):
+                raise Exception("Boisson inexistante. Cette erreur n'est pas censée arriver.")
+            else:
+                boisson = self.bartender.boissons[idBoisson]
+
+            if(boisson not in self.bartender.getAvailableBoissons()):
+                raise Exception("Boisson non disponible. Cette erreur n'est pas censée arriver.")
+
+            self.bartender.addService(boisson, quantite)
+
+        elif(command == "startMenu"):
+            self.bartender.startMenu()
+
         elif(command == "ask"):
             if(args[0] == "cuves"):
                 self.bartender.sendCuves(client)

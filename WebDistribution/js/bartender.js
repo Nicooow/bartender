@@ -122,7 +122,7 @@ export default class Bartender {
     }
 
     for(b in boissons){
-      this.Server.sendMessage("addMenu|" + boissons[b][0].id + "|" + boissons[b][1]);
+      this.Server.sendMessage("addService|" + boissons[b][0].id + "|" + boissons[b][1]);
     }
 
     this.Server.sendMessage("startMenu");

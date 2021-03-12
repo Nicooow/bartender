@@ -7,6 +7,7 @@ import traceback
 import os
 from py import parser, serverWs, gpioHandler, bdd, errors
 from py.bcolors import bcolors
+from py.models.service import Service
 
 application_path = (
     os.path.dirname(sys.executable)
@@ -30,6 +31,7 @@ class Bartender():
         self.cuves = {}
         self.config = {}
         self.distributeur = None
+        self.services = []
 
         # INIT
         self.log('__init__', "Initialisation...")
@@ -66,6 +68,8 @@ class Bartender():
     def clientLeft(self, client, server):
         packet = client["data"]["editingStopPacket"]
         editingObject = client["data"]["editingObject"]
+        if(client == self.distributeur):
+            self.distributeur = None
         if(packet != None):
             for other in self.ws.getOtherClients(client):
                 self.ws.send_message(other, packet)
@@ -121,6 +125,21 @@ class Bartender():
             boissons.append(c.boisson)
 
         return boissons
+
+    def getCuveFromBoisson(self, boisson):
+        for i in self.cuves:
+            if(self.cuves[i].boisson == boisson):
+                return self.cuves[i]
+
+    def addService(self, boisson, quantite):
+        cuve = self.getCuveFromBoisson(boisson)
+        new = Service(boisson, cuve, quantite)
+        self.services.append(new)
+
+    def startMenu(self):
+        self.log("startMenu", "Composition du service :")
+        for service in self.services:
+            self.log("startMenu", f" - {service.boisson.nomAffichage} : {service.quantiteService}Cl")
 
 
 bar = Bartender()
