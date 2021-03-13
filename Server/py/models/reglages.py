@@ -5,10 +5,10 @@ class Reglages():
         self.id = id
         self.nomCourt = nomCourt
         self.nomAffichage = nomAffichage
-        self.reglage = []
+        self.reglages = {}
 
     def addPacket(self):
         pass
 
     def addReglage(self, reglage):
-        self.reglage.append(reglage);
+        self.reglages[reglage.id] = reglage;

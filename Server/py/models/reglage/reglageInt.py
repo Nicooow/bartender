@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from py.models.reglage import Reglage
+from py.models.reglage.reglage import Reglage
 
 class ReglageInt(Reglage):
     def __init__(self, id, nomCourt, nomAffichage, groupe, value = 0):

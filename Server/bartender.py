@@ -32,6 +32,7 @@ class Bartender():
         self.config = {}
         self.distributeur = None
         self.services = []
+        self.reglages = {}
 
         # INIT
         self.log('__init__', "Initialisation...")
@@ -59,6 +60,17 @@ class Bartender():
             color = colorFunc[func]
         if(self.debug):
             print(f"{bcolors.CEND}[{color[0]}{func}{bcolors.CEND}] {color[1]}{text}{bcolors.CEND}")
+
+    def getReglage(self, nomGroupe, nomReglage, defaultValue = None):
+        for g in self.reglages:
+            if(self.reglages[g].nomCourt == nomGroupe):
+                for r in self.reglages[g].reglages:
+                    if(self.reglages[g].reglages[r].nomCourt == nomReglage):
+                        self.log("getReglage", f"{nomGroupe}.{nomReglage} = {self.reglages[g].reglages[r].value}")
+                        return self.reglages[g].reglages[r].value
+
+        self.log("getReglage", f"Impossible de trouver le réglage {nomReglage} du groupe {nomGroupe}. Ajoutez-le dans la BDD.")
+        return defaultValue
 
     def newClient(self, client, server):
         client["data"] = {}

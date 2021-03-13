@@ -14,6 +14,11 @@ class GPIOHandler():
 
     def load(self):
         self.bartender.log("GPIO", "Initialisation...")
+        
+        self.pinR = self.bartender.getReglage("BANDE_LED", "PIN_ROUGE", 0)
+        self.pinB = self.bartender.getReglage("BANDE_LED", "PIN_VERT", 0)
+        self.pinG = self.bartender.getReglage("BANDE_LED", "PIN_BLEU", 0)
+
         GPIO.setmode(GPIO.BOARD)
 
         for i in self.bartender.cuves:

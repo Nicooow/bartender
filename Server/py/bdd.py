@@ -2,6 +2,9 @@
 import mysql.connector
 from py.models.boisson import Boisson
 from py.models.cuve import Cuve
+from py.models.reglages import Reglages
+from py.models.reglage.reglage import Reglage
+from py.models.reglage.reglageInt import ReglageInt
 
 class BDD():
     def __init__(self, bartender):
@@ -39,6 +42,7 @@ class BDD():
 
         boissons = {}
         cuves = {}
+        reglages = {}
 
         try:
             self.cursor.execute("SELECT * FROM boisson")
@@ -61,8 +65,35 @@ class BDD():
             self.bartender.log("Bdd", "Erreur lors du chargement des cuves")
             print(e)
 
+        try:
+            self.cursor.execute("SELECT * FROM reglages")
+            for r in self.cursor:
+                reg = Reglages(r[0], r[1], r[2])
+                reglages[r[0]] = reg
+            self.bartender.log("Bdd", f"{len(reglages)} groupe de réglages chargés")
+        except Exception as e:
+            self.bartender.log("Bdd", "Erreur lors du chargement des groupes de réglages")
+            print(e)
+
+        try:
+            self.cursor.execute("SELECT * FROM reglage")
+            i = 0
+            for r in self.cursor:
+                i+=1
+                typeObject = Reglage
+                typeString = {"int": ReglageInt}
+                if(r[1] in typeString):
+                    typeObject = typeString[r[1]]
+                reg = typeObject(r[0], r[2], r[3],  reglages[r[5]], r[4])
+                reglages[r[5]].addReglage(reg)
+            self.bartender.log("Bdd", f"{i} réglages chargés")
+        except Exception as e:
+            self.bartender.log("Bdd", "Erreur lors du chargement des réglages")
+            print(e)
+
         self.bartender.boissons = boissons
         self.bartender.cuves = cuves
+        self.bartender.reglages = reglages
 
     def save(self):
         pass
