@@ -1,4 +1,4 @@
-import {Boisson} from './Boisson.js';
+import {Boisson} from './boisson.js';
 
 export class Server {
   constructor(bartender) {
