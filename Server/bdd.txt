@@ -18,7 +18,15 @@ millimetreParTick
 pinId
 #idPompe
 
-- specialPin
-pinId
-type
-name
+- reglage
+idReglage
+type (string, int, list, color)
+nomCourt
+nomAffichage
+valeur
+#idReglages
+
+- reglages
+idReglages
+nomCourt
+nomAffichage
