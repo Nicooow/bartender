@@ -259,6 +259,11 @@ function setPage(page, arg1){
       </div>
       `);
     sendMessage("ask|cuves");
+  }else if(page=="reglages"){
+    $("#page").html(`<h1>Réglages</h1>
+                    <div class="row" id="listCuves">
+                    </div>`);
+    sendMessage("ask|reglages");
   }
   if ($(window).width() <= 800) {
     $('.navbar-toggler:not(.collapsed)').click();
