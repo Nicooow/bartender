@@ -124,6 +124,12 @@ class Bartender():
         for i in self.boissons:
             self.ws.send_message(client, self.boissons[i].addPacket())
 
+    def sendReglages(self, client):
+        for g in self.reglages:
+            self.ws.send_message(client, self.reglages[g].addPacket())
+            for r in self.reglages[g].reglages:
+                self.ws.send_message(client, self.reglages[g].reglages[r].addPacket())
+
     def setupDistributeur(self, client):
         if(self.distributeur is not None):
             self.log('setupDistributeur', "Déconnexion de l'ancien distributeur...")

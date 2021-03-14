@@ -10,13 +10,21 @@ class Reglage():
         self.value = value
 
     def valueToString(self):
-        pass
+        return str(value)
 
     def saveValue(self, value):
         pass
 
     def addPacket(self):
-        pass
+        packet = []
+        packet.append("addElement")
+        packet.append("reglage")
+        packet.append(str(self.id))
+        packet.append(str(self.type))
+        packet.append(str(self.nomCourt))
+        packet.append(str(self.nomAffichage))
+        packet.append(self.valueToString())
+        return "|".join(packet)
 
     def updatePacket(self):
         pass

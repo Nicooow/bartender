@@ -43,6 +43,8 @@ class Parser():
                 self.bartender.sendCuves(client)
             elif(args[0] == "boissons"):
                 self.bartender.sendBoissons(client)
+            elif(args[0] == "reglages"):
+                self.bartender.sendReglages(client)
             elif(args[0] == "updateBoisson"):
                 try:
                     idAsk = int(args[1])

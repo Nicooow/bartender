@@ -8,7 +8,13 @@ class Reglages():
         self.reglages = {}
 
     def addPacket(self):
-        pass
+        packet = []
+        packet.append("addElement")
+        packet.append("reglages")
+        packet.append(str(self.id))
+        packet.append(str(self.nomCourt))
+        packet.append(str(self.nomAffichage))
+        return "|".join(packet)
 
     def addReglage(self, reglage):
         self.reglages[reglage.id] = reglage;

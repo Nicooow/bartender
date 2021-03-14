@@ -17,8 +17,5 @@ class ReglageInt(Reglage):
     def saveValue(self, value):
         self.value = int(value)
 
-    def addPacket(self):
-        pass
-
     def updatePacket(self):
         pass
