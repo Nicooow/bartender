@@ -8,6 +8,7 @@ import os
 from py import parser, serverWs, gpioHandler, bdd, errors
 from py.bcolors import bcolors
 from py.models.service import Service
+from py.models.reglage.reglage import Reglage
 
 application_path = (
     os.path.dirname(sys.executable)
@@ -17,6 +18,7 @@ application_path = (
 
 class Bartender():
     def __init__(self, debug=True):
+        start = time.time()
         # PARAM
         self.debug = debug
 
@@ -43,6 +45,8 @@ class Bartender():
         self.ws.start()
         self.gpio.load()
 
+        self.log("__init__", f"Initialisation terminée en {round(time.time()-start,3)} secondes.")
+
     def exit(self):
         self.bdd.disconnect()
         self.ws.close()
@@ -67,10 +71,10 @@ class Bartender():
                 for r in self.reglages[g].reglages:
                     if(self.reglages[g].reglages[r].nomCourt == nomReglage):
                         self.log("getReglage", f"{nomGroupe}.{nomReglage} = {self.reglages[g].reglages[r].value}")
-                        return self.reglages[g].reglages[r].value
+                        return self.reglages[g].reglages[r]
 
         self.log("getReglage", f"Impossible de trouver le réglage {nomReglage} du groupe {nomGroupe}. Ajoutez-le dans la BDD.")
-        return defaultValue
+        return Reglage(None, None, None, None, defaultValue)
 
     def newClient(self, client, server):
         client["data"] = {}
