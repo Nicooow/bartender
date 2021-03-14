@@ -24,6 +24,7 @@ class Reglage():
         packet.append(str(self.nomCourt))
         packet.append(str(self.nomAffichage))
         packet.append(self.valueToString())
+        packet.append(str(self.groupe.id))
         return "|".join(packet)
 
     def updatePacket(self):

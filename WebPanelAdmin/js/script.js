@@ -93,6 +93,10 @@ function parseMessage(message){
       }else{
         addBoisson(args[2], args[3], args[4], args[5],  args[6], args[7], args[8]);
       }
+    }else if(args[1] == "reglages"){
+      addReglages(args[2], args[3], args[4]);
+    }else if(args[1] == "reglage"){
+      addReglage(args[2], args[3], args[4], args[5],  args[6], args[7]);
     }
   }else if(fnct == "animation"){
     if(args[1] == "cuves"){
@@ -261,7 +265,7 @@ function setPage(page, arg1){
     sendMessage("ask|cuves");
   }else if(page=="reglages"){
     $("#page").html(`<h1>Réglages</h1>
-                    <div class="row" id="listCuves">
+                    <div id="reglages">
                     </div>`);
     sendMessage("ask|reglages");
   }
@@ -720,6 +724,34 @@ function addCuveQuantity(id, quantity){
 
 function toggleCuve(id, toggle){
   sendMessage(`toggle|cuve|${id}|${toggle}`);
+}
+
+function addReglages(id, nomCourt, nomAffichage){
+  $("#reglages").append(`
+    <div class="row" style="padding-top:10px" id="reglages_${id}">
+      <div class="card w-100">
+        <div class="card-body">
+          <h5 class="card-title">${nomAffichage}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">${nomCourt}</h6>
+          <p class="card-text"></p>
+        </div>
+      </div>
+    </div>
+  `);
+}
+
+function addReglage(id, type, nomCourt, nomAffichage, value, groupeId){
+  if(type == "int"){
+    $("#reglages_"+groupeId+" .card-text").append(`
+      <div class="form-row text-center align-items-center" style="padding-left:25px;padding-right:25px;">
+        <label class="col-sm-2 col-form-label" for="reglage_${id}"><span>${nomAffichage}</span><br><span class="text-muted">${nomCourt}</span></label>
+        <div class="col">
+          <input type="number" class="form-control" id="reglage_${id}" value="${value}">
+        </div>
+        <button class="btn btn-primary col-sm-2" style="margin:5px;">Valider</button>
+      </div>
+      `);
+  }
 }
 
 $( document ).ready(function() {
