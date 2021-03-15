@@ -751,6 +751,26 @@ function addReglage(id, type, nomCourt, nomAffichage, value, groupeId){
         <button class="btn btn-primary col-sm-2" style="margin:5px;">Valider</button>
       </div>
       `);
+  }else if(type=="color"){
+      $("#reglages_"+groupeId+" .card-text").append(`
+        <div class="form-row text-center align-items-center" style="padding-left:25px;padding-right:25px;">
+          <label class="col-sm-2 col-form-label" for="reglage_${id}"><span>${nomAffichage}</span><br><span class="text-muted">${nomCourt}</span></label>
+          <div class="col">
+            <input type="color" class="form-control" id="reglage_${id}" value="${value}">
+          </div>
+          <button class="btn btn-primary col-sm-2" style="margin:5px;">Valider</button>
+        </div>
+        `);
+  }else{
+    $("#reglages_"+groupeId+" .card-text").append(`
+      <div class="form-row text-center align-items-center" style="padding-left:25px;padding-right:25px;">
+        <label class="col-sm-2 col-form-label" for="reglage_${id}"><span>${nomAffichage}</span><br><span class="text-muted">${nomCourt}</span></label>
+        <div class="col">
+          <span>${value}</span> <span class="text-muted"> (type inconnu : ${type})</span>
+        </div>
+        <button disabled class="btn btn-primary col-sm-2" style="margin:5px;">Valider</button>
+      </div>
+      `);
   }
 }
 

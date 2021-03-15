@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
 
 class Reglage():
-    def __init__(self, id, nomCourt, nomAffichage, groupe, value = None):
+    def __init__(self, id, nomCourt, nomAffichage, groupe, value = None, type = ""):
         self.id = id
-        self.type = ""
+        self.type = type
         self.nomCourt = nomCourt
         self.nomAffichage = nomAffichage
         self.groupe = groupe
         self.value = value
 
     def valueToString(self):
-        return str(value)
+        return str(self.value)
 
     def saveValue(self, value):
-        pass
+        self.value = value
 
     def addPacket(self):
         packet = []

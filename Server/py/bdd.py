@@ -5,6 +5,7 @@ from py.models.cuve import Cuve
 from py.models.reglages import Reglages
 from py.models.reglage.reglage import Reglage
 from py.models.reglage.reglageInt import ReglageInt
+from py.models.reglage.reglageColor import ReglageColor
 
 class BDD():
     def __init__(self, bartender):
@@ -80,11 +81,12 @@ class BDD():
             i = 0
             for r in self.cursor:
                 i+=1
-                typeObject = Reglage
-                typeString = {"int": ReglageInt}
+                typeString = {"int": ReglageInt, "color": ReglageColor}
                 if(r[1] in typeString):
                     typeObject = typeString[r[1]]
-                reg = typeObject(r[0], r[2], r[3],  reglages[r[5]], r[4])
+                    reg = typeObject(r[0], r[2], r[3],  reglages[r[5]], r[4])
+                else:
+                    reg = Reglage(r[0], r[2], r[3],  reglages[r[5]], r[4], r[1])
                 reglages[r[5]].addReglage(reg)
             self.bartender.log("Bdd", f"{i} réglages chargés")
         except Exception as e:
