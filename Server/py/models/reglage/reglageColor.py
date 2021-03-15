@@ -9,6 +9,8 @@ class ReglageColor(Reglage):
         self.nomCourt = nomCourt
         self.nomAffichage = nomAffichage
         self.groupe = groupe
+
+        self.eventHandler = lambda *args: None
         self.saveValue(value)
 
     def valueToString(self):
@@ -16,6 +18,4 @@ class ReglageColor(Reglage):
 
     def saveValue(self, value):
         self.value = "#" + str(value).replace("#","")
-
-    def updatePacket(self):
-        pass
+        super(ReglageColor, self).onValueChange(value, self.value)

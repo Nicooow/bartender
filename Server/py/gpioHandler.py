@@ -14,10 +14,13 @@ class GPIOHandler():
 
     def load(self):
         self.bartender.log("GPIO", "Initialisation...")
-        
+
         self.pinR = self.bartender.getReglage("BANDE_LED", "PIN_ROUGE", 0)
-        self.pinB = self.bartender.getReglage("BANDE_LED", "PIN_VERT", 0)
-        self.pinG = self.bartender.getReglage("BANDE_LED", "PIN_BLEU", 0)
+        self.pinR.eventHandler = self.onPinRChange
+        self.pinG = self.bartender.getReglage("BANDE_LED", "PIN_VERT", 0)
+        self.pinG.eventHandler = self.onPinGChange
+        self.pinB = self.bartender.getReglage("BANDE_LED", "PIN_BLEU", 0)
+        self.pinB.eventHandler = self.onPinBChange
 
         GPIO.setmode(GPIO.BOARD)
 
@@ -62,3 +65,12 @@ class GPIOHandler():
         GPIO.remove_event_detect(pin)
         GPIO.cleanup(pin)
         del self.indexPinPompe[int(pin)]
+
+    def onPinRChange(self, reglage, oldValue, newValue):
+        pass
+
+    def onPinGChange(self, reglage, oldValue, newValue):
+        pass
+
+    def onPinBChange(self, reglage, oldValue, newValue):
+        pass

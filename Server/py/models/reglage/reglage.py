@@ -9,11 +9,14 @@ class Reglage():
         self.groupe = groupe
         self.value = value
 
+        self.eventHandler = lambda *args: None
+
     def valueToString(self):
         return str(self.value)
 
     def saveValue(self, value):
         self.value = value
+        self.onValueChange(value, self.value)
 
     def addPacket(self):
         packet = []
@@ -29,3 +32,6 @@ class Reglage():
 
     def updatePacket(self):
         pass
+
+    def onValueChange(self, oldValue, newValue):
+        self.eventHandler(self, oldValue, newValue)

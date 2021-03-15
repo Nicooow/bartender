@@ -9,13 +9,14 @@ class ReglageInt(Reglage):
         self.nomCourt = nomCourt
         self.nomAffichage = nomAffichage
         self.groupe = groupe
+
+        self.eventHandler = lambda *args: None
         self.saveValue(value)
+
 
     def valueToString(self):
         return str(self.value)
 
     def saveValue(self, value):
         self.value = int(value)
-
-    def updatePacket(self):
-        pass
+        super(ReglageInt, self).onValueChange(value, self.value)
