@@ -748,7 +748,7 @@ function addReglage(id, type, nomCourt, nomAffichage, value, groupeId){
         <div class="col">
           <input type="number" class="form-control" id="reglage_${id}" value="${value}">
         </div>
-        <button class="btn btn-primary col-sm-2" style="margin:5px;">Valider</button>
+        <button class="btn btn-primary col-sm-2" style="margin:5px;" onclick="updateReglage(${groupeId}, ${id}, $('#reglage_${id}').val())">Valider</button>
       </div>
       `);
   }else if(type=="color"){
@@ -758,7 +758,7 @@ function addReglage(id, type, nomCourt, nomAffichage, value, groupeId){
           <div class="col">
             <input type="color" class="form-control" id="reglage_${id}" value="${value}">
           </div>
-          <button class="btn btn-primary col-sm-2" style="margin:5px;">Valider</button>
+          <button class="btn btn-primary col-sm-2" style="margin:5px;" onclick="updateReglage(${groupeId}, ${id}, $('#reglage_${id}').val())">Valider</button>
         </div>
         `);
   }else{
@@ -772,6 +772,10 @@ function addReglage(id, type, nomCourt, nomAffichage, value, groupeId){
       </div>
       `);
   }
+}
+
+function updateReglage(groupeId, id, value){
+  sendMessage(`update|reglage|${groupeId}|${id}|${value}`);
 }
 
 $( document ).ready(function() {

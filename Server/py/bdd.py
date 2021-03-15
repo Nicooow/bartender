@@ -196,3 +196,11 @@ class BDD():
         del self.bartender.cuves[int(idToDelete)]
 
         self.bartender.log("Bdd", f"Cuve supprimée (id:{self.cursor.lastrowid})")
+
+    def updateReglage(self, reglage, newValue):
+        reglage.saveValue(newValue)
+
+        sql = ("UPDATE reglage SET valeur = %s WHERE id = %s")
+        self.cursor.execute(sql, (reglage.valueToString(), reglage.id))
+
+        self.db.commit()

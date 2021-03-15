@@ -31,7 +31,13 @@ class Reglage():
         return "|".join(packet)
 
     def updatePacket(self):
-        pass
+        packet = []
+        packet.append("updateElement")
+        packet.append(str(self.id))
+        packet.append("reglage")
+        packet.append(str(self.type))
+        packet.append(self.valueToString())
+        return "|".join(packet)
 
     def onValueChange(self, oldValue, newValue):
         self.eventHandler(self, oldValue, newValue)
