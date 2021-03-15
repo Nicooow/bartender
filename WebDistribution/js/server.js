@@ -58,6 +58,20 @@ export class Server {
       }
     }else if(fnct == "themeColor"){
       this.Bartender.Vue.setThemeColor(args[1]);
+    }else if(fnct == "distribution"){
+      if(args[1] == "start"){
+        this.Bartender.Vue.showProgressBar();
+      }else if(args[1] == "stop"){
+        this.Bartender.Vue.hideProgressBar();
+        setTimeout(()=>{
+          this.Bartender.Vue.setSelectedBoisson(-1);
+          this.Bartender.Vue.setSelectedBoisson(-2);
+          this.Bartender.Vue.showSelectionAlcool();
+          this.Bartender.Vue.setPercent(0);
+        }, 500);
+      }
+    }else if(fnct == "percentDistribution"){
+      this.Bartender.Vue.setPercent(args[1]);
     }
   }
 

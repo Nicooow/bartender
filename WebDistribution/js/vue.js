@@ -53,6 +53,8 @@ export class Vue {
   resetScreen(){
     this.hidePreValidate();
     this.hideSelections();
+    this.hideProgressBar();
+    this.hideSelected();
   }
 
   hideBarInfo(){
@@ -64,6 +66,7 @@ export class Vue {
 
   showSelectionAlcool(){
     this.resetScreen()
+    this.showSelected();
     $("#selection_alcool").removeClass("unselected");
     $("#selection_alcool").addClass("selected");
     clearTimeout(this.Bartender.timeoutPreValidate);
@@ -71,6 +74,7 @@ export class Vue {
 
   showSelectionDiluant(){
     this.resetScreen()
+    this.showSelected();
     $("#selection_diluant").removeClass("unselected");
     $("#selection_diluant").addClass("selected")
   }
@@ -80,6 +84,14 @@ export class Vue {
     $("#selection_alcool").addClass("unselected");
     $("#selection_diluant").removeClass("selected");
     $("#selection_diluant").addClass("unselected");
+  }
+
+  showSelected(){
+    $("#selected_alcool, #selected_diluant").removeClass("hide");
+  }
+
+  hideSelected(){
+    $("#selected_alcool, #selected_diluant").addClass("hide");
   }
 
   resetBoissons(){
@@ -135,5 +147,23 @@ export class Vue {
     var b = hex & 255;
 
     $("body").get(0).style.setProperty("--color-theme", r+", "+g+", "+b);
+  }
+
+  showProgressBar(){
+    this.resetScreen();
+    setTimeout(function(){
+      $("#progression_text, #progression").addClass("ready");
+    }, 250);
+  }
+
+  hideProgressBar(){
+    $("#progression_text, #progression").removeClass("ready");
+  }
+
+  setPercent(percent){
+    setTimeout(function(){
+      $("#barre").css("width", (percent)+"%")
+      $("#percent_text").html(Math.floor(percent)+"%")
+    }, 1);
   }
 }

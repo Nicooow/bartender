@@ -84,6 +84,7 @@ class Bartender():
         client["data"] = {}
         client["data"]["editingStopPacket"] = None
         client["data"]["editingObject"] = None
+        client["data"]["lastSentPercent"] = -1
 
     def clientLeft(self, client, server):
         packet = client["data"]["editingStopPacket"]
@@ -167,6 +168,8 @@ class Bartender():
         self.log("startMenu", "Composition du service :")
         for service in self.services:
             self.log("startMenu", f" - {service.boisson.nomAffichage} : {service.quantiteService}Cl")
+        if(self.distributeur != None):
+            self.ws.send_message(self.distributeur, "distribution|start")
 
     def updateMenu(self):
         quantiteMax = 0
@@ -176,7 +179,13 @@ class Bartender():
             quantiteMax += service.quantiteService
             quantiteRestant += service.quantiteRestant
 
-        print(100-(quantiteRestant*100.0/quantiteMax))
+        if(self.distributeur != None):
+            percent = 100-(quantiteRestant*100.0/quantiteMax)
+            if(int(self.distributeur["data"]["lastSentPercent"]) != int(percent)):
+                self.distributeur["data"]["lastSentPercent"] = int(percent)
+                self.ws.send_message(self.distributeur, "percentDistribution|"+str(int(percent)))
+                if(int(percent) == 100):
+                    self.ws.send_message(self.distributeur, "distribution|stop")
 
 
     def onThemeCouleurChange(self, reglage, oldValue, newValue):

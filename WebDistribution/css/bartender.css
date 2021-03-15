@@ -434,7 +434,7 @@ body {
   margin-left: 50%;
   transform: translateX(-50%);
   background-color: rgba(var(--color-theme), 1);
-  transition: width 0.5s linear;
+  transition: width 0.1s linear;
   border-radius: 50px;
   box-shadow: -0rem 0rem .7rem rgba(var(--color-theme), 1), 0rem 0rem .7rem rgba(var(--color-theme), 1);
 }

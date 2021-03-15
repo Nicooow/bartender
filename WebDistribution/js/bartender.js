@@ -34,6 +34,9 @@ export default class Bartender {
   setScreensaver(enable){
     if(enable && !this.screensaverEnabled){
       this.screensaverEnabled = true;
+      this.Vue.setSelectedBoisson(-1);
+      this.Vue.setSelectedBoisson(-2);
+      this.Vue.showSelectionAlcool();
       this.Vue.enterScreensaver();
     }else if(enable == false){
       this.screensaverEnabled = false;
@@ -157,8 +160,8 @@ setInterval(function(){
   p += 0.1;
   p = p%5;
   //$("body").get(0).style.setProperty("--color-theme", r+", "+g+", "+b);
-  $("#barre").css("width", (p*20)+"%")
-  $("#percent_text").html(Math.floor(p*20)+"%")
+  //$("#barre").css("width", (p*20)+"%")
+  //$("#percent_text").html(Math.floor(p*20)+"%")
 },20);
 
 $( document ).ready(function() {
