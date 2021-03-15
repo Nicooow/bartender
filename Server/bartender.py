@@ -168,6 +168,17 @@ class Bartender():
         for service in self.services:
             self.log("startMenu", f" - {service.boisson.nomAffichage} : {service.quantiteService}Cl")
 
+    def updateMenu(self):
+        quantiteMax = 0
+        quantiteRestant = 0
+
+        for service in self.services:
+            quantiteMax += service.quantiteService
+            quantiteRestant += service.quantiteRestant
+
+        print(100-(quantiteRestant*100.0/quantiteMax))
+
+
     def onThemeCouleurChange(self, reglage, oldValue, newValue):
         if(self.distributeur != None):
             self.ws.send_message(self.distributeur, "themeColor|"+reglage.valueToString())

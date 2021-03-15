@@ -94,7 +94,7 @@ export default class Bartender {
 
   checkPreValidate(){
     if(!(this.selectedAlcool == undefined && this.selectedDiluant == undefined))
-      this.timeoutPreValidate = setTimeout(() => {this.Vue.showPreValidate()}, 1000);
+      this.timeoutPreValidate = setTimeout(() => {this.Vue.showPreValidate()}, 500);
   }
 
   getQuantityWithMode(boisson){

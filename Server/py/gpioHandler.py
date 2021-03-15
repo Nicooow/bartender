@@ -1,16 +1,23 @@
 # -*- coding: utf-8 -*-
 
+import threading
+import time
+
+isRpi = True
+
 try:
     import RPi.GPIO as GPIO
 except (RuntimeError, ModuleNotFoundError):
     from fake_rpigpio import RPi
     GPIO = RPi.GPIO
+    isRpi = False
 
 class GPIOHandler():
     def __init__(self, bartender):
         self.bartender = bartender
         self.indexPinDebitmetre = {}
         self.indexPinPompe = {}
+        self.lastSentCuveQuantite = {}
 
     def load(self):
         self.bartender.log("GPIO", "Initialisation...")
@@ -33,14 +40,34 @@ class GPIOHandler():
                 self.bartender.log("GPIO", f"Impossible de configurer le pin {cuve.debitmetrePinId} en input... (débitmètre)")
                 print(e)
 
+        self.stopThread = False
+        if(not isRpi):
+            threading.Thread(target=self.fakeDistribution).start()
+
     def stop(self):
         self.bartender.log("GPIO", "Nettoyage des ports GPIO...")
         GPIO.cleanup()
+        self.stopThread = True
 
     def tickEvent(self, pin):
         cuve = self.indexPinDebitmetre[int(pin)]
-        cuve.quantite -= cuve.debitmetreMlParTick
-        if(int(cuve.quantite)%5==0):
+        if((cuve.quantite - cuve.debitmetreMlParTick)>=0):
+            cuve.quantite -= cuve.debitmetreMlParTick
+        else:
+            cuve.quantite = 0
+
+        cuve.quantite = round(cuve.quantite, 4)
+
+        for service in self.bartender.services:
+            if(service.cuve == cuve):
+                service.quantiteRestant -= cuve.debitmetreMlParTick
+                self.bartender.updateMenu()
+
+        if(cuve not in self.lastSentCuveQuantite):
+            self.lastSentCuveQuantite[cuve] = int(cuve.quantite)
+
+        if(int(cuve.quantite) != self.lastSentCuveQuantite[cuve]):
+            self.lastSentCuveQuantite[cuve] = int(cuve.quantite)
             self.bartender.ws.send_message_to_all(cuve.updatePacket())
 
     def setupPinDebitmetre(self, cuve, pin):
@@ -74,3 +101,12 @@ class GPIOHandler():
 
     def onPinBChange(self, reglage, oldValue, newValue):
         pass
+
+    def fakeDistribution(self):
+        self.bartender.log("GPIO", f"Démarrage de la fausse distribution...")
+        while not self.stopThread:
+            time.sleep(0.005)
+            for service in self.bartender.services:
+                if(service.quantiteRestant > 0):
+                    self.tickEvent(service.cuve.debitmetrePinId)
+        self.bartender.log("GPIO", f"Arrêt de la fausse distribution...")

@@ -38,7 +38,7 @@ class ServerWs(threading.Thread):
         self.server.send_message(client, msg)
 
     def send_message_to_all(self, msg):
-        self.bartender.log("ServerWs", f"Envoie (all) : {msg}")
+        #self.bartender.log("ServerWs", f"Envoie (all) : {msg}")
         self.server.send_message_to_all(msg)
 
     def message_received(self, client, server, msg):
