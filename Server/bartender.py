@@ -45,6 +45,10 @@ class Bartender():
         self.ws.start()
         self.gpio.load()
 
+        # DONNEES
+        self.reglageThemeCouleur = self.getReglage("THEME", "COLOR", "#ff0000")
+        self.reglageThemeCouleur.eventHandler = self.onThemeCouleurChange
+
         self.log("__init__", f"Initialisation terminée en {round(time.time()-start,3)} secondes.")
 
     def exit(self):
@@ -136,6 +140,7 @@ class Bartender():
             self.ws.kickClient(self.distributeur)
         self.log('setupDistributeur', "Distributeur connecté")
         self.distributeur = client
+        self.ws.send_message(client, "themeColor|"+self.reglageThemeCouleur.valueToString())
 
     def getAvailableBoissons(self):
         boissons = []
@@ -163,6 +168,9 @@ class Bartender():
         for service in self.services:
             self.log("startMenu", f" - {service.boisson.nomAffichage} : {service.quantiteService}Cl")
 
+    def onThemeCouleurChange(self, reglage, oldValue, newValue):
+        if(self.distributeur != None):
+            self.ws.send_message(self.distributeur, "themeColor|"+reglage.valueToString())
 
 bar = Bartender()
 

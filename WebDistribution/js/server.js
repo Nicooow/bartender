@@ -56,6 +56,8 @@ export class Server {
       if(args[1] == "availableBoissons"){
         this.Bartender.availableBoissonsReceived();
       }
+    }else if(fnct == "themeColor"){
+      this.Bartender.Vue.setThemeColor(args[1]);
     }
   }
 

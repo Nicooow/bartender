@@ -127,4 +127,13 @@ export class Vue {
     $("#selected_diluant").removeClass("ready");
     $("#validate").removeClass("ready");
   }
+
+  setThemeColor(color){
+    var hex = parseInt(color.slice(1), 16);
+    var r = (hex >> 16) & 255;
+    var g = (hex >> 8) & 255;
+    var b = hex & 255;
+
+    $("body").get(0).style.setProperty("--color-theme", r+", "+g+", "+b);
+  }
 }
