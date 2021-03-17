@@ -16,6 +16,7 @@ export class Vue {
     $( "#selected_alcool h1" ).click(() => {this.Controller.onSelectedAlcoolClick(event)});
     $( "#selected_diluant h1" ).click(() => {this.Controller.onSelectedDiluantClick(event)});
     $( "#validate" ).click(() => {this.Controller.onValidateClick(event)});
+    $( "#cancel").click(() => {this.Controller.onCancelClick(event)});
   }
 
   setEventsBoissons(){

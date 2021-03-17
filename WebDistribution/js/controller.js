@@ -34,4 +34,8 @@ export class Controller {
   onValidateClick(event){
     this.Bartender.sendChoices();
   }
+
+  onCancelClick(event){
+    
+  }
 }
