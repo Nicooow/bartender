@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  sam. 13 mars 2021 à 18:04
+-- Généré le :  ven. 19 mars 2021 à 20:32
 -- Version du serveur :  10.4.10-MariaDB
 -- Version de PHP :  7.3.12
 
@@ -78,12 +78,12 @@ CREATE TABLE `cuve` (
 --
 
 INSERT INTO `cuve` (`id`, `idBoisson`, `quantite`, `quantiteMax`, `pompePinId`, `debitmetrePinId`, `debitmetreMlParTick`, `enabled`) VALUES
-(1, 9, 500, 3000, 12, 29, 0.2, 1),
-(2, 2, 2000, 3000, 12, 31, 2, 1),
-(5, 11, 1700, 2000, 13, 32, 0.2, 0),
-(9, 40, 2500, 5000, 7, 7, 1, 1),
-(10, 41, 2000, 5000, 7, 7, 2, 1),
-(11, 42, 4000, 5000, 7, 7, 2, 1);
+(1, 9, 2919, 3000, 11, 29, 0.02, 1),
+(2, 2, 1986, 3000, 12, 31, 0.02, 1),
+(5, 11, 1869, 2000, 13, 32, 0.02, 0),
+(9, 40, 2001, 5000, 15, 33, 0.02, 0),
+(10, 41, 3780.36, 5000, 16, 35, 0.02, 1),
+(11, 42, 2000, 5000, 18, 36, 0.02, 1);
 
 -- --------------------------------------------------------
 
@@ -100,6 +100,16 @@ CREATE TABLE `reglage` (
   `idReglages` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Déchargement des données de la table `reglage`
+--
+
+INSERT INTO `reglage` (`id`, `type`, `nomCourt`, `nomAffichage`, `valeur`, `idReglages`) VALUES
+(1, 'int', 'PIN_ROUGE', 'Numéro GPIO du pin concernant le rouge', '24', 1),
+(2, 'int', 'PIN_BLEU', 'Numéro GPIO du pin concernant le bleu', '25', 1),
+(3, 'int', 'PIN_VERT', 'Numéro GPIO du pin concernant le vert', '27', 1),
+(4, 'color', 'COLOR', 'Couleur du thème', '#ee11e9', 2);
+
 -- --------------------------------------------------------
 
 --
@@ -111,6 +121,14 @@ CREATE TABLE `reglages` (
   `nomCourt` varchar(100) NOT NULL,
   `nomAffichage` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `reglages`
+--
+
+INSERT INTO `reglages` (`id`, `nomCourt`, `nomAffichage`) VALUES
+(1, 'BANDE_LED', 'Paramètres de la bande led'),
+(2, 'THEME', 'Paramètres du thème');
 
 --
 -- Index pour les tables déchargées
@@ -142,13 +160,13 @@ ALTER TABLE `reglages`
 -- AUTO_INCREMENT pour la table `reglage`
 --
 ALTER TABLE `reglage`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `reglages`
 --
 ALTER TABLE `reglages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
