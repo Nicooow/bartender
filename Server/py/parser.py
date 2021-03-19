@@ -17,6 +17,8 @@ class Parser():
         if(command == "setupAs"):
             if(args[0] == "distributeur"):
                 self.bartender.setupDistributeur(client);
+            elif(args[0] == "ethylotest"):
+                self.bartender.setupEthylotest(client);
 
         elif(command == "createMenu"):
             self.bartender.services = []
@@ -204,6 +206,10 @@ class Parser():
 
                 for other in self.bartender.ws.getOtherClients(client):
                     self.bartender.ws.send_message(other, reglage.updatePacket())
+
+            elif(args[0] == "ethylotest"):
+                value = int(args[1])
+                self.bartender.ethylotestLevel = value
 
         elif(command=="delete"):
             if(args[0] == "boisson"):

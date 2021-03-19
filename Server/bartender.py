@@ -33,6 +33,8 @@ class Bartender():
         self.cuves = {}
         self.config = {}
         self.distributeur = None
+        self.ethylotest = None
+        self.ethylotestLevel = 0
         self.services = []
         self.reglages = {}
 
@@ -141,6 +143,14 @@ class Bartender():
             self.ws.kickClient(self.distributeur)
         self.log('setupDistributeur', "Distributeur connecté")
         self.distributeur = client
+        self.ws.send_message(client, "themeColor|"+self.reglageThemeCouleur.valueToString())
+
+    def setupEthylotest(self, client):
+        if(self.ethylotest is not None):
+            self.log('setupEthylotest', "Déconnexion de l'ancien ethylotest...")
+            self.ws.kickClient(self.ethylotest)
+        self.log('setupEthylotest', "Ethylotest connecté")
+        self.ethylotest = client
         self.ws.send_message(client, "themeColor|"+self.reglageThemeCouleur.valueToString())
 
     def getAvailableBoissons(self):
