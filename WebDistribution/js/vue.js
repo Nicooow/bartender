@@ -17,6 +17,8 @@ export class Vue {
     $( "#selected_diluant h1" ).click(() => {this.Controller.onSelectedDiluantClick(event)});
     $( "#validate" ).click(() => {this.Controller.onValidateClick(event)});
     $( "#cancel").click(() => {this.Controller.onCancelClick(event)});
+    $( "#ethylotestBtn").click(() => {this.Controller.onEthylotestClick(event)});
+    $( "#pageEthylotest #container").click(() => {this.Controller.onCloseEthylotestClick(event)});
   }
 
   setEventsBoissons(){
@@ -167,5 +169,15 @@ export class Vue {
       $("#barre").css("width", (percent)+"%")
       $("#percent_text").html(Math.floor(percent)+"%")
     }, 1);
+  }
+
+  showEthylotest(){
+    $("#pageEthylotest").removeClass("hide");
+    $("#page").addClass("blur");
+  }
+
+  hideEthylotest(){
+    $("#pageEthylotest").addClass("hide");
+    $("#page").removeClass("blur");
   }
 }

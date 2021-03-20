@@ -130,6 +130,14 @@ export default class Bartender {
 
     this.Server.sendMessage("startMenu");
   }
+
+  startEthylotest(){
+    this.Vue.showEthylotest();
+  }
+
+  stopEthylotest(){
+    this.Vue.hideEthylotest();
+  }
 }
 
 function validate(){

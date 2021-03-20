@@ -36,6 +36,14 @@ export class Controller {
   }
 
   onCancelClick(event){
-    
+
+  }
+
+  onEthylotestClick(event){
+    this.Bartender.startEthylotest();
+  }
+
+  onCloseEthylotestClick(event){
+    this.Bartender.stopEthylotest();
   }
 }
