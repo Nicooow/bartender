@@ -9,7 +9,7 @@ export class Server {
 
   connect() {
     try {
-        this.socket = new WebSocket("ws://192.168.3.29:12345");
+        this.socket = new WebSocket("ws://bartender.local:12345");
         this.Bartender.Vue.showBarInfo("Connexion au serveur...");
     } catch (exception) {
         console.error(exception);
