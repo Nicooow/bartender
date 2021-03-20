@@ -121,12 +121,12 @@ class GPIOHandler():
     def setupPinPompe(self, pompe, pin):
         self.bartender.log("GPIO", f"Ajout du pin {pin} en output... (pompe)")
         GPIO.setup(int(pin), GPIO.OUT)
-        GPIO.output(int(pin), GPIO.LOW)
+        GPIO.output(int(pin), GPIO.HIGH)
         self.indexPinPompe[int(pin)] = pompe
 
     def unsetupPinPompe(self, pompe, pin):
         self.bartender.log("GPIO", f"Suppression du pin {pin} en output... (pompe)")
-        GPIO.output(int(pin), GPIO.LOW)
+        GPIO.output(int(pin), GPIO.HIGH)
         GPIO.remove_event_detect(int(pin))
         GPIO.cleanup(int(pin))
         del self.indexPinPompe[int(pin)]
@@ -145,10 +145,18 @@ class GPIOHandler():
         self.PwmG.ChangeDutyCycle(g*100/255)
         self.PwmB.ChangeDutyCycle(b*100/255)
 
+    def startPompe(self, pin):
+        self.bartender.log("GPIO", f"Démarrage de la pompe {pin}...")
+        GPIO.output(int(pin), GPIO.LOW)
+
+    def stopPompe(self, pin):
+        self.bartender.log("GPIO", f"Arrêt de la pompe {pin}...")
+        GPIO.output(int(pin), GPIO.HIGH)
+
     def fakeDistribution(self):
         self.bartender.log("GPIO", f"Démarrage de la fausse distribution...")
         while not self.stopThread:
-            time.sleep(0.001)
+            time.sleep(0.0001)
             for service in self.bartender.services:
                 if(service.quantiteRestant > 0):
                     self.tickEvent(service.cuve.debitmetrePinId)

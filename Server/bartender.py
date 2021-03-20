@@ -178,6 +178,8 @@ class Bartender():
     def startMenu(self):
         self.log("startMenu", "Composition du service :")
         for service in self.services:
+            self.gpio.startPompe(service.cuve.pompePinId)
+            service.terminated = False
             self.log("startMenu", f" - {service.boisson.nomAffichage} : {service.quantiteService}Cl")
         if(self.distributeur != None):
             self.ws.send_message(self.distributeur, "distribution|start")
@@ -189,8 +191,12 @@ class Bartender():
 
         for service in self.services:
             quantiteMax += service.quantiteService
-            if(service.quantiteRestant >= 0):
+            if(service.quantiteRestant > 0):
                 quantiteRestant += service.quantiteRestant
+            else:
+                if(not service.terminated):
+                    self.gpio.stopPompe(service.cuve.pompePinId)
+                    service.terminated = True
 
         if(self.distributeur != None):
             percent = 100-(quantiteRestant*100.0/quantiteMax)
