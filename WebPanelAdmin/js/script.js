@@ -38,7 +38,7 @@ function connexionServeur(){
   $("#connexion").show();
 
   try {
-      socket = new WebSocket("ws://localhost:12345");
+      socket = new WebSocket("ws://bartender.local:12345");
   } catch (exception) {
       console.error(exception);
       erreur("danger", "impossible de se connecter au serveur ("+exception+")");
