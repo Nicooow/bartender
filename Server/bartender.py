@@ -181,6 +181,7 @@ class Bartender():
             self.log("startMenu", f" - {service.boisson.nomAffichage} : {service.quantiteService}Cl")
         if(self.distributeur != None):
             self.ws.send_message(self.distributeur, "distribution|start")
+            self.ws.send_message(self.distributeur, "percentDistribution|0")
 
     def updateMenu(self):
         quantiteMax = 0

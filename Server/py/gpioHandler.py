@@ -148,7 +148,7 @@ class GPIOHandler():
     def fakeDistribution(self):
         self.bartender.log("GPIO", f"Démarrage de la fausse distribution...")
         while not self.stopThread:
-            time.sleep(0.005)
+            time.sleep(0.001)
             for service in self.bartender.services:
                 if(service.quantiteRestant > 0):
                     self.tickEvent(service.cuve.debitmetrePinId)

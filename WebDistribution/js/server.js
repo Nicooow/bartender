@@ -31,6 +31,7 @@ export class Server {
         this.Bartender.Vue.setSelectedBoisson(-1);
         this.Bartender.Vue.setSelectedBoisson(-2);
         this.askAvailableBoissons();
+        this.Bartender.Vue.showSelectionAlcool();
 
         this.socket.onmessage = () => {
             this.parseMessage(event.data);
@@ -73,6 +74,12 @@ export class Server {
       }
     }else if(fnct == "percentDistribution"){
       this.Bartender.Vue.setPercent(args[1]);
+    }else if(fnct == "update"){
+      if(args[1] == "availableBoissons"){
+        this.Bartender.Vue.setSelectedBoisson(-1);
+        this.Bartender.Vue.setSelectedBoisson(-2);
+        this.askAvailableBoissons();
+      }
     }
   }
 

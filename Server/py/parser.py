@@ -340,6 +340,8 @@ class Parser():
                 try:
                     updateCuve = self.bartender.bdd.updateCuve(cuve.id, cuve.quantite, cuve.quantiteMax, cuve.pompePinId, cuve.debitmetrePinId, cuve.debitmetreMlParTick, cuve.boisson.id, toggled)
                     self.bartender.ws.send_message_to_all("toggleElement|cuve|" + str(idToToggle) + "|" + str(int(toggled)))
+                    if(self.bartender.distributeur != None):
+                        self.bartender.ws.send_message(self.bartender.distributeur, "update|availableBoissons")
                 except Exception as e:
                     self.bartender.log("Bdd", "Erreur lors de l'ajout d'une quantité dans une cuve")
                     print(str(e))
