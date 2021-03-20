@@ -24,10 +24,13 @@ class GPIOHandler():
 
         self.pinR = self.bartender.getReglage("BANDE_LED", "PIN_ROUGE", 0)
         self.pinR.eventHandler = self.onPinRChange
+        self.PwmR = None
         self.pinG = self.bartender.getReglage("BANDE_LED", "PIN_VERT", 0)
         self.pinG.eventHandler = self.onPinGChange
+        self.PwmG = None
         self.pinB = self.bartender.getReglage("BANDE_LED", "PIN_BLEU", 0)
         self.pinB.eventHandler = self.onPinBChange
+        self.PwmB = None
 
         GPIO.setmode(GPIO.BOARD)
 
@@ -43,6 +46,9 @@ class GPIOHandler():
         try:
             self.bartender.log("GPIO", f"Ajout du pin {self.pinR.value} en input... (pinR)")
             GPIO.setup(self.pinR.value, GPIO.OUT)
+            GPIO.output(self.pinR.value, GPIO.LOW)
+            self.PwmR = GPIO.PWM(self.pinR.value, 1000)
+            self.PwmR.start(0)
         except Exception as e:
             self.bartender.log("GPIO", f"Impossible de configurer le pin {self.pinR.value} en output... (pinR)")
             print(e)
@@ -50,6 +56,9 @@ class GPIOHandler():
         try:
             self.bartender.log("GPIO", f"Ajout du pin {self.pinG.value} en input... (pinG)")
             GPIO.setup(self.pinG.value, GPIO.OUT)
+            GPIO.output(self.pinG.value, GPIO.LOW)
+            self.PwmG = GPIO.PWM(self.pinG.value, 1000)
+            self.PwmG.start(0)
         except Exception as e:
             self.bartender.log("GPIO", f"Impossible de configurer le pin {self.pinG.value} en output... (pinG)")
             print(e)
@@ -57,6 +66,9 @@ class GPIOHandler():
         try:
             self.bartender.log("GPIO", f"Ajout du pin {self.pinB.value} en input... (pinB)")
             GPIO.setup(self.pinB.value, GPIO.OUT)
+            GPIO.output(self.pinB.value, GPIO.LOW)
+            self.PwmB = GPIO.PWM(self.pinB.value, 1000)
+            self.PwmB.start(0)
         except Exception as e:
             self.bartender.log("GPIO", f"Impossible de configurer le pin {self.pinB.value} en output... (pinB)")
             print(e)
@@ -67,6 +79,9 @@ class GPIOHandler():
 
     def stop(self):
         self.bartender.log("GPIO", "Nettoyage des ports GPIO...")
+        self.PwmR.stop()
+        self.PwmG.stop()
+        self.PwmB.stop()
         GPIO.cleanup()
         self.stopThread = True
 
@@ -106,12 +121,14 @@ class GPIOHandler():
     def setupPinPompe(self, pompe, pin):
         self.bartender.log("GPIO", f"Ajout du pin {pin} en output... (pompe)")
         GPIO.setup(int(pin), GPIO.OUT)
+        GPIO.output(int(pin), GPIO.LOW)
         self.indexPinPompe[int(pin)] = pompe
 
     def unsetupPinPompe(self, pompe, pin):
         self.bartender.log("GPIO", f"Suppression du pin {pin} en output... (pompe)")
-        GPIO.remove_event_detect(pin)
-        GPIO.cleanup(pin)
+        GPIO.output(int(pin), GPIO.LOW)
+        GPIO.remove_event_detect(int(pin))
+        GPIO.cleanup(int(pin))
         del self.indexPinPompe[int(pin)]
 
     def onPinRChange(self, reglage, oldValue, newValue):
@@ -122,6 +139,11 @@ class GPIOHandler():
 
     def onPinBChange(self, reglage, oldValue, newValue):
         pass
+
+    def setRGB(self, r, g, b):
+        self.PwmR.ChangeDutyCycle(r*100/255)
+        self.PwmG.ChangeDutyCycle(r*100/255)
+        self.PwmB.ChangeDutyCycle(r*100/255)
 
     def fakeDistribution(self):
         self.bartender.log("GPIO", f"Démarrage de la fausse distribution...")

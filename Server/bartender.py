@@ -50,6 +50,7 @@ class Bartender():
         # DONNEES
         self.reglageThemeCouleur = self.getReglage("THEME", "COLOR", "#ff0000")
         self.reglageThemeCouleur.eventHandler = self.onThemeCouleurChange
+        self.setThemeCouleur(self.reglageThemeCouleur.valueToString())
 
         self.log("__init__", f"Initialisation terminée en {round(time.time()-start,3)} secondes.")
 
@@ -201,6 +202,12 @@ class Bartender():
     def onThemeCouleurChange(self, reglage, oldValue, newValue):
         if(self.distributeur != None):
             self.ws.send_message(self.distributeur, "themeColor|"+reglage.valueToString())
+        self.setThemeColor(reglage.valueToString())
+
+    def setThemeCouleur(self, couleurHexa):
+        couleurHexa = couleurHexa.lstrip('#')
+        r, g, b = tuple(int(couleurHexa[i:i+2], 16) for i in (0, 2, 4))
+        self.gpio.setRGB(r, g, b)
 
 bar = Bartender()
 
