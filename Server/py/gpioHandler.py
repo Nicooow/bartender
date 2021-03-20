@@ -47,7 +47,7 @@ class GPIOHandler():
             self.bartender.log("GPIO", f"Ajout du pin {self.pinR.value} en input... (pinR)")
             GPIO.setup(self.pinR.value, GPIO.OUT)
             GPIO.output(self.pinR.value, GPIO.LOW)
-            self.PwmR = GPIO.PWM(self.pinR.value, 1000)
+            self.PwmR = GPIO.PWM(self.pinR.value, 100)
             self.PwmR.start(0)
         except Exception as e:
             self.bartender.log("GPIO", f"Impossible de configurer le pin {self.pinR.value} en output... (pinR)")
@@ -57,7 +57,7 @@ class GPIOHandler():
             self.bartender.log("GPIO", f"Ajout du pin {self.pinG.value} en input... (pinG)")
             GPIO.setup(self.pinG.value, GPIO.OUT)
             GPIO.output(self.pinG.value, GPIO.LOW)
-            self.PwmG = GPIO.PWM(self.pinG.value, 1000)
+            self.PwmG = GPIO.PWM(self.pinG.value, 100)
             self.PwmG.start(0)
         except Exception as e:
             self.bartender.log("GPIO", f"Impossible de configurer le pin {self.pinG.value} en output... (pinG)")
@@ -67,7 +67,7 @@ class GPIOHandler():
             self.bartender.log("GPIO", f"Ajout du pin {self.pinB.value} en input... (pinB)")
             GPIO.setup(self.pinB.value, GPIO.OUT)
             GPIO.output(self.pinB.value, GPIO.LOW)
-            self.PwmB = GPIO.PWM(self.pinB.value, 1000)
+            self.PwmB = GPIO.PWM(self.pinB.value, 100)
             self.PwmB.start(0)
         except Exception as e:
             self.bartender.log("GPIO", f"Impossible de configurer le pin {self.pinB.value} en output... (pinB)")
