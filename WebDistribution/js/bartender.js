@@ -133,10 +133,13 @@ export default class Bartender {
 
   startEthylotest(){
     this.Vue.showEthylotest();
+    this.Server.sendMessage("ask|ethylotest")
+    this.intervalEthylotest = setInterval(() => {this.Server.sendMessage("ask|ethylotest")}, 500);
   }
 
   stopEthylotest(){
     this.Vue.hideEthylotest();
+    clearInterval(this.intervalEthylotest);
   }
 }
 

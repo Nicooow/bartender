@@ -58,6 +58,8 @@ class Parser():
                 for b in self.bartender.getAvailableBoissons():
                     self.bartender.ws.send_message(client, b.addPacket().replace("|boisson|", "|availableBoissons|"))
                 self.bartender.ws.send_message(client, "askOk|availableBoissons")
+            elif(args[0] == "ethylotest"):
+                self.bartender.ws.send_message(client, "askOk|ethylotest|" + str(self.bartender.ethylotestLevel))
 
         elif(command=="add" or command=="update"):
             if(command=="update" and (args[1] in ("boisson", "cuve"))):

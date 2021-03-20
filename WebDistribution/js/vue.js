@@ -180,4 +180,8 @@ export class Vue {
     $("#pageEthylotest").addClass("hide");
     $("#page").removeClass("blur");
   }
+
+  updateEthylotest(value){
+    $("#pageEthylotest #valueEthylotest").html(value);
+  }
 }

@@ -55,7 +55,8 @@ export class Server {
     }else if(fnct == "askOk"){
       if(args[1] == "availableBoissons"){
         this.Bartender.availableBoissonsReceived();
-      }
+      }else if(args[1] == "ethylotest");
+        this.Bartender.Vue.updateEthylotest(args[2]);
     }else if(fnct == "themeColor"){
       this.Bartender.Vue.setThemeColor(args[1]);
     }else if(fnct == "distribution"){
