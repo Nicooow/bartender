@@ -40,6 +40,9 @@ class Parser():
         elif(command == "startMenu"):
             self.bartender.startMenu()
 
+        elif(command == "cancelDistribution"):
+            self.bartender.cancelDistribution()
+
         elif(command == "ask"):
             if(args[0] == "cuves"):
                 self.bartender.sendCuves(client)

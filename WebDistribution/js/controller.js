@@ -36,7 +36,7 @@ export class Controller {
   }
 
   onCancelClick(event){
-
+    this.Bartender.cancelDistribution();
   }
 
   onEthylotestClick(event){

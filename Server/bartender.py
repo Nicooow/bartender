@@ -185,6 +185,12 @@ class Bartender():
             self.ws.send_message(self.distributeur, "distribution|start")
             self.ws.send_message(self.distributeur, "percentDistribution|0")
 
+    def cancelDistribution(self):
+        self.log("cancelDistribution", "Annulation de la distribution...")
+        for service in self.services:
+            service.quantiteRestant = 0
+        self.updateMenu()
+
     def updateMenu(self):
         quantiteMax = 0
         quantiteRestant = 0
