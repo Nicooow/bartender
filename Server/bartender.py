@@ -188,7 +188,8 @@ class Bartender():
 
         for service in self.services:
             quantiteMax += service.quantiteService
-            quantiteRestant += service.quantiteRestant
+            if(service.quantiteRestant >= 0):
+                quantiteRestant += service.quantiteRestant
 
         if(self.distributeur != None):
             percent = 100-(quantiteRestant*100.0/quantiteMax)

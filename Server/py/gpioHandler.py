@@ -88,7 +88,7 @@ class GPIOHandler():
     def tickEvent(self, pin):
         cuve = self.indexPinDebitmetre[int(pin)]
         if((cuve.quantite - cuve.debitmetreMlParTick)>=0):
-            cuve.quantite -= cuve.debitmetreMlParTick
+            cuve.quantite -= (cuve.debitmetreMlParTick/10)
         else:
             cuve.quantite = 0
 
@@ -96,7 +96,7 @@ class GPIOHandler():
 
         for service in self.bartender.services:
             if(service.cuve == cuve):
-                service.quantiteRestant -= cuve.debitmetreMlParTick
+                service.quantiteRestant -= (cuve.debitmetreMlParTick/10)
                 self.bartender.updateMenu()
 
         if(cuve not in self.lastSentCuveQuantite):
