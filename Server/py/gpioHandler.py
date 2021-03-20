@@ -40,6 +40,27 @@ class GPIOHandler():
                 self.bartender.log("GPIO", f"Impossible de configurer le pin {cuve.debitmetrePinId} en input... (débitmètre)")
                 print(e)
 
+        try:
+            self.bartender.log("GPIO", f"Ajout du pin {self.pinR.value} en input... (pinR)")
+            GPIO.setup(self.pinR.value, GPIO.OUT)
+        except Exception as e:
+            self.bartender.log("GPIO", f"Impossible de configurer le pin {self.pinR.value} en output... (pinR)")
+            print(e)
+
+        try:
+            self.bartender.log("GPIO", f"Ajout du pin {self.pinG.value} en input... (pinG)")
+            GPIO.setup(self.pinG.value, GPIO.OUT)
+        except Exception as e:
+            self.bartender.log("GPIO", f"Impossible de configurer le pin {self.pinG.value} en output... (pinG)")
+            print(e)
+
+        try:
+            self.bartender.log("GPIO", f"Ajout du pin {self.pinB.value} en input... (pinB)")
+            GPIO.setup(self.pinB.value, GPIO.OUT)
+        except Exception as e:
+            self.bartender.log("GPIO", f"Impossible de configurer le pin {self.pinB.value} en output... (pinB)")
+            print(e)
+
         self.stopThread = False
         if(not isRpi):
             threading.Thread(target=self.fakeDistribution).start()
