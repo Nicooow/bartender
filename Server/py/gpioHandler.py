@@ -142,8 +142,8 @@ class GPIOHandler():
 
     def setRGB(self, r, g, b):
         self.PwmR.ChangeDutyCycle(r*100/255)
-        self.PwmG.ChangeDutyCycle(r*100/255)
-        self.PwmB.ChangeDutyCycle(r*100/255)
+        self.PwmG.ChangeDutyCycle(g*100/255)
+        self.PwmB.ChangeDutyCycle(b*100/255)
 
     def fakeDistribution(self):
         self.bartender.log("GPIO", f"Démarrage de la fausse distribution...")
