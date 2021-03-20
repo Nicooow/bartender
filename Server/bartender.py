@@ -202,7 +202,7 @@ class Bartender():
     def onThemeCouleurChange(self, reglage, oldValue, newValue):
         if(self.distributeur != None):
             self.ws.send_message(self.distributeur, "themeColor|"+reglage.valueToString())
-        self.setThemeColor(reglage.valueToString())
+        self.setThemeCouleur(reglage.valueToString())
 
     def setThemeCouleur(self, couleurHexa):
         couleurHexa = couleurHexa.lstrip('#')
