@@ -93,6 +93,7 @@ body {
 }
 
 .off-sign{
+  color: rgba(var(--color-theme), 0.45) !important;
   animation: shineOut 0.5s forwards;
 }
 

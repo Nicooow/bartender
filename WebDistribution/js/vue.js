@@ -27,6 +27,7 @@ export class Vue {
     $(".on-sign").addClass("off-sign");
     $(".on-sign").removeClass("on-sign");
     $("#mode"+level).addClass("on-sign");
+    $("#mode"+level).removeClass("off-sign");
   }
 
   enterScreensaver(){
