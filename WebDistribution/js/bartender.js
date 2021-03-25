@@ -64,7 +64,6 @@ export default class Bartender {
 
   availableBoissonsReceived(){
     this.Vue.resetBoissons();
-    this.Vue.showSelectionAlcool();
     for(b in this.availableBoissons){
       this.Vue.addBoisson(this.availableBoissons[b]);
     }
@@ -129,6 +128,10 @@ export default class Bartender {
     }
 
     this.Server.sendMessage("startMenu");
+  }
+
+  cancelDistribution(){
+    this.Server.sendMessage("cancelDistribution");
   }
 
   startEthylotest(){

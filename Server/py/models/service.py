@@ -6,3 +6,4 @@ class Service():
         self.cuve = cuve
         self.quantiteService = quantiteService
         self.quantiteRestant = quantiteService
+        self.terminated = False

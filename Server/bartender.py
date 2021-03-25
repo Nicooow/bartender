@@ -50,6 +50,7 @@ class Bartender():
         # DONNEES
         self.reglageThemeCouleur = self.getReglage("THEME", "COLOR", "#ff0000")
         self.reglageThemeCouleur.eventHandler = self.onThemeCouleurChange
+        self.setThemeCouleur(self.reglageThemeCouleur.valueToString())
 
         self.log("__init__", f"Initialisation terminée en {round(time.time()-start,3)} secondes.")
 
@@ -177,9 +178,18 @@ class Bartender():
     def startMenu(self):
         self.log("startMenu", "Composition du service :")
         for service in self.services:
+            self.gpio.startPompe(service.cuve.pompePinId)
+            service.terminated = False
             self.log("startMenu", f" - {service.boisson.nomAffichage} : {service.quantiteService}Cl")
         if(self.distributeur != None):
             self.ws.send_message(self.distributeur, "distribution|start")
+            self.ws.send_message(self.distributeur, "percentDistribution|0")
+
+    def cancelDistribution(self):
+        self.log("cancelDistribution", "Annulation de la distribution...")
+        for service in self.services:
+            service.quantiteRestant = 0
+        self.updateMenu()
 
     def updateMenu(self):
         quantiteMax = 0
@@ -187,7 +197,12 @@ class Bartender():
 
         for service in self.services:
             quantiteMax += service.quantiteService
-            quantiteRestant += service.quantiteRestant
+            if(service.quantiteRestant > 0):
+                quantiteRestant += service.quantiteRestant
+            else:
+                if(not service.terminated):
+                    self.gpio.stopPompe(service.cuve.pompePinId)
+                    service.terminated = True
 
         if(self.distributeur != None):
             percent = 100-(quantiteRestant*100.0/quantiteMax)
@@ -201,6 +216,12 @@ class Bartender():
     def onThemeCouleurChange(self, reglage, oldValue, newValue):
         if(self.distributeur != None):
             self.ws.send_message(self.distributeur, "themeColor|"+reglage.valueToString())
+        self.setThemeCouleur(reglage.valueToString())
+
+    def setThemeCouleur(self, couleurHexa):
+        couleurHexa = couleurHexa.lstrip('#')
+        r, g, b = tuple(int(couleurHexa[i:i+2], 16) for i in (0, 2, 4))
+        self.gpio.setRGB(r, g, b)
 
 bar = Bartender()
 
