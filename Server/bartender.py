@@ -190,6 +190,8 @@ class Bartender():
         for service in self.services:
             service.quantiteRestant = 0
         self.updateMenu()
+        if(self.distributeur != None):
+            self.distributeur["data"]["lastSentPercent"] = -1
 
     def updateMenu(self):
         quantiteMax = 0
