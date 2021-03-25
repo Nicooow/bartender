@@ -8,6 +8,9 @@
   <meta name="description" content="Site de configuration du Bartender">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="author" content="Nicolas Boujot">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <link rel="icon" href="favicon.ico" />
   <link rel="apple-touch-icon" href="favicon.ico">
 
@@ -70,13 +73,15 @@
     <div id="errors">
 
     </div>
+
+    <div id="btnReload" style="display:none"><button type="button" id="button_more_cuve" class="btn btn-primary btn-block" onclick="connexionServeur()">Se reconnecter au serveur</button></div>
   </div>
 
   <div class="container" id="page" style="display:none;">
     <h1>Accueil</h1>
   </div>
 
-  <script src="js/script.js?465"></script>
+  <script src="js/script.js?466"></script>
   <script>
   window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {

@@ -35,26 +35,31 @@ function erreur(type, texte){
 }
 
 function connexionServeur(){
+  $("#errors").html("");
   $("#connexion").show();
+  $("#btnReload").hide();
 
   try {
       socket = new WebSocket("ws://bartender.local:12345");
   } catch (exception) {
       console.error(exception);
       erreur("danger", "impossible de se connecter au serveur ("+exception+")");
+      $("#btnReload").show();
       $("#navbarSupportedContent .nav-item.active").removeClass("active");
       $("#connexion").hide();
   }
 
   socket.onerror = function(error) {
       console.error(error);
-      erreur("danger", "impossible de se connecter au serveur");
+      erreur("danger", "impossible de se connecter au serveur.");
       $("#navbarSupportedContent .nav-item.active").removeClass("active");
       $("#connexion").hide();
+      $("#btnReload").show();
   };
 
   socket.onopen = function(event) {
       $("#connexion").hide();
+      $("#btnReload").hide();
       $("#page").show();
       setPage("accueil")
 
@@ -62,6 +67,7 @@ function connexionServeur(){
           $("#page").hide()
           $("#navbarSupportedContent .nav-item.active").removeClass("active");
           erreur("danger", "connexion avec le serveur coupée, veuillez recharger la page.");
+          $("#btnReload").show();
       };
 
       this.onmessage = function(event) {
@@ -779,7 +785,6 @@ function updateReglage(groupeId, id, value){
 }
 
 $( document ).ready(function() {
-  $("#connexion").show();
   setTimeout(function(){
     connexionServeur();
   }, 500);
