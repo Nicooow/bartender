@@ -17,7 +17,7 @@ void setup() {
   WiFiManager wifiManager;
   wifiManager.autoConnect("ETHYLOTEST");
 
-  webSocket.begin("192.168.3.29", 12345, "");
+  webSocket.begin("bartender.local", 12345, "");
   webSocket.onEvent(webSocketEvent);
 }
 
