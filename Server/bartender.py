@@ -201,6 +201,7 @@ class Bartender():
                 quantiteRestant += service.quantiteRestant
             else:
                 if(not service.terminated):
+                    self.bdd.updateCuve(service.cuve.id, service.cuve.quantite, service.cuve.quantiteMax, service.cuve.pompePinId, service.cuve.debitmetrePinId, service.cuve.debitmetreMlParTick, service.cuve.boisson.id, service.cuve.enabled)
                     self.gpio.stopPompe(service.cuve.pompePinId)
                     service.terminated = True
 
