@@ -322,6 +322,9 @@ class Parser():
             if(cuve.quantite+sumQuantite>cuve.quantiteMax):
                 raise Exception("La quantité actuelle ne peut dépasser la quantité maximum")
 
+            if(sumQuantite < 0):
+                raise Exception("La quantité à ajouter ne peut être négative")
+
             try:
                 updateCuve = self.bartender.bdd.updateCuve(cuve.id, cuve.quantite + sumQuantite, cuve.quantiteMax, cuve.pompePinId, cuve.debitmetrePinId, cuve.debitmetreMlParTick, cuve.boisson.id, cuve.enabled)
                 self.bartender.ws.send_message_to_all(updateCuve.updatePacket())
