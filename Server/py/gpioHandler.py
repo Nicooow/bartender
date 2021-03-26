@@ -157,6 +157,9 @@ class GPIOHandler():
 
     def startPompe(self, pin):
         pin = int(pin)
+        cuve = self.indexPinPompe[int(pin)]
+        cuve.running = True
+        self.bartender.ws.send_message_to_all(cuve.updatePacket())
         self.bartender.log("GPIO", f"Démarrage de la pompe {pin}...")
         GPIO.output(int(pin), GPIO.LOW)
         if(not pin in self.pompeOnByPin):
@@ -166,6 +169,9 @@ class GPIOHandler():
 
     def stopPompe(self, pin):
         pin = int(pin)
+        cuve = self.indexPinPompe[int(pin)]
+        cuve.running = False
+        self.bartender.ws.send_message_to_all(cuve.updatePacket())
         self.bartender.log("GPIO", f"Arrêt de la pompe {pin}...")
         GPIO.output(int(pin), GPIO.HIGH)
         if(pin in self.pompeOnByPin):

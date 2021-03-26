@@ -40,7 +40,7 @@ function connexionServeur(){
   $("#btnReload").hide();
 
   try {
-      socket = new WebSocket("ws://bartender.local:12345");
+      socket = new WebSocket("ws://192.168.3.29:12345");
   } catch (exception) {
       console.error(exception);
       erreur("danger", "impossible de se connecter au serveur ("+exception+")");
@@ -89,9 +89,9 @@ function parseMessage(message){
   }else if(fnct == "addElement"){
     if(args[1] == "cuve"){
       if(pageActuel=="accueil"){
-         addCuveAccueil(args[2], args[11], args[12], args[5], args[14]);
+         addCuveAccueil(args[2], args[11], args[12], args[5], args[14], args[15]);
       }else if(pageActuel=="listCuves"){
-         addCuve(args[2], args[3], args[4], args[5],  args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14]);
+         addCuve(args[2], args[3], args[4], args[5],  args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14], args[15]);
       }
     }else if(args[1] == "boisson"){
       if(pageActuel=="modifyCuve" || pageActuel=="newCuve"){
@@ -142,6 +142,8 @@ function parseMessage(message){
        $("#cuve_"+ idToUpdate +" #button_1500_cuve").prop("disabled",parseInt(args[3])+1500>parseInt(args[4]));
        $("#cuve_"+ idToUpdate +" #button_2000_cuve").prop("disabled",parseInt(args[3])+2000>parseInt(args[4]));
        $("#cuve_"+ idToUpdate +" #button_more_cuve").prop("disabled",parseInt(args[3])>=parseInt(args[4]));
+
+       $("#cuve_"+ idToUpdate +" .glowingDiv").toggleClass("glowing", Boolean(parseInt(args[13])))
 
     }else if(args[2] == "boisson"){
       idToUpdate = args[1]
@@ -312,11 +314,13 @@ function showBoissonModele(isNew, id, nomAffichage, nomCourt , couleur,  pourcen
     `);
 }
 
-function addCuveAccueil(num, name, color, level, enabled){
+function addCuveAccueil(num, name, color, level, enabled, running){
   blur = (Boolean(parseInt(enabled)) ? "" : " blur");
+  glowing = (Boolean(parseInt(running)) ? " glowing" : "");
   $("#listCuves").append(`
     <div class="col-xs-4 tinyCuve${blur}" id="cuve_${num}">
       <div class="card text-center" style="width: 7rem;">
+        <div class="glowingDiv${glowing}" style="position:absolute; width:100%; height:100%;color: ${color};"/>
         <div class="card-body">
           <h5 class="card-title">Cuve ${num}</h5>
           <p class="card-text" id="cuve-${num}-name">${name}</p>
@@ -525,7 +529,7 @@ function toggleSuppressionCuve(){
   $("#toggleSuppressionCuve").toggleClass("btn-danger")
 }
 
-function addCuve(id, quantite, quantiteMax, niveau, pompePinId, dmPinId, debitmetreMlParTick, bId, bNomAffiche, bNomCourt, bCouleur, editing, enabled){
+function addCuve(id, quantite, quantiteMax, niveau, pompePinId, dmPinId, debitmetreMlParTick, bId, bNomAffiche, bNomCourt, bCouleur, editing, enabled, running){
     hideDelete = " hide"
     hideModify = ""
     editing = Boolean(parseInt(editing))
@@ -534,10 +538,12 @@ function addCuve(id, quantite, quantiteMax, niveau, pompePinId, dmPinId, debitme
         hideDelete = ""
         hideModify = " hide"
     }
+    glowing = (Boolean(parseInt(running)) ? " glowing" : "");
 
     $("#listCuves").append(`
       <div class="col" id="cuve_${id}">
         <div class="card" style="margin-bottom:10px;word-wrap:unset;padding:5px;">
+          <div class="glowingDiv${glowing}" style="position:absolute; width:100%; height:100%;color: ${bCouleur};"/>
           <div class="card-body" style="padding:0;padding-right: 10px;padding-left: 10px;">
             <div class="cuve_hide `+(editing ? "" : "hide")+`" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;z-index: 1;display: flex;justify-content: center;align-items: center;border-radius:5px;background-color:#5f59597a;">
                 <p style="margin-bottom: 0; font-weight: 700;text-shadow: 0 0 5px #ff0000;">En cours de modification...</p>

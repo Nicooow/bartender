@@ -11,6 +11,7 @@ class Cuve():
         self.debitmetreMlParTick = debitmetreMlParTick
         self.editing = False
         self.enabled = enabled
+        self.running = False
 
     def addPacket(self):
         self.quantite = round(float(self.quantite), 2)
@@ -36,6 +37,7 @@ class Cuve():
             packet.append(str(self.boisson.couleur))
         packet.append(str(int(self.editing)))
         packet.append(str(int(self.enabled)))
+        packet.append(str(int(self.running)))
         return "|".join(packet)
 
     def updatePacket(self):
@@ -60,4 +62,5 @@ class Cuve():
             packet.append(str(self.boisson.nomAffichage))
             packet.append(str(self.boisson.nomCourt))
             packet.append(str(self.boisson.couleur))
+        packet.append(str(int(self.running)))
         return "|".join(packet)
