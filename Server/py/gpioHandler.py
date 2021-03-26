@@ -118,7 +118,7 @@ class GPIOHandler():
 
     def setupPinDebitmetre(self, cuve, pin):
         self.bartender.log("GPIO", f"Ajout du pin {pin} en input... (débitmètre)")
-        GPIO.setup(int(pin), GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.setup(int(pin), GPIO.IN, pull_up_down=GPIO.PUD_UP)
         GPIO.add_event_detect(int(pin), GPIO.FALLING, callback=self.tickEvent)
         self.indexPinDebitmetre[int(pin)] = cuve
 
