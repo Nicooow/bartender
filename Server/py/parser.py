@@ -352,3 +352,21 @@ class Parser():
                     self.bartender.log("Bdd", "Erreur lors de l'ajout d'une quantité dans une cuve")
                     print(str(e))
                     raise e
+
+            elif(args[0]=="pompe"):
+                idToToggle = int(args[1])
+                toggled = bool(int(args[2]))
+
+                if(not int(idToToggle) in self.bartender.cuves):
+                    raise Exception("Cuve inexistante. Cette erreur n'est pas censée arriver.")
+
+                cuve = self.bartender.cuves[int(idToToggle)]
+                try:
+                    if toggled:
+                        self.bartender.gpio.startPompe(cuve.pompePinId)
+                    else:
+                        self.bartender.gpio.stopPompe(cuve.pompePinId)
+                except Exception as e:
+                    self.bartender.log("Bdd", "Erreur lors de l'activation/désactivation de la pompe")
+                    print(str(e))
+                    raise e

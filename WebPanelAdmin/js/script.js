@@ -40,7 +40,7 @@ function connexionServeur(){
   $("#btnReload").hide();
 
   try {
-      socket = new WebSocket("ws://192.168.3.29:12345");
+      socket = new WebSocket("ws://bartender.local:12345");
   } catch (exception) {
       console.error(exception);
       erreur("danger", "impossible de se connecter au serveur ("+exception+")");
@@ -144,6 +144,8 @@ function parseMessage(message){
        $("#cuve_"+ idToUpdate +" #button_more_cuve").prop("disabled",parseInt(args[3])>=parseInt(args[4]));
 
        $("#cuve_"+ idToUpdate +" .glowingDiv").toggleClass("glowing", Boolean(parseInt(args[13])))
+       $("#cuve_"+ idToUpdate +" .pompe-on").toggleClass("disabled", Boolean(parseInt(args[13])))
+       $("#cuve_"+ idToUpdate +" .pompe-off").toggleClass("disabled", !Boolean(parseInt(args[13])))
 
     }else if(args[2] == "boisson"){
       idToUpdate = args[1]
@@ -334,6 +336,14 @@ function addCuveAccueil(num, name, color, level, enabled, running){
                 </svg>
               </div>
             </div>
+          </div>
+          <div class="btn-group btn-group-toggle" data-toggle="buttons" style="padding-top:20px">
+            <label class="pompe-on btn btn-secondary btn-sm${(Boolean(parseInt(running)) ? " disabled" : "")}">
+              <input type="radio" name="options" id="option1" onclick="sendMessage('toggle|pompe|${num}|1')"> On
+            </label>
+            <label class="pompe-off btn btn-secondary btn-sm${(Boolean(parseInt(running)) ? "" : " disabled")}">
+              <input type="radio" name="options" id="option2" onclick="sendMessage('toggle|pompe|${num}|0')"> Off
+            </label>
           </div>
         </div>
       </div>
