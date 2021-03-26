@@ -321,7 +321,7 @@ function addCuveAccueil(num, name, color, level, enabled, running){
   glowing = (Boolean(parseInt(running)) ? " glowing" : "");
   $("#listCuves").append(`
     <div class="col-xs-4 tinyCuve${blur}" id="cuve_${num}">
-      <div class="card text-center" style="width: 7rem;">
+      <div class="card text-center" style="width: 7.2rem;">
         <div class="glowingDiv${glowing}" style="position:absolute; width:100%; height:100%;color: ${color};"/>
         <div class="card-body">
           <h5 class="card-title">Cuve ${num}</h5>
